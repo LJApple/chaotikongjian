@@ -16,11 +16,13 @@
 </template>
 
 <script type="text/ecmascript-6">
+import common from '../../utils/common'
+import qs from 'qs'
 export default {
   components:{},
   props:{
       isShowImg: true,
-      isHaveUpload: false
+      isHaveUpload: true
   },
   data(){
     return {
@@ -39,22 +41,23 @@ export default {
   methods:{
       getFile(e) {
         const { files, value } = e.target
-        console.log(e)
+        console.log('files', files)
         this.filesUrlList = []
         this.fileName = files[0].name
         for (var i = 0; i < files.length; i++) {
             this.fileName = files[i].name
             this.filesUrlList.push(value)
-            var formData = new FormData()
-            formData.append("file", files[i])
-            const param = {
-                contentType: false,
-                cache: false,
-                data: formData,
-                processData: false
+            let param = new FormData()
+            param.append("file", files[i])
+            console.log('param', files[i])
+            let option = {
+                method: 'POST',
+                headers:{'Content-Type':'multipart/form-data'},
+                data: param,
+                url: this.$api.upload
             }
-            return
-            this.$axios.post(this.$api.upload, param).then((response) => {
+            this.$axios(option).then((response) => {
+                debugger
                 // handle success
                 this.fileName = response.fileName
                 this.uploadFile = response.uploadFile

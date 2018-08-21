@@ -21,6 +21,7 @@ const  myForum = resolve => require.ensure([], () => resolve(require('../modules
 const  forumDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/forumDetail')), 'forumDetail')
 // 发帖
 const  post = resolve => require.ensure([], () => resolve(require('../modules/forum/post')), 'post')
+
 export default new Router({
   mode : 'history',
   base: '/t2/',  //添加的地方

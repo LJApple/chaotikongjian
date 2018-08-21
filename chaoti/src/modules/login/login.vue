@@ -16,7 +16,6 @@
 import { getData } from '../../assets/js/dom'
 import { MessageBox } from 'mint-ui'
 import common from '../../utils/common'
-import qs from 'qs'
 export default {
   components:{},
   props:{},
@@ -27,27 +26,25 @@ export default {
     }
   },
   methods:{
-    // login(e) {
-    //   let currentIndex = getData(e.target, 'index')
-    //   console.log('login', currentIndex)
-    // }
+    // 登录逻辑
     login() {
       if (!this.userName || !this.passWord) {
         this.$toast('用户名密码不能为空')
         return
       }
-      const  data = {
+      let param = {
         phone: this.userName,
         pwd: this.passWord
       }
-      var uri= `${this.$api.login}?${qs.stringify(data)}`
-      this.$axios.post(uri, '').then((res) => {
-        const success = res.data.success
+      param = common.splicingJson(param)
+      const uri= this.$api.login + param
+      this.$axios.post(uri).then((res) => {
+        const { success } = res.data
         if (success) {
           const path = this.$route.query.redirect
           this.$router.push({path: path})
         } else {
-          this.$toast(`${res.data.message}`)
+          this.$toast(res.data.message)
         }
         console.log('res', res.data)
       }).catch((error) => {

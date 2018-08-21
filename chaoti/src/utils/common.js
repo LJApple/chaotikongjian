@@ -212,6 +212,17 @@ class common {
     const re = /^[A-Za-z\d]+([-_.][A-Za-z\d]+)*@([A-Za-z\d]+[-.])+[A-Za-z\d]{2,4}$/;
     return re.test(str)
   }
+  // 拼接json
+  splicingJson(object) {
+      let param = ''
+      for (const v in object) {
+        console.log('object', v)
+        param += `&${v}=${object[v]}`
+        console.log('v', param)
+      }
+      param = param.replace('&', '?')
+      return param
+  }
 }
 
 export default common = new common()
