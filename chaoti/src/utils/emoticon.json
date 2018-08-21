@@ -1,0 +1,562 @@
+﻿[
+  {
+    "name": "[微笑]",
+    "path": "/static/images/icon/f_static_023.png"
+  },
+  {
+    "name": "[撇嘴]",
+    "path": "/static/images/icon/f_static_040.png"
+  },
+  {
+    "name": "[色]",
+    "path": "/static/images/icon/f_static_019.png"
+  },
+  {
+    "name": "[发呆]",
+    "path": "/static/images/icon/f_static_043.png"
+  },
+  {
+    "name": "[得意]",
+    "path": "/static/images/icon/f_static_021.png"
+  },
+  {
+    "name": "[大哭]",
+    "path": "/static/images/icon/f_static_009.png"
+  },
+  {
+    "name": "[害羞]",
+    "path": "/static/images/icon/f_static_020.png"
+  },
+  {
+    "name": "[闭嘴]",
+    "path": "/static/images/icon/f_static_106.png"
+  },
+  {
+    "name": "[睡]",
+    "path": "/static/images/icon/f_static_035.png"
+  },
+  {
+    "name": "[流泪]",
+    "path": "/static/images/icon/f_static_010.png"
+  },
+  {
+    "name": "[尴尬]",
+    "path": "/static/images/icon/f_static_025.png"
+  },
+  {
+    "name": "[发怒]",
+    "path": "/static/images/icon/f_static_024.png"
+  },
+  {
+    "name": "[调皮]",
+    "path": "/static/images/icon/f_static_001.png"
+  },
+  {
+    "name": "[呲牙]",
+    "path": "/static/images/icon/f_static_000.png"
+  },
+  {
+    "name": "[惊讶]",
+    "path": "/static/images/icon/f_static_033.png"
+  },
+  {
+    "name": "[难过]",
+    "path": "/static/images/icon/f032.png"
+  },
+  {
+    "name": "[酷]",
+    "path": "/static/images/icon/f_static_012.png"
+  },
+  {
+    "name": "[冷汗]",
+    "path": "/static/images/icon/f_static_027.png"
+  },
+  {
+    "name": "[抓狂]",
+    "path": "/static/images/icon/f_static_013.png"
+  },
+  {
+    "name": "[吐]",
+    "path": "/static/images/icon/f_static_022.png"
+  },
+  {
+    "name": "[偷笑]",
+    "path": "/static/images/icon/f_static_003.png"
+  },
+  {
+    "name": "[可爱]",
+    "path": "/static/images/icon/f_static_018.png"
+  },
+  {
+    "name": "[白眼]",
+    "path": "/static/images/icon/f_static_030.png"
+  },
+  {
+    "name": "[傲慢]",
+    "path": "/static/images/icon/f_static_031.png"
+  },
+  {
+    "name": "[饥饿]",
+    "path": "/static/images/icon/f_static_081.png"
+  },
+  {
+    "name": "[困]",
+    "path": "/static/images/icon/f_static_082.png"
+  },
+  {
+    "name": "[惊恐]",
+    "path": "/static/images/icon/f_static_026.png"
+  },
+  {
+    "name": "[流汗]",
+    "path": "/static/images/icon/f_static_002.png"
+  },
+  {
+    "name": "[憨笑]",
+    "path": "/static/images/icon/f_static_037.png"
+  },
+  {
+    "name": "[大兵]",
+    "path": "/static/images/icon/f_static_050.png"
+  },
+  {
+    "name": "[奋斗]",
+    "path": "/static/images/icon/f_static_042.png"
+  },
+  {
+    "name": "[咒骂]",
+    "path": "/static/images/icon/f_static_083.png"
+  },
+  {
+    "name": "[疑问]",
+    "path": "/static/images/icon/f_static_034.png"
+  },
+  {
+    "name": "[嘘]",
+    "path": "/static/images/icon/f_static_011.png"
+  },
+  {
+    "name": "[晕]",
+    "path": "/static/images/icon/f_static_049.png"
+  },
+  {
+    "name": "[折磨]",
+    "path": "/static/images/icon/f_static_084.png"
+  },
+  {
+    "name": "[衰]",
+    "path": "/static/images/icon/f039.png"
+  },
+  {
+    "name": "[骷髅]",
+    "path": "/static/images/icon/f078.png"
+  },
+  {
+    "name": "[敲打]",
+    "path": "/static/images/icon/f_static_005.png"
+  },
+  {
+    "name": "[再见]",
+    "path": "/static/images/icon/f_static_004.png"
+  },
+  {
+    "name": "[擦汗]",
+    "path": "/static/images/icon/f_static_006.png"
+  },
+  {
+    "name": "[抠鼻]",
+    "path": "/static/images/icon/f_static_085.png"
+  },
+  {
+    "name": "[鼓掌]",
+    "path": "/static/images/icon/f_static_086.png"
+  },
+  {
+    "name": "[糗大了]",
+    "path": "/static/images/icon/f_static_087.png"
+  },
+  {
+    "name": "[坏笑]",
+    "path": "/static/images/icon/f_static_046.png"
+  },
+  {
+    "name": "[左哼哼]",
+    "path": "/static/images/icon/f_static_088.png"
+  },
+  {
+    "name": "[右哼哼]",
+    "path": "/static/images/icon/f_static_044.png"
+  },
+  {
+    "name": "[哈欠]",
+    "path": "/static/images/icon/f_static_089.png"
+  },
+  {
+    "name": "[鄙视]",
+    "path": "/static/images/icon/f_static_048.png"
+  },
+  {
+    "name": "[委屈]",
+    "path": "/static/images/icon/f_static_014.png"
+  },
+  {
+    "name": "[快哭了]",
+    "path": "/static/images/icon/f_static_090.png"
+  },
+  {
+    "name": "[阴险]",
+    "path": "/static/images/icon/f_static_041.png"
+  },
+  {
+    "name": "[亲亲]",
+    "path": "/static/images/icon/f_static_036.png"
+  },
+  {
+    "name": "[吓]",
+    "path": "/static/images/icon/f_static_091.png"
+  },
+  {
+    "name": "[可怜]",
+    "path": "/static/images/icon/f_static_051.png"
+  },
+  {
+    "name": "[菜刀]",
+    "path": "/static/images/icon/f_static_017.png"
+  },
+  {
+    "name": "[西瓜]",
+    "path": "/static/images/icon/f060.png"
+  },
+  {
+    "name": "[啤酒]",
+    "path": "/static/images/icon/f_static_061.png"
+  },
+  {
+    "name": "[篮球]",
+    "path": "/static/images/icon/f_static_092.png"
+  },
+  {
+    "name": "[乒乓]",
+    "path": "/static/images/icon/f_static_093.png"
+  },
+  {
+    "name": "[咖啡]",
+    "path": "/static/images/icon/f_static_066.png"
+  },
+  {
+    "name": "[饭]",
+    "path": "/static/images/icon/f058.png"
+  },
+  {
+    "name": "[猪头]",
+    "path": "/static/images/icon/f007.png"
+  },
+  {
+    "name": "[玫瑰]",
+    "path": "/static/images/icon/f008.png"
+  },
+  {
+    "name": "[凋谢]",
+    "path": "/static/images/icon/f057.png"
+  },
+  {
+    "name": "[示爱]",
+    "path": "/static/images/icon/f_static_029.png"
+  },
+  {
+    "name": "[爱心]",
+    "path": "/static/images/icon/f028.png"
+  },
+  {
+    "name": "[心碎]",
+    "path": "/static/images/icon/f_static_074.png"
+  },
+  {
+    "name": "[蛋糕]",
+    "path": "/static/images/icon/f_static_059.png"
+  },
+  {
+    "name": "[闪电]",
+    "path": "/static/images/icon/f080.png"
+  },
+  {
+    "name": "[炸弹]",
+    "path": "/static/images/icon/f016.png"
+  },
+  {
+    "name": "[刀]",
+    "path": "/static/images/icon/f_static_070.png"
+  },
+  {
+    "name": "[足球]",
+    "path": "/static/images/icon/f_static_077.png"
+  },
+  {
+    "name": "[瓢虫]",
+    "path": "/static/images/icon/f_static_062.png"
+  },
+  {
+    "name": "[便便]",
+    "path": "/static/images/icon/f_static_015.png"
+  },
+  {
+    "name": "[月亮]",
+    "path": "/static/images/icon/f068.png"
+  },
+  {
+    "name": "[太阳]",
+    "path": "/static/images/icon/f075.png"
+  },
+  {
+    "name": "[礼物]",
+    "path": "/static/images/icon/f076.png"
+  },
+  {
+    "name": "[拥抱]",
+    "path": "/static/images/icon/f_static_045.png"
+  },
+  {
+    "name": "[强]",
+    "path": "/static/images/icon/f_static_052.png"
+  },
+  {
+    "name": "[弱]",
+    "path": "/static/images/icon/f_static_053.png"
+  },
+  {
+    "name": "[握手]",
+    "path": "/static/images/icon/f_static_054.png"
+  },
+  {
+    "name": "[胜利]",
+    "path": "/static/images/icon/f_static_055.png"
+  },
+  {
+    "name": "[抱拳]",
+    "path": "/static/images/icon/f_static_056.png"
+  },
+  {
+    "name": "[勾引]",
+    "path": "/static/images/icon/f_static_063.png"
+  },
+  {
+    "name": "[拳头]",
+    "path": "/static/images/icon/f_static_073.png"
+  },
+  {
+    "name": "[差劲]",
+    "path": "/static/images/icon/f_static_072.png"
+  },
+  {
+    "name": "[爱你]",
+    "path": "/static/images/icon/f_static_065.png"
+  },
+  {
+    "name": "[NO]",
+    "path": "/static/images/icon/f_static_094.png"
+  },
+  {
+    "name": "[OK]",
+    "path": "/static/images/icon/f064.png"
+  },
+  {
+    "name": "[爱情]",
+    "path": "/static/images/icon/f_static_038.png"
+  },
+  {
+    "name": "[飞吻]",
+    "path": "/static/images/icon/f047.png"
+  },
+  {
+    "name": "[跳跳]",
+    "path": "/static/images/icon/f_static_095.png"
+  },
+  {
+    "name": "[发抖]",
+    "path": "/static/images/icon/f071.png"
+  },
+  {
+    "name": "[怄火]",
+    "path": "/static/images/icon/f_static_096.png"
+  },
+  {
+    "name": "[转圈]",
+    "path": "/static/images/icon/f_static_097.png"
+  },
+  {
+    "name": "[磕头]",
+    "path": "/static/images/icon/f_static_098.png"
+  },
+  {
+    "name": "[回头]",
+    "path": "/static/images/icon/f_static_099.png"
+  },
+  {
+    "name": "[跳绳]",
+    "path": "/static/images/icon/f_static_100.png"
+  },
+  {
+    "name": "[挥手]",
+    "path": "/static/images/icon/f_static_079.png"
+  },
+  {
+    "name": "[激动]",
+    "path": "/static/images/icon/f_static_101.png"
+  },
+  {
+    "name": "[街舞]",
+    "path": "/static/images/icon/f_static_102.png"
+  },
+  {
+    "name": "[献吻]",
+    "path": "/static/images/icon/f_static_103.png"
+  },
+  {
+    "name": "[左太极]",
+    "path": "/static/images/icon/f_static_104.png"
+  },
+  {
+    "name": "[右太极]",
+    "path": "/static/images/icon/f_static_105.png"
+  },
+  {
+    "name": "[双喜]",
+    "path": "/static/images/icon/f108.png"
+  },
+  {
+    "name": "[鞭炮]",
+    "path": "/static/images/icon/f109.png"
+  },
+  {
+    "name": "[灯笼]",
+    "path": "/static/images/icon/f110.png"
+  },
+  {
+    "name": "[发财]",
+    "path": "/static/images/icon/f111.png"
+  },
+  {
+    "name": "[K歌]",
+    "path": "/static/images/icon/f112.png"
+  },
+  {
+    "name": "[购物]",
+    "path": "/static/images/icon/f113.png"
+  },
+  {
+    "name": "[邮件]",
+    "path": "/static/images/icon/f114.png"
+  },
+  {
+    "name": "[帅]",
+    "path": "/static/images/icon/f115.png"
+  },
+  {
+    "name": "[喝彩]",
+    "path": "/static/images/icon/f116.png"
+  },
+  {
+    "name": "[祈祷]",
+    "path": "/static/images/icon/f117.png"
+  },
+  {
+    "name": "[爆筋]",
+    "path": "/static/images/icon/f118.png"
+  },
+  {
+    "name": "[棒棒糖]",
+    "path": "/static/images/icon/f119.png"
+  },
+  {
+    "name": "[喝奶]",
+    "path": "/static/images/icon/f120.png"
+  },
+  {
+    "name": "[面条]",
+    "path": "/static/images/icon/f121.png"
+  },
+  {
+    "name": "[香蕉]",
+    "path": "/static/images/icon/f122.png"
+  },
+  {
+    "name": "[飞机]",
+    "path": "/static/images/icon/f123.png"
+  },
+  {
+    "name": "[开车]",
+    "path": "/static/images/icon/f124.png"
+  },
+  {
+    "name": "[高铁左车头]",
+    "path": "/static/images/icon/f125.png"
+  },
+  {
+    "name": "[车厢]",
+    "path": "/static/images/icon/f126.png"
+  },
+  {
+    "name": "[高铁右车头]",
+    "path": "/static/images/icon/f127.png"
+  },
+  {
+    "name": "[多云]",
+    "path": "/static/images/icon/f128.png"
+  },
+  {
+    "name": "[下雨]",
+    "path": "/static/images/icon/f129.png"
+  },
+  {
+    "name": "[钞票]",
+    "path": "/static/images/icon/f130.png"
+  },
+  {
+    "name": "[熊猫]",
+    "path": "/static/images/icon/f131.png"
+  },
+  {
+    "name": "[灯泡]",
+    "path": "/static/images/icon/f132.png"
+  },
+  {
+    "name": "[风车]",
+    "path": "/static/images/icon/f133.png"
+  },
+  {
+    "name": "[闹钟]",
+    "path": "/static/images/icon/f134.png"
+  },
+  {
+    "name": "[打伞]",
+    "path": "/static/images/icon/f135.png"
+  },
+  {
+    "name": "[彩球]",
+    "path": "/static/images/icon/f136.png"
+  },
+  {
+    "name": "[钻戒]",
+    "path": "/static/images/icon/f137.png"
+  },
+  {
+    "name": "[沙发]",
+    "path": "/static/images/icon/f138.png"
+  },
+  {
+    "name": "[纸巾]",
+    "path": "/static/images/icon/f139.png"
+  },
+  {
+    "name": "[药]",
+    "path": "/static/images/icon/f140.png"
+  },
+  {
+    "name": "[手枪]",
+    "path": "/static/images/icon/f141.png"
+  },
+  {
+    "name": "[青蛙]",
+    "path": "/static/images/icon/f142.png"
+  }
+]

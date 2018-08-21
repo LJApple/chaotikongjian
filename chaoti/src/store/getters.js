@@ -1,0 +1,1 @@
+export const taskListDetail = state => state.taskListDetail
