@@ -3,16 +3,26 @@
     <div class="task-detail">
         <div class="t-header"></div>
         <div class="td-list">
-          <div class="tdl-title"><span class="bloder">任务标题：</span>2018下半年脑if噢is发达范德萨发发发发范德萨发发</div>
+          <div class="tdl-title"><span class="bloder">任务标题：</span>{{taskDetail.title}}</div>
           <div class="tdl-content">
-            <div><span class="bloder">内容:</span> 范德萨发搭嘎广大搭嘎搭嘎打发发达地方司法但是发放范德萨发大师傅发发</div>
+            <div><span class="bloder">内容:</span>{{taskDetail.content}}</div>
           </div>
            <div class="uplad">
-              <upload @fileList="uplad" :isHaveUpload="isHaveUpload"></upload>  
+              <upload @fileList="fileList" :isHaveUpload="isHaveUpload"></upload>  
             </div>
-          <div>
-            <mt-button v-if="taskDetail.state === 1" type="primary">领取任务</mt-button>
-            <mt-button class="gray" v-if="taskDetail.state === 2" type="primary">已过期</mt-button>
+          <div class="revieseTask" v-if="taskType === 1">
+            <mt-button v-if="taskDetail.isDisabled === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.isDisabled === 1" size="large" type="primary">已过期</mt-button>
+          </div>
+          <!-- 待提交任务 -->
+          <div class="stayTask" v-if="taskType === 2">
+            <mt-button v-if="taskDetail.isDisabled === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>          
+            <mt-button v-if="taskDetail.isDisabled === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
+          </div>
+          <!-- 已完成任务 -->
+          <div class="comTask" v-if="taskType === 3">
+            <mt-button v-if="taskDetail.isDisabled === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.isDisabled === 1" size="large" type="primary">已过期</mt-button>
           </div>
         </div>
     </div>
@@ -22,6 +32,9 @@
 <script type="text/ecmascript-6">
 import { mapGetters } from 'vuex'
 import upload from 'components/upload/upload'
+import { MessageBox } from 'mint-ui'
+import common from '../../utils/common'
+import qs from 'qs'
 export default {
   components: {
       upload
@@ -30,28 +43,78 @@ export default {
   data(){
     return {
       taskDetail: {},
-      isHaveUpload: false
+      isHaveUpload: false,
+      taskId: null,
+      taskType: '1',
+      fileData: null
     }
   },
   watch:{},
   computed:{
-    test() {
-         console.log('isHaveUpload', this.isHaveUpload)
-     },
     // 获取store中的taskList的值
     ...mapGetters([
       'taskListDetail'
     ])
   },
   methods:{
-    uplad(e) {
-      console.log('uplad', e)
+    // 获取上传组件中的数据
+    fileList(e) {
+      this.fileData = e
+    },
+    // 获取任务数据
+    gettask() {
+      this.taskId = this.$route.params.taskId
+      this.taskType = this.$route.query.taskType
+      const url = `${this.$api.gettask}?taskId=${this.taskId}`
+      this.$axios.get(url).then((response) => {
+          console.log('response', response)
+          const { data, success } = response.data
+          if (success) {
+            this.taskDetail = data
+          }
+        })
+    },
+     // 领取任务
+    recieveTask() {
+      let params = {
+        taskID: this.taskId
+      }
+      params = common.splicingJson(params)
+      const url = this.$api.recieveTask + params
+      this.$axios.post(url).then((response) => {
+        const {success} = response.data
+        if (success) {
+           MessageBox.alert('任务领取成功，任务书已发至您的邮箱，请前往查看！', '提示').then(action => {
+            this.$router.go(-1)
+          })
+        }
+      })
+    },
+    // 提交任务
+    satyTask() {
+      if (!this.fileData) return this.$toast("请上传任务书！")
+      let params = {
+            "TaskID": this.taskId,
+            "UploadFile": this.fileData.uploadFile,//附件路径
+            "FileName": this.fileData.fileName//附件名称
+      }
+      // params = common.splicingJson(params)
+      // const url = this.$api.submittask + params
+      this.$axios.post(this.$api.submittask, qs.stringify(params)).then((response) => {
+        debugger
+        const {success} = response.data
+        if (success) {
+           MessageBox.alert('提交成功', '提示').then(action => {
+            this.$router.go(-1)
+          })
+        }
+      })
     }
   },
   beforeCreate() {
   },
   created(){
-    console.log('this.tash', this.taskListDetail)
+    this.gettask()
   },
   mounted(){
     const params = this.$route.params
@@ -76,4 +139,6 @@ export default {
     padding 20px $pagePadding 
     margin-top 10px
     line-height 20px
+.revieseTask
+  padding 12px
 </style>

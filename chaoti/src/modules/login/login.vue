@@ -33,12 +33,12 @@ export default {
         return
       }
       let param = {
-        phone: this.userName,
+        number: this.userName, // number
         pwd: this.passWord
       }
       param = common.splicingJson(param)
-      const uri= this.$api.login + param
-      this.$axios.post(uri).then((res) => {
+      const url = this.$api.login + param
+      this.$axios.post(url).then((res) => {
         const { success } = res.data
         if (success) {
           const path = this.$route.query.redirect

@@ -9,43 +9,46 @@
       </mt-navbar>
       <mt-tab-container v-model="selected">
         <mt-tab-container-item id="1">
-          <div @click="toTaskDetail(item.id, false)" v-for="(item, index) in getTaskList" :key="index" class="t-list paddingLR12">
+          <div  @click="toTaskDetail(item.taskID, false, 1)" v-for="(item, index) in getTaskList" :key="index" class="t-list paddingLR12">
             <div class="tl-left">
               <div class="tll-tittle nowrap">{{item.title}}</div>
               <div class="tll-content nowrap">{{item.content}}</div>
-              <div class="tll-last nowrap">截止时间：{{item.time}}</div>
+              <div class="tll-last nowrap">截止时间：{{item.submitByTime}}</div>
             </div>
             <div class="tl-right">
-              <mt-button v-if="item.state === 1" type="primary">领取任务</mt-button>
-              <mt-button class="gray" v-if="item.state === 2" type="primary">已过期</mt-button>
+              <mt-button v-if="item.isDisabled === 0" @click.stop="recieveTask(item.taskID)" type="primary">领取任务</mt-button>
+              <mt-button class="gray" v-if="item.isDisabled === 1" type="primary">已过期</mt-button>
             </div>
           </div>
+          <div v-if="getTaskList.length === 0" class="havenoTask" >暂无任务</div>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
-           <div @click="toTaskDetail(item.id, true)" v-for="(item, index) in toComTaskList" :key="index" class="t-list paddingLR12">
+           <div @click="toTaskDetail(item.taskID, true, 2)" v-for="(item, index) in toComTaskList" :key="index" class="t-list paddingLR12">
             <div class="tl-left">
               <div class="tll-tittle nowrap">{{item.title}}</div>
               <div class="tll-content nowrap">{{item.content}}</div>
-              <div class="tll-last nowrap">截止时间：{{item.time}}</div>
+              <div class="tll-last nowrap">截止时间：{{item.submitByTime}}</div>
             </div>
             <div class="tl-right">
-              <mt-button v-if="item.state === 1" type="primary">领取任务</mt-button>
-              <mt-button class="gray" v-if="item.state === 2" type="primary">已过期</mt-button>
+              <mt-button v-if="item.isDisabled === 0" type="primary">提交任务</mt-button>
+              <mt-button class="gray" v-if="item.isDisabled === 1" type="primary">已过期</mt-button>
             </div>
           </div>
+          <div v-if="toComTaskList.length === 0"  class="havenoTask">暂无任务</div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
-            <div @click="toTaskDetail(item.id, true)" v-for="(item, index) in completedTaskList" :key="index" class="t-list paddingLR12">
+            <div @click="toTaskDetail(item.taskID, true, 3)" v-for="(item, index) in completedTaskList" :key="index" class="t-list paddingLR12">
               <div class="tl-left">
                 <div class="tll-tittle nowrap">{{item.title}}</div>
                 <div class="tll-content nowrap">{{item.content}}</div>
-                <div class="tll-last nowrap">截止时间：{{item.time}}</div>
+                <div class="tll-last nowrap">截止时间：{{item.submitByTime}}</div>
               </div>
               <div class="tl-right">
-                <mt-button v-if="item.state === 1" type="primary">待审核</mt-button>
-                <mt-button class="gray" v-if="item.state === 2" type="primary">已过期</mt-button>
+                <mt-button v-if="item.isDisabled === 1"  type="primary">已完成</mt-button>
+                <mt-button class="gray" v-if="item.isDisabled === 0" type="primary">修改</mt-button>
               </div>
             </div>
+            <div v-if="completedTaskList.length === 0" class="havenoTask">暂无任务</div>
         </mt-tab-container-item>
       </mt-tab-container>
     </div>
@@ -54,22 +57,19 @@
 
 <script type="text/ecmascript-6">
 import { mapMutations } from 'vuex'
+import qs from 'qs'
+import common from '../../utils/common'
+import { MessageBox } from 'mint-ui';
 export default {
   components:{},
   props:{},
   data(){
     return {
-       selected: '1',
-       getTaskList: [
-         {id: 1, title: '攀岩活动', content: '发哦附近嗷嗷佛发发哦附近嗷嗷佛发发哦附近嗷嗷佛发', time: '2016-9-8', state: 1},
-         {id: 2, title: '攀岩活动', content: '发哦附近嗷嗷佛发发哦附近嗷嗷佛发发哦附近嗷嗷佛发', time: '2016-9-8', state: 2}
-       ],
-       toComTaskList: [
-        {title: '攀岩活动2', content: '发哦附近嗷嗷佛发发哦附近嗷嗷佛发发哦附近嗷嗷佛发', time: '2016-9-8', state: 2}
-       ],
-      completedTaskList: [
-        {title: '攀岩活动3', content: '发哦附近嗷嗷佛发发哦附近嗷嗷佛发发哦附近嗷嗷佛发', time: '2016-9-8', state: 1}
-      ]
+      selected: '1',
+      getTaskList: [],
+      toComTaskList: [],
+      completedTaskList: [],
+      isShowCompletedTaskList: true, // 是否显示已完成列表
     }
   },
   watch:{
@@ -80,10 +80,12 @@ export default {
       //oldVal  切换前 id 
       this.selected = val
       if (val === "1") {
-        console.log('点击了1')
+        this.getTaskOneTap()
       } else if (val === "2") {
+         this.getTaskTwoTap()
         console.log('点击了2')
       } else if (val === "3") {
+         this.getTaskThreeTap()
          console.log('点击了3')
       }
       console.log('seleced', val, oldVal)
@@ -92,11 +94,11 @@ export default {
   computed:{},
   methods:{
     // 将事件派发
-    toTaskDetail(taskId, isHaveUpload) {
+    toTaskDetail(taskId, isHaveUpload, taskType) {
       this.$router.push({
         name: 'tasksDetail',
         params: { taskId },
-        query: {isHaveUpload}
+        query: {isHaveUpload, taskType}
       })
       this.setTaskDetail(taskId)
     },
@@ -108,16 +110,86 @@ export default {
         this.selected = selected
       }
     },
+    // 领取任务
+    recieveTask(taskID) {
+      let params = {
+        taskID
+      }
+      params = common.splicingJson(params)
+      const url = this.$api.recieveTask + params
+      this.$axios.post(url).then((response) => {
+        const {success} = response.data
+        if (success) {
+          MessageBox('提示', '任务领取成功，任务书已发至您的邮箱，请前往查看！')
+        }
+      }).catch((error) => {
+        
+      }).then(() =>{
+      })
+    },
+    // 获取任务列表 第一步
+    getTaskOneTap() {
+      this.$axios.get(this.$api.taskOneTap).then((response) => {
+        console.log('response', response)
+        const { data, success } = response.data
+        if (success) {
+          for (const v of data) {
+            v.submitByTime = v.submitByTime.substring(0, 10)
+          }
+          this.getTaskList = data
+        }
+      }).catch((error) => {
+        
+      }).then(() =>{
+      })
+    },
+     // 获取任务列表 第二步
+    getTaskTwoTap() {
+      this.$axios.get(this.$api.taskTwoTap).then((response) => {
+        console.log('response', response)
+        const { data, success } = response.data
+        if (success) {
+          for (const v of data) {
+            v.submitByTime = v.submitByTime.substring(0, 10)
+          }
+          this.toComTaskList = data
+        }
+      }).catch((error) => {
+        
+      }).then(() =>{
+      })
+    },
+     // 获取任务列表 第三步
+    getTaskThreeTap() {
+      this.$axios.get(this.$api.taskThreeTap).then((response) => {
+        console.log('response', response)
+        const { data, success } = response.data
+        if (success) {
+          for (const v of data) {
+            v.submitByTime = v.submitByTime.substring(0, 10)
+          }
+          this.completedTaskList = data
+        }
+      }).catch((error) => {
+        
+      }).then(() =>{
+      })
+    },
     ...mapMutations({
       setTaskDetail: 'SET_TASK_LIST_DETAIL'
     })
   },
   activated () {
     // 缓存返回卸卸载这里
+    if (this.selected === '1') {
+      this.getTaskOneTap()
+    }
     console.log('this.selected', this.selected)
   },
   created(){
     this.changeSelected()
+    // 领取任务列表数据
+    this.getTaskOneTap()
   },
   mounted(){
 
@@ -151,4 +223,10 @@ export default {
       height 100%
       display flex
       align-items center
+.havenoTask
+  display flex
+  justify-content  center
+  width 100%
+  align-items center
+  margin-top 50%
 </style>

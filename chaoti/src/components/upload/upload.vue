@@ -11,7 +11,6 @@
             <div class="uploadBtn"><img src="../../assets/images/upload.png" alt="Alternate Text" /></div>
             <input type="file" class="file-btn" accept="image/*" @change="getFile"/>
         </div>
-       <mt-button type="primary" size="large">领取任务</mt-button>
     </div>
 </template>
 
@@ -52,15 +51,14 @@ export default {
             console.log('param', files[i])
             let option = {
                 method: 'POST',
-                headers:{'Content-Type':'multipart/form-data'},
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
                 data: param,
+                processData: false,
                 url: this.$api.upload
             }
             this.$axios(option).then((response) => {
-                debugger
                 // handle success
-                this.fileName = response.fileName
-                this.uploadFile = response.uploadFile
+                this.uploadFile = response.data.data
                 const fileList = {
                     fileName: this.fileName,
                     uploadFile: this.uploadFile

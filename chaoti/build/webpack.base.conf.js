@@ -39,7 +39,8 @@ module.exports = {
       'assets': resolve('src/assets'),
       'modules': resolve('src/modules'),
       'components': resolve('src/components'),
-      'utils': resolve('src/utils')
+      'utils': resolve('src/utils'),
+      'jquery': path.resolve(__dirname, '../node_modules/jquery/src/jquery')
     }
   },
   module: {

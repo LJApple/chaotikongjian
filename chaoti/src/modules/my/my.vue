@@ -193,7 +193,8 @@ export default {
           core: 101
         }
       ],
-      popupVisible: false
+      popupVisible: false,
+      getrulesData: null
     }
   },
   watch:{
@@ -251,10 +252,22 @@ export default {
       // 连续签到3天赠送1级分
       questionClick() {
         this.$toast('连续签到3天赠送1级分');
+      },
+      // 获取奖励规则
+      rulesData() {
+        this.$axios.get(this.$api.getrules).then((response) => {
+          const {success} = response.data
+          if (success) {
+           debugger
+          }
+        })
       }
   },
   activated () {},
-  created(){},
+  created() {
+    // 获取奖励规则
+    // this.rulesData()
+  },
   mounted(){
 
   }
