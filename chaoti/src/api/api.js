@@ -12,6 +12,11 @@ const api = {
     gettask: `${serverUrl}task/gettask`, // 领取详情
     submittask: `${serverUrl}task/submittask`, // 提交任务
     // 我的
-    getrules: `${serverUrl}my/getrules`, // 获取规则和纪律说明内容
+    getrules: `${serverUrl}my/getrules`, // 获取规则和纪律说明内容 
+    getuserinfo: `${serverUrl}user/getuserdata`, // 获取用户信息
+    signin: `${serverUrl}my/signin`, // 签到
+    getexper: `${serverUrl}my/getexper`, // 获取经验值
+    getmyrno: `${serverUrl}my/getmyrno`, // 获取排行榜
+    updateuserpwd: `${serverUrl}user/updateuserpwd`, // 修改密码
 }
 Vue.prototype.$api = api

@@ -59,7 +59,7 @@
 import { mapMutations } from 'vuex'
 import qs from 'qs'
 import common from '../../utils/common'
-import { MessageBox } from 'mint-ui';
+import { MessageBox } from 'mint-ui'
 export default {
   components:{},
   props:{},

@@ -57,7 +57,7 @@ const router = new Router({
       name: 'my',
       component: my,
       meta: {
-        title: '我的',
+        title: '超积分',
         requireAuth: true
       }
     },
