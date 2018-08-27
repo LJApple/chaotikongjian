@@ -5,24 +5,24 @@
         <div class="td-list">
           <div class="tdl-title"><span class="bloder">任务标题：</span>{{taskDetail.title}}</div>
           <div class="tdl-content">
-            <div><span class="bloder">内容:</span>{{taskDetail.content}}</div>
+            <div><span class="bloder">内容:</span>{{taskDetail.details}}</div>
           </div>
            <div class="uplad">
-              <upload @fileList="fileList" :isHaveUpload="isHaveUpload"></upload>  
+              <upload @fileList="fileList" :isHaveUpload="isHaveUpload" :fileName="taskDetail.fileName"></upload>  
             </div>
           <div class="revieseTask" v-if="taskType === 1">
-            <mt-button v-if="taskDetail.isDisabled === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
-            <mt-button class="gray" v-if="taskDetail.isDisabled === 1" size="large" type="primary">已过期</mt-button>
+            <mt-button v-if="taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 待提交任务 -->
           <div class="stayTask" v-if="taskType === 2">
-            <mt-button v-if="taskDetail.isDisabled === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>          
-            <mt-button v-if="taskDetail.isDisabled === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
+            <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>          
+            <mt-button v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 已完成任务 -->
           <div class="comTask" v-if="taskType === 3">
-            <mt-button v-if="taskDetail.isDisabled === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
-            <mt-button class="gray" v-if="taskDetail.isDisabled === 1" size="large" type="primary">已过期</mt-button>
+            <mt-button v-if="taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
         </div>
     </div>
@@ -46,7 +46,8 @@ export default {
       isHaveUpload: false,
       taskId: null,
       taskType: '1',
-      fileData: null
+      fileData: null,
+      fileName: null
     }
   },
   watch:{},
@@ -101,7 +102,6 @@ export default {
       // params = common.splicingJson(params)
       // const url = this.$api.submittask + params
       this.$axios.post(this.$api.submittask, qs.stringify(params)).then((response) => {
-        debugger
         const {success} = response.data
         if (success) {
            MessageBox.alert('提交成功', '提示').then(action => {

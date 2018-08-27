@@ -40,10 +40,10 @@
       <mt-tab-container v-model="selected" class="my-contain">
         <mt-tab-container-item id="1">
           <mt-cell title="待完成任务" to="/tasks?selected=2" is-link>
-            <img slot="icon" class="mc-img" src="../../assets/images/time.png" width="24" height="24">
+            <img slot="icon" class="mc-img" src="../../assets/images/time.png" width="44" height="44">
           </mt-cell>
           <mt-cell title="已完成任务"  to="/tasks?selected=3" is-link>
-            <img slot="icon" src="../../assets/images/done.png" width="20" height="20">
+            <img slot="icon" src="../../assets/images/done.png" width="35" height="35">
           </mt-cell>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
@@ -173,12 +173,17 @@
       <div class="close" @click="close"><img src="../../assets/images/delDialog.png" alt=""></div>
       <div class="content"></div>
     </mt-popup>
-    <div class="editPwd">
+    <div class="editPwd" :class="{displayNo:!isShowModal}">
       <div class="ep-box">
-        <div class="e-title">请输入您的密码</div>
-        <input label="密码" class="e-input"  type="password" placeholder="请输入您的密码" v-model="username"/>>
-        <input label="密码" class="e-input"  type="password" placeholder="请再次输入您的密码" v-model="usernameAg" />
-        <mt-button type="primary" size="large">提交</mt-button>
+        <div class="e-title">请输入您的工号和邮箱</div>
+        <div class="ep-content">
+          <input class="e-input"  type="text" placeholder="请输入您的工号" v-model="pwd"/>
+          <input class="e-input"  type="text" placeholder="请输入您的邮箱" v-model="pwdAgin" />
+        </div>
+        <div class="epb-btn">
+          <div class="epbb-cancle" @click="cancle">取消</div>
+          <div class="epbb-sure" @click="submit">确定</div>
+        </div>
       </div>
     </div>
   </div>
@@ -210,7 +215,10 @@ export default {
       popupVisible: false,
       getrulesData: null,
       username: null,
-      usernameAg: null
+      usernameAg: null,
+      isShowModal: false,
+      pwd: null,
+      pwdAgin: null
     }
   },
   watch: {
@@ -278,7 +286,7 @@ export default {
         if (success) {
           debugger;
         }
-      });
+      })
     },
     // 获取用户信息
     getUserInfo() {
@@ -287,7 +295,7 @@ export default {
         if (success) {
           this.userInfo = data;
         }
-      });
+      })
     },
     // 签到
     signin() {
@@ -295,7 +303,7 @@ export default {
         const { success } = response.data;
         if (success) {
         }
-      });
+      })
     },
     // 获取经验值
     getexper() {
@@ -303,7 +311,7 @@ export default {
         const { success } = response.data;
         if (success) {
         }
-      });
+      })
     },
     // 获取排行榜
     getmyrno() {
@@ -313,7 +321,35 @@ export default {
         const { success } = response.data;
         if (success) {
         }
-      });
+      })
+    },
+     cancle() {
+      this.isShowModal = false
+    },
+    submit() {
+        if (!this.number || !this.email) {
+          this.$toast('请输入正确的工号和邮箱')
+          return
+        }
+        console.log('common.checkEmail(this.email)', common.checkEmail(this.email))
+        if(!common.checkEmail(this.email)) {
+          this.$toast('请输入正确的邮箱地址')
+          return
+        }
+        let param = {
+            email: this.email,
+            number: this.number
+        }
+        param = common.splicingJson(param)
+        const url = this.$api.forgetpwd + param
+        this.$axios.post(url).then((response) => {
+            const { message, success } = res.data
+            if (success) {
+              MessageBox.alert('提交成功，请前往您的邮箱修改密码')
+            } else {
+              MessageBox.alert(message)
+            }
+        })
     }
   },
   activated() {},

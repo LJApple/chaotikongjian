@@ -9,12 +9,24 @@
     </div>
     <div class="l-btn" @click="login" :data-index="1">登录</div>
     <div class="l-forget" @click="forgetPwd">忘记密码?</div>
+    <div class="editPwd" :class="{displayNo:!isShowModal}">
+      <div class="ep-box">
+        <div class="e-title">请输入您的工号和邮箱</div>
+        <div class="ep-content">
+          <input class="e-input"  type="text" placeholder="请输入您的工号" v-model="number"/>
+          <input class="e-input"  type="text" placeholder="请输入您的邮箱" v-model="email" />
+        </div>
+        <div class="epb-btn">
+          <div class="epbb-cancle" @click="cancle">取消</div>
+          <div class="epbb-sure" @click="submit">确定</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { getData } from '../../assets/js/dom'
-import { MessageBox } from 'mint-ui'
 import common from '../../utils/common'
 import { mapMutations } from 'vuex'
 import qs from 'qs'
@@ -24,7 +36,10 @@ export default {
   data(){
     return {
       userName: null,
-      passWord: null
+      passWord: null,
+      number: null,
+      email: null,
+      isShowModal: false
     }
   },
   methods:{
@@ -55,29 +70,36 @@ export default {
       })
     },
     forgetPwd() {
-      MessageBox.prompt('请输入您的邮箱', {
-        inputValidator: (val) => {
-          if (val === null) {
-            return true //初始化的值为null，不做处理的话，刚打开MessageBox就会校验出错，影响用户体验
-          }
-          return common.checkEmail(val)
-          }, inputErrorMessage: '请输入正确的邮箱地址'
-
-      }).then(({ value, action }) => { 
-        console.log('value', value, action)
-        const param = {
-          email: value
-        }
-        this.$axios.post(this.$api.forgetpwd, qs.stringify(param)).then((response) => {
-            MessageBox.alert('提交成功，请前往您的邮箱修改密码').then(action => {
-                // this.$router.back(-1)
-            })
-        })
-      })
+      this.isShowModal = !this.isShowModal
     },
-    ...mapMutations({
-      setLogin: 'LOGIN'
-    })
+   cancle() {
+      this.isShowModal = false
+   },
+   submit() {
+      if (!this.number || !this.email) {
+        this.$toast('请输入正确的工号和邮箱')
+        return
+      }
+      console.log('common.checkEmail(this.email)', common.checkEmail(this.email))
+      if(!common.checkEmail(this.email)) {
+        this.$toast('请输入正确的邮箱地址')
+        return
+      }
+       let param = {
+          email: this.email,
+          number: this.number
+        }
+        param = common.splicingJson(param)
+        const url = this.$api.forgetpwd + param
+        this.$axios.post(url).then((response) => {
+            const { message, success } = res.data
+            if (success) {
+               MessageBox.alert('提交成功，请前往您的邮箱修改密码')
+            } else {
+               MessageBox.alert(message)
+            }
+        })
+   }
   },
   created(){
   },

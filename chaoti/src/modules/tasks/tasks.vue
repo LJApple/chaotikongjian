@@ -9,7 +9,7 @@
       </mt-navbar>
       <mt-tab-container v-model="selected">
         <mt-tab-container-item id="1">
-          <div  @click="toTaskDetail(item.taskID, false, 1)" v-for="(item, index) in getTaskList" :key="index" class="t-list paddingLR12">
+          <div  @click="toTaskDetail(item.taskId, false, 1)" v-for="(item, index) in getTaskList" :key="index" class="t-list paddingLR12">
             <div class="tl-left">
               <div class="tll-tittle nowrap">{{item.title}}</div>
               <div class="tll-content nowrap">{{item.content}}</div>
@@ -23,7 +23,7 @@
           <div v-if="getTaskList.length === 0" class="havenoTask" >暂无任务</div>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
-           <div @click="toTaskDetail(item.taskID, true, 2)" v-for="(item, index) in toComTaskList" :key="index" class="t-list paddingLR12">
+           <div @click="toTaskDetail(item.taskId, true, 2)" v-for="(item, index) in toComTaskList" :key="index" class="t-list paddingLR12">
             <div class="tl-left">
               <div class="tll-tittle nowrap">{{item.title}}</div>
               <div class="tll-content nowrap">{{item.content}}</div>
@@ -37,7 +37,7 @@
           <div v-if="toComTaskList.length === 0"  class="havenoTask">暂无任务</div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
-            <div @click="toTaskDetail(item.taskID, true, 3)" v-for="(item, index) in completedTaskList" :key="index" class="t-list paddingLR12">
+            <div @click="toTaskDetail(item.taskId, true, 3)" v-for="(item, index) in completedTaskList" :key="index" class="t-list paddingLR12">
               <div class="tl-left">
                 <div class="tll-tittle nowrap">{{item.title}}</div>
                 <div class="tll-content nowrap">{{item.content}}</div>
@@ -137,9 +137,6 @@ export default {
         console.log('response', response)
         const { data, success } = response.data
         if (success) {
-          for (const v of data) {
-            v.submitByTime = v.submitByTime.substring(0, 10)
-          }
           this.getTaskList = data
         }
       }).catch((error) => {

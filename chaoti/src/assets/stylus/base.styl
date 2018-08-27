@@ -23,6 +23,8 @@ html,body
     background $headerBg
     height 150px
     width 100%
+.displayNo
+    display none !important
 .bloder
     font-weight: bolder
 .slide-enter-active, .slide-leave-active
@@ -33,6 +35,7 @@ html,body
 .editPwd
     position fixed
     top 0
+    left 0
     height 100%
     width 100%
     background rgba(0, 0, 0, 0.5)
@@ -42,6 +45,30 @@ html,body
     .ep-box
         width: 318px
         box-sizing: border-box
-        padding: 0 12px
+        background-color: #ffffff
+        text-align: center
+        .ep-content
+            padding: 0 12px
+        .e-title
+            font-size: 16px
+            padding: 20px
         .e-input
             border: 1px solid #dddddd
+            height 46px
+            width: 90%
+            padding: 0 12px
+            margin-bottom: 20px
+            border-radius: 10px
+        .epb-btn
+            display: flex
+            .epbb-sure, .epbb-cancle
+                height 46px
+                line-height: @height 
+                width: 100%
+                background-color: #ffffff
+                border-top: 1px solid #dddddd
+                color: #ed4b4b
+            .epbb-cancle
+                background: #ffffff
+                border-right: 1px solid #dddddd
+                color: #333333

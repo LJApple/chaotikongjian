@@ -21,11 +21,11 @@ export default {
   components:{},
   props:{
       isShowImg: true,
-      isHaveUpload: true
+      isHaveUpload: true,
+      fileName: null
   },
   data(){
     return {
-        fileName: null,
         uploadFile: null,
         filesUrlList: []
     }
