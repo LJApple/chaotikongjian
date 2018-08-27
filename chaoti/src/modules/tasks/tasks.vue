@@ -81,6 +81,10 @@ export default {
       this.selected = val
       if (val === "1") {
         this.getTaskOneTap()
+        this.$router.push({
+            name: 'tasks',
+            query: {seleced: '1'}
+        })
       } else if (val === "2") {
          this.getTaskTwoTap()
         console.log('点击了2')
@@ -180,14 +184,14 @@ export default {
     })
   },
   activated () {
+    const {selected} = this.$route.query
     // 缓存返回卸卸载这里
-    if (this.selected === '1') {
-      this.getTaskOneTap()
-    }
+    this.changeSelected()
+    // if (selected) this.selected = selected
     console.log('this.selected', this.selected)
   },
   created(){
-    this.changeSelected()
+    // this.changeSelected()
     // 领取任务列表数据
     this.getTaskOneTap()
   },

@@ -108,7 +108,6 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   const account_token =   window.sessionStorage.getItem('account_token')
-  debugger
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
       if (account_token) { // 判断当前的token是否存在
           next()

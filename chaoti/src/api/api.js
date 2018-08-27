@@ -3,6 +3,7 @@ const serverUrl = '/api/' // 本地调试时
 // const serverUrl = 'http://139.159.163.177:1002/api/'  // 打包部署上线时 
 const api = {
     login: `${serverUrl}login`, // 登录接口  
+    forgetpwd: `${serverUrl}forgetpwd`, // 忘记密码  
     upload: `/upload/uploadfile`, // 上传  
     taskOneTap: `${serverUrl}task/gettasklist`, // 领取任务
     taskTwoTap: `${serverUrl}task/getrecievetasklist`, // 待完成任务

@@ -17,6 +17,7 @@ import { getData } from '../../assets/js/dom'
 import { MessageBox } from 'mint-ui'
 import common from '../../utils/common'
 import { mapMutations } from 'vuex'
+import qs from 'qs'
 export default {
   components:{},
   props:{},
@@ -67,12 +68,10 @@ export default {
         const param = {
           email: value
         }
-        this.$axios.post(this.$api.login, param).then((response) => {
-           this.$toast('提交成功，请前往您的邮箱修改密码')
-        }).catch((error) => {
-         
-        }).then(() =>{
-          // always executed
+        this.$axios.post(this.$api.forgetpwd, qs.stringify(param)).then((response) => {
+            MessageBox.alert('提交成功，请前往您的邮箱修改密码').then(action => {
+                // this.$router.back(-1)
+            })
         })
       })
     },

@@ -6,13 +6,11 @@ import router from './router'
 import store from './store'
 import Mint from "mint-ui"
 import axios from 'axios'
-import { mapGetters } from 'vuex'
 // mintui样式导入
 import 'mint-ui/lib/style.css'
 import './assets/stylus/index.styl'
 // 导入api
 import './api/api'
-// 禁用移动端三百毫秒延迟
 // 应用mintui
 Vue.use(Mint)
 // 将所有的请求加加上account_token
@@ -27,10 +25,6 @@ axios.interceptors.request.use(config => {
 )
 axios.interceptors.response.use(response => response,error => {
     console.log('error', error)
-    this.$toast({
-        message: '服务器繁忙，请稍后重试',
-        duration: 5000
-    })
 })
 // 挂在axios
 Vue.prototype.$axios = axios
