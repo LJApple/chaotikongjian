@@ -22,7 +22,7 @@ const  forumDetail = resolve => require.ensure([], () => resolve(require('../mod
 // 发帖
 const  post = resolve => require.ensure([], () => resolve(require('../modules/forum/post')), 'post')
 
-export default new Router({
+const router = new Router({
   mode : 'history',
   base: '/t2/',  //添加的地方
   routes: [
@@ -106,3 +106,22 @@ export default new Router({
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const account_token =   window.sessionStorage.getItem('account_token')
+  debugger
+  if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
+      if (account_token) { // 判断当前的token是否存在
+          next()
+      } else {
+          next({
+          path: '/login',
+          query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      })
+     }
+  }
+  else {
+      next();
+  }
+})
+
+export default router

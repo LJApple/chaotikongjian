@@ -16,6 +16,7 @@
 import { getData } from '../../assets/js/dom'
 import { MessageBox } from 'mint-ui'
 import common from '../../utils/common'
+import { mapMutations } from 'vuex'
 export default {
   components:{},
   props:{},
@@ -39,8 +40,9 @@ export default {
       param = common.splicingJson(param)
       const url = this.$api.login + param
       this.$axios.post(url).then((res) => {
-        const { success } = res.data
+        const { success, data } = res.data
         if (success) {
+          window.sessionStorage.setItem('account_token', data)
           const path = this.$route.query.redirect
           this.$router.push({path: path})
         } else {
@@ -73,7 +75,10 @@ export default {
           // always executed
         })
       })
-    }
+    },
+    ...mapMutations({
+      setLogin: 'LOGIN'
+    })
   },
   created(){
   },

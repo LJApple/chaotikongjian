@@ -1,5 +1,7 @@
 const state = {
-  taskListDetail: null
+  taskListDetail: null,
+  user: {},
+  account_token: null
 }
 
 export default state
