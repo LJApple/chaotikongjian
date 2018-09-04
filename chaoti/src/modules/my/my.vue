@@ -7,7 +7,8 @@
       </div>
       <div class="th-photo">
         <img v-if="userInfo.photo === ''" src="../../assets/images/defalut-wihte.png" alt="">
-        <img v-else src="userInfo.photo" alt="">
+        <img v-else :src="userInfo.photo" alt="">
+        <input type="file" class="file-btn" accept="image/*" @change="getFile"/>
       </div>
       <div class="th-right">
         <div class="thr-left">
@@ -39,36 +40,53 @@
       </mt-navbar>
       <mt-tab-container v-model="selected" class="my-contain">
         <mt-tab-container-item id="1">
-          <mt-cell title="待完成任务" to="/tasks?selected=2" is-link>
-            <img slot="icon" class="mc-img" src="../../assets/images/time.png" width="44" height="44">
+          <!-- <mt-cell title="待完成任务" to="/tasks?selected=2" is-link>
+            <img slot="icon" class="mc-img" src="../../assets/images/time.png" width="22" height="22">
           </mt-cell>
           <mt-cell title="已完成任务"  to="/tasks?selected=3" is-link>
-            <img slot="icon" src="../../assets/images/done.png" width="35" height="35">
-          </mt-cell>
+            <img slot="icon" src="../../assets/images/done.png" width="18" height="18">
+          </mt-cell> -->
+          <div class="pn-list"  v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, 1)">
+            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 0" :title="item.title">
+                <span>领取任务</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 1" :title="item.title">
+                <span>提交任务</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link v-if="item.taskStatus === 2" :title="item.title">
+                <span>已完成</span>
+            </mt-cell>
+          </div>
+          <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
+            direction="lt" class="changeClass" :radius="60" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
+            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">待完成</div></div>
+            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio" v-if="isExpend">已完成</div></div>
+          </mt-palette-button>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
           <div class="total">
              <mt-cell title="个人总体验值">
             <span class="my-ex">11分</span>
-            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="22" height="22">
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
           </div>
           <mt-cell title="总积分">
             <span class="my-ex">11分</span>
-            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="22" height="22">
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-          <mt-cell title="已经使用">
+          <mt-cell title="已经使用" class="borderTop">
             <span class="my-ex">1分</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="22" height="22">
+            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-           <mt-cell title="剩余积分">
+           <mt-cell title="剩余积分" class="borderTop">
             <span class="my-ex">1分</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="22" height="22">
+            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-           <mt-cell title="您的排名">
+           <mt-cell title="您的排名" class="borderTop">
             <span class="my-ex">1分</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="22" height="22">
+            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
+          <div class="mc-bottom">距离第9名只差3分哦 <span>积分排行榜</span></div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
           <!-- <div class="type1" :hidden="isClass">
@@ -137,7 +155,7 @@
                         <span>性别</span>
                     </div>
                     <mt-radio class="s-radio"
-                        v-model="value"
+                        v-model="userInfo.type"
                         align="right"
                         :options="options">
                     </mt-radio>
@@ -146,23 +164,25 @@
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="手机号" placeholder="手机号" v-model="photoNumber"></mt-field>
+                    <mt-field class="s-padding" label="手机号" placeholder="手机号" v-model="userInfo.phone"></mt-field>
                 </div>
                 <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="邮箱" placeholder="邮箱" v-model="photoNumber"></mt-field>
+                    <mt-field class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
                 </div>
-                <mt-cell title="修改密码"  value="" class="hasArrow borderBt"  is-link>
+                <div  @click="changPwd">
+                    <mt-cell title="修改密码" value="" class="hasArrow borderBt"  is-link>
+                        <img slot="icon"  class="paddingLR10" src="../../assets/images/done.png" width="18" height="18">
+                    </mt-cell>
+                </div>
+                <!-- <mt-cell title="修改头像"  value="" class="hasArrow"  is-link>
                     <img slot="icon" class="paddingLR10" src="../../assets/images/done.png" width="20" height="20">
-                </mt-cell>
-                <mt-cell title="修改头像"  value="" class="hasArrow"  is-link>
-                    <img slot="icon" class="paddingLR10" src="../../assets/images/done.png" width="20" height="20">
-                </mt-cell>
+                </mt-cell> -->
                 </div>
             <div class="submit" >
-                <mt-button type="primary" size="large">提交</mt-button>
+                <mt-button type="primary" size="large" @click="submitData">提交</mt-button>
             </div>
         </mt-tab-container-item>
       </mt-tab-container>
@@ -171,14 +191,14 @@
       v-model="popupVisible" modal="false"
       position="center" class="showMes">
       <div class="close" @click="close"><img src="../../assets/images/delDialog.png" alt=""></div>
-      <div class="content"></div>
+      <div class="content">{{rulesText}}</div>
     </mt-popup>
     <div class="editPwd" :class="{displayNo:!isShowModal}">
       <div class="ep-box">
-        <div class="e-title">请输入您的工号和邮箱</div>
+        <div class="e-title">请输入您密码</div>
         <div class="ep-content">
-          <input class="e-input"  type="text" placeholder="请输入您的工号" v-model="pwd"/>
-          <input class="e-input"  type="text" placeholder="请输入您的邮箱" v-model="pwdAgin" />
+          <input class="e-input"  type="password" placeholder="请输入您的密码" v-model="pwd"/>
+          <input class="e-input"  type="password" placeholder="请在此输入您的密码" v-model="pwdAgin" />
         </div>
         <div class="epb-btn">
           <div class="epbb-cancle" @click="cancle">取消</div>
@@ -190,7 +210,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { MessageBox } from "mint-ui";
+import { MessageBox } from "mint-ui"
+import qs from 'qs'
 export default {
   components: {},
   props: {},
@@ -199,26 +220,32 @@ export default {
       selected: "1",
       isClass: 0,
       userInfo: {},
-      username: "王五",
       photoNumber: "18720087343",
       value: "1",
       options: [
         {
           label: "男",
-          value: "1"
+          value: "0"
         },
         {
           label: "女",
-          value: "2"
+          value: "1"
         }
       ],
       popupVisible: false,
       getrulesData: null,
-      username: null,
-      usernameAg: null,
-      isShowModal: false,
+      isShowModal: false, // 修改密码显示隐藏
       pwd: null,
-      pwdAgin: null
+      pwdAgin: null,
+      fileList: {
+          fileName: null,
+          uploadFile: null
+      }, // 文件内容
+      rules: null, // 规则
+      rulesText: null, // 规则内容
+      exper: null, // 积分
+      isExpend: false,
+      getTaskList: null
     }
   },
   watch: {
@@ -230,7 +257,8 @@ export default {
       if (val === "1") {
         console.log("点击了1");
       } else if (val === "2") {
-        console.log("点击了2");
+        console.log("点击了2")
+         this.getexper()
       } else if (val === "3") {
         console.log("点击了3");
       }
@@ -240,24 +268,63 @@ export default {
   computed: {},
   methods: {
     main_log(val) {
-      console.log("main_log", val);
+        console.log('main_log', val)
+        if (val === 'expand') {
+            this.isExpend = true
+        } else if(val === 'collapse') {
+            this.isExpend = false
+        }
     },
     sub_log(val) {
-      console.log("sub_log", val);
-      if (val === 1) {
-        this.isClass = false;
-      } else if (val === 2) {
-        this.isClass = true;
-      }
-      this.$refs.target_1.collapse();
+        console.log('sub_log', val)
+        if (val === 1) {
+
+        } else if (val === 2) {
+
+        } else if (val === 3) {
+
+        }
+        this.$refs.target_1.collapse()
     },
-    // 打开窗口
-    showModal() {
-      this.popupVisible = true;
+    // 获取任务列表
+    getTaskOneTap() {
+      this.$axios.get(this.$api.taskOneTap).then((response) => {
+        console.log('response', response)
+        const { data, success } = response.data
+        if (success) {
+          this.getTaskList = data
+        }
+      }).catch((error) => {
+        
+      }).then(() =>{
+      })
+    },
+    // 跳转到任务详情
+    toTaskDetail(taskId, isHaveUpload, taskType) {
+     if ( isHaveUpload === 0 ) {
+         isHaveUpload = false
+     } else {
+         isHaveUpload = true
+     }
+      this.$router.push({
+        name: 'tasksDetail',
+        params: { taskId },
+        query: {isHaveUpload, taskType}
+      })
+      this.setTaskDetail(taskId)
+    },
+    // 打开规则窗口
+    showModal(type) {
+      this.popupVisible = true
+      if (type === 1) {
+        this.rulesText = this.rules.rewardRules
+      } else  {
+        this.rulesText = this.rules.discipline
+      }
     },
     // 关闭窗口
     close() {
-      this.popupVisible = false;
+      this.popupVisible = false
     },
     // 退出登录
     logout() {
@@ -282,9 +349,9 @@ export default {
     // 获取奖励规则
     rulesData() {
       this.$axios.get(this.$api.getrules).then(response => {
-        const { success } = response.data;
+        const { success, data } = response.data
         if (success) {
-          debugger;
+          this.rules = data
         }
       })
     },
@@ -308,8 +375,9 @@ export default {
     // 获取经验值
     getexper() {
       this.$axios.get(this.$api.getexper).then(response => {
-        const { success } = response.data;
+        const { success, data } = response.data;
         if (success) {
+            this.exper = data
         }
       })
     },
@@ -323,25 +391,33 @@ export default {
         }
       })
     },
-     cancle() {
+    cancle() {
       this.isShowModal = false
     },
+    // 点击修改密码
+    changPwd() {
+        this.isShowModal = true
+    },
+    // 提交修改密码
     submit() {
-        if (!this.number || !this.email) {
-          this.$toast('请输入正确的工号和邮箱')
+        if (!this.pwd) {
+          this.$toast('请输入您的密码')
           return
         }
-        console.log('common.checkEmail(this.email)', common.checkEmail(this.email))
-        if(!common.checkEmail(this.email)) {
-          this.$toast('请输入正确的邮箱地址')
+        if(!this.pwdAgin) {
+          this.$toast('请再次输入您的密码')
+          return
+        }
+         if(this.pwdAgin !== this.pwd) {
+          this.$toast('两次输入的密码不一致哦')
           return
         }
         let param = {
-            email: this.email,
-            number: this.number
+            pwd: this.pwd,
+            pwdAgin: this.pwdAgin
         }
         param = common.splicingJson(param)
-        const url = this.$api.forgetpwd + param
+        const url = this.$api.updateuserpwd + param
         this.$axios.post(url).then((response) => {
             const { message, success } = res.data
             if (success) {
@@ -350,41 +426,88 @@ export default {
               MessageBox.alert(message)
             }
         })
-    }
+    },
+    // 提交数据
+    submitData() {
+        let param = this.userInfo
+        console.log('this.userInfo', param, qs.stringify(param))
+        // param = common.splicingJson(param)
+        // const url = this.$api.updateuserdata + param
+        this.$axios.post(this.$api.updateuserdata, qs.stringify(param)).then((res) => {
+            const { message, success } = res.data
+            if (success) {
+              MessageBox.alert('修改成功')
+            } else {
+              MessageBox.alert(message)
+            }
+        })
+    },
+    // 上传文件
+    getFile(e) {
+        const { files, value } = e.target
+        this.filesUrlList = []
+        for (var i = 0; i < files.length; i++) {
+            this.fileList.fileName = files[i].name
+            this.filesUrlList.push(value)
+            let param = new FormData()
+            param.append("file", files[i])
+            let option = {
+                method: 'POST',
+                headers: { 'content-type': 'application/x-www-form-urlencoded' },
+                data: param,
+                processData: false,
+                url: this.$api.upload
+            }
+            this.$axios(option).then((res) => {
+                const { data, success, message } = res.data
+                if (success) {
+                    debugger
+                    this.userInfo.photo = this.fileList.uploadFile = data
+                    this.$toast(message)
+                } else {
+                    this.$toast('头像上传失败')
+                }
+            }).catch((error) => {
+                // handle error
+                console.log(error)
+            })
+        }
+        e.target.value = null
+      }
   },
   activated() {},
   created() {
     // 获取奖励规则
-    // this.rulesData()
+    this.rulesData()
     // 获取用户信息
     this.getUserInfo();
+    // 获取任务列表
+    this.getTaskOneTap()
     // // 获取积分
     // this.getexper()
     // // 获取排行榜
     // this.getmyrno()
   },
   mounted() {}
-};
+}
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import '../../assets/stylus/variable.styl';
+.my-contain
+    margin-top: 10px
+    /deep/ .mint-cell-wrapper
+        padding-left: 10px
+    .mc-bottom
+        text-align: center
+        position: absolute
+        bottom: -20px
+.total
+  margin-bottom: 10px
 
-.my-contain {
-  margin-top: 10px;
-}
-
-.total {
-  margin-bottom: 10px;
-
-  /deep/ .mint-cell-text {
-    font-weight: bolder;
-  }
-
-  /deep/ .my-ex {
-    color: #26a2ff;
-  }
-}
-
+  /deep/ .mint-cell-text
+    font-weight: bolder
+  /deep/ .my-ex
+    color: #26a2ff
 .header {
   display: flex;
   font-size: 14px;
@@ -448,42 +571,21 @@ export default {
   }
 }
 
-.changeClass {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 58px;
-  height: 58px;
-}
+/deep/ .mint-main-button
+  font-size: 18px
 
-.classRadio {
-  height: 40px;
-  width: @height;
-  border-radius: @height;
-  line-height: @height;
-  font-size: 14px;
-  color: #ffffff;
-  background: rgb(38, 162, 255);
-}
+.t-header
+  display: flex
+  align-items: center
+  padding: 0 12px
+  box-sizing: border-box
 
-/deep/ .mint-main-button {
-  font-size: 18px;
-}
-
-.t-header {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  box-sizing: border-box;
-}
-
-.th-photo {
-  img {
-    height: 60px;
-    width: @height;
-    border-radius: @height;
-  }
-}
+.th-photo
+    position: relative
+    img
+        height: 60px
+        width: @height
+        border-radius: @height
 
 .th-right {
   padding-left: 10px;
@@ -628,9 +730,9 @@ export default {
   border-bottom: 1px solid #dddddd;
 
   /deep/ .mint-cell-wrapper {
-    background-image: none !important;
-    background: #ffffff;
-    padding: 0;
+    background-image: none !important
+    background: #ffffff
+    padding: 0
   }
 
   .sll-left {
@@ -685,4 +787,15 @@ export default {
 /deep/ .mint-cell-value {
   padding-right: 12px;
 }
+.file-btn 
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    outline: none
+    background-color: transparent
+    opacity: 0
+.borderTop
+    border-top: 1px solid #ddd
 </style>

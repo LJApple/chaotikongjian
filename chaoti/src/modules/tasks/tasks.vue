@@ -99,7 +99,7 @@ export default {
       }).then(() =>{
       })
     },
-    // // 获取任务列表 第一步
+    // 获取任务列表 第一步
     getTaskOneTap() {
       this.$axios.get(this.$api.taskOneTap).then((response) => {
         console.log('response', response)
