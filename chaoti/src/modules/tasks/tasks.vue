@@ -2,56 +2,24 @@
   <div class="tasks">
     <div class="t-header"></div>
     <div class="page-navbar">
-      <mt-navbar class="page-part paddingLR12" v-model="selected">
-        <mt-tab-item id="1">领取任务</mt-tab-item>
-        <mt-tab-item id="2">待完成任务</mt-tab-item>
-        <mt-tab-item id="3">已完成任务</mt-tab-item>
-      </mt-navbar>
-      <mt-tab-container v-model="selected">
-        <mt-tab-container-item id="1">
-          <div  @click="toTaskDetail(item.taskId, false, 1)" v-for="(item, index) in getTaskList" :key="index" class="t-list paddingLR12">
-            <div class="tl-left">
-              <div class="tll-tittle nowrap">{{item.title}}</div>
-              <div class="tll-content nowrap">{{item.content}}</div>
-              <div class="tll-last nowrap">截止时间：{{item.submitByTime}}</div>
-            </div>
-            <div class="tl-right">
-              <mt-button v-if="item.isDisabled === 0" @click.stop="recieveTask(item.taskID)" type="primary">领取任务</mt-button>
-              <mt-button class="gray" v-if="item.isDisabled === 1" type="primary">已过期</mt-button>
-            </div>
-          </div>
-          <div v-if="getTaskList.length === 0" class="havenoTask" >暂无任务</div>
-        </mt-tab-container-item>
-        <mt-tab-container-item id="2">
-           <div @click="toTaskDetail(item.taskId, true, 2)" v-for="(item, index) in toComTaskList" :key="index" class="t-list paddingLR12">
-            <div class="tl-left">
-              <div class="tll-tittle nowrap">{{item.title}}</div>
-              <div class="tll-content nowrap">{{item.content}}</div>
-              <div class="tll-last nowrap">截止时间：{{item.submitByTime}}</div>
-            </div>
-            <div class="tl-right">
-              <mt-button v-if="item.isDisabled === 0" type="primary">提交任务</mt-button>
-              <mt-button class="gray" v-if="item.isDisabled === 1" type="primary">已过期</mt-button>
-            </div>
-          </div>
-          <div v-if="toComTaskList.length === 0"  class="havenoTask">暂无任务</div>
-        </mt-tab-container-item>
-        <mt-tab-container-item id="3">
-            <div @click="toTaskDetail(item.taskId, true, 3)" v-for="(item, index) in completedTaskList" :key="index" class="t-list paddingLR12">
-              <div class="tl-left">
-                <div class="tll-tittle nowrap">{{item.title}}</div>
-                <div class="tll-content nowrap">{{item.content}}</div>
-                <div class="tll-last nowrap">截止时间：{{item.submitByTime}}</div>
-              </div>
-              <div class="tl-right">
-                <mt-button v-if="item.isDisabled === 1"  type="primary">已完成</mt-button>
-                <mt-button class="gray" v-if="item.isDisabled === 0" type="primary">修改</mt-button>
-              </div>
-            </div>
-            <div v-if="completedTaskList.length === 0" class="havenoTask">暂无任务</div>
-        </mt-tab-container-item>
-      </mt-tab-container>
+        <div class="pn-list"  v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, 1)">
+            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 0" :title="item.title">
+                <span>领取任务</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 1" :title="item.title">
+                <span>提交任务</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link v-if="item.taskStatus === 2" :title="item.title">
+                <span>已完成</span>
+            </mt-cell>
+        </div>
     </div>
+    <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
+    direction="lt" class="changeClass" :radius="80" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
+    <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">领取</div></div>
+    <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio" v-if="isExpend">待完成</div></div>
+    <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
+    </mt-palette-button>
   </div>
 </template>
 
@@ -65,40 +33,40 @@ export default {
   props:{},
   data(){
     return {
-      selected: '1',
-      getTaskList: [],
-      toComTaskList: [],
-      completedTaskList: [],
-      isShowCompletedTaskList: true, // 是否显示已完成列表
+     getTaskList: [],
+     isExpend: false
     }
   },
   watch:{
-    // 监听selected
-    selected(val, oldVal) {
-
-      //val     切换后 id
-      //oldVal  切换前 id 
-      this.selected = val
-      if (val === "1") {
-        this.getTaskOneTap()
-        this.$router.push({
-            name: 'tasks',
-            query: {seleced: '1'}
-        })
-      } else if (val === "2") {
-         this.getTaskTwoTap()
-        console.log('点击了2')
-      } else if (val === "3") {
-         this.getTaskThreeTap()
-         console.log('点击了3')
-      }
-      console.log('seleced', val, oldVal)
-    }
   },
   computed:{},
   methods:{
+    main_log(val) {
+        console.log('main_log', val)
+        if (val === 'expand') {
+            this.isExpend = true
+        } else if(val === 'collapse') {
+            this.isExpend = false
+        }
+    },
+    sub_log(val) {
+        console.log('sub_log', val)
+        if (val === 1) {
+
+        } else if (val === 2) {
+
+        } else if (val === 3) {
+
+        }
+        this.$refs.target_1.collapse()
+    },
     // 将事件派发
     toTaskDetail(taskId, isHaveUpload, taskType) {
+     if ( isHaveUpload === 0 ) {
+         isHaveUpload = false
+     } else {
+         isHaveUpload = true
+     }
       this.$router.push({
         name: 'tasksDetail',
         params: { taskId },
@@ -131,7 +99,7 @@ export default {
       }).then(() =>{
       })
     },
-    // 获取任务列表 第一步
+    // // 获取任务列表 第一步
     getTaskOneTap() {
       this.$axios.get(this.$api.taskOneTap).then((response) => {
         console.log('response', response)
@@ -144,38 +112,38 @@ export default {
       }).then(() =>{
       })
     },
-     // 获取任务列表 第二步
-    getTaskTwoTap() {
-      this.$axios.get(this.$api.taskTwoTap).then((response) => {
-        console.log('response', response)
-        const { data, success } = response.data
-        if (success) {
-          for (const v of data) {
-            v.submitByTime = v.submitByTime.substring(0, 10)
-          }
-          this.toComTaskList = data
-        }
-      }).catch((error) => {
+    //  // 获取任务列表 第二步
+    // getTaskTwoTap() {
+    //   this.$axios.get(this.$api.taskTwoTap).then((response) => {
+    //     console.log('response', response)
+    //     const { data, success } = response.data
+    //     if (success) {
+    //       for (const v of data) {
+    //         v.submitByTime = v.submitByTime.substring(0, 10)
+    //       }
+    //       this.toComTaskList = data
+    //     }
+    //   }).catch((error) => {
         
-      }).then(() =>{
-      })
-    },
-     // 获取任务列表 第三步
-    getTaskThreeTap() {
-      this.$axios.get(this.$api.taskThreeTap).then((response) => {
-        console.log('response', response)
-        const { data, success } = response.data
-        if (success) {
-          for (const v of data) {
-            v.submitByTime = v.submitByTime.substring(0, 10)
-          }
-          this.completedTaskList = data
-        }
-      }).catch((error) => {
+    //   }).then(() =>{
+    //   })
+    // },
+    //  // 获取任务列表 第三步
+    // getTaskThreeTap() {
+    //   this.$axios.get(this.$api.taskThreeTap).then((response) => {
+    //     console.log('response', response)
+    //     const { data, success } = response.data
+    //     if (success) {
+    //       for (const v of data) {
+    //         v.submitByTime = v.submitByTime.substring(0, 10)
+    //       }
+    //       this.completedTaskList = data
+    //     }
+    //   }).catch((error) => {
         
-      }).then(() =>{
-      })
-    },
+    //   }).then(() =>{
+    //   })
+    // },
     ...mapMutations({
       setTaskDetail: 'SET_TASK_LIST_DETAIL'
     })
@@ -200,34 +168,22 @@ export default {
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
 .tasks
-  .t-list
-    width 100%
-    height 120px
-    display flex
-    box-sizing border-box
-    background-color #ffffff
-    justify-content space-between
-    margin-top 15px
-    .tl-left
-      width 250px
-      .tll-tittle 
-        padding 15px 0
-        font-size $fs18
-      .tll-content
-        padding-bottom 20px
-        color $fs-content
-        font-size $fs16
-      .tll-last
-        color $fs-time
-        font-size $fs14
-    .tl-right
-      height 100%
-      display flex
-      align-items center
-.havenoTask
-  display flex
-  justify-content  center
-  width 100%
-  align-items center
-  margin-top 50%
+    height 100%   
+    .pnl-list
+        margin-top 10px
+    .changeClass
+        position: fixed
+        right: 20px
+        bottom: 20px
+        width: 58px
+        height: 58px
+        z-index 99999
+        .classRadio
+            height: 50px
+            width: @height
+            border-radius: @height
+            line-height: @height
+            font-size: 12px
+            color: #ffffff
+            background: #ef4f4f
 </style>

@@ -29,6 +29,7 @@
 import { getData } from '../../assets/js/dom'
 import common from '../../utils/common'
 import { mapMutations } from 'vuex'
+import { MessageBox } from 'mint-ui'
 import qs from 'qs'
 export default {
   components:{},
@@ -91,12 +92,14 @@ export default {
         }
         param = common.splicingJson(param)
         const url = this.$api.forgetpwd + param
-        this.$axios.post(url).then((response) => {
+        this.$axios.post(url).then((res) => {
             const { message, success } = res.data
             if (success) {
-               MessageBox.alert('提交成功，请前往您的邮箱修改密码')
+               MessageBox.alert('提交成功，请前往您的邮箱修改密码').then(action => {
+                   this.isShowModal = false
+               })
             } else {
-               MessageBox.alert(message)
+               this.$toast(message)
             }
         })
    }
