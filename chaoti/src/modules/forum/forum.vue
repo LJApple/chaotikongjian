@@ -20,28 +20,28 @@
       </div>
     </div>
     <div class="f-list">
-      <div class="fl-img" @click="toDetail(1)">
+      <div class="fl-img" @click="toDetail('typeone')">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">模块1</div>
+            <div class="">意见反馈</div>
         </div>
       </div>
-      <div class="fl-img" @click="toDetail(2)">
+      <div class="fl-img" @click="toDetail('typetwo')">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">模块2</div>
+            <div class="">全民体验坊</div>
         </div>
       </div>
-      <div class="fl-img" @click="toDetail(3)">
+      <div class="fl-img" @click="toDetail('typethree')">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">模块3</div>
+            <div class="">我要点赞</div>
         </div>
       </div>
-      <div class="fl-img" @click="toDetail(4)">
+      <div class="fl-img" @click="toDetail('typefour')">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">模块4</div>
+            <div class="">我要点赞</div>
         </div>
       </div>
     </div>
@@ -78,10 +78,13 @@ export default {
           path: '/myForum'
         })
       },
-      // 跳转到详情
+      // 跳转到详情 type 分别表示对应的类型
       toDetail(param) {
         this.$router.push({
-          path: '/forumDetail'
+          path: '/forumDetail',
+          query: {
+              from: param
+          }
         })
       }
   },
@@ -93,7 +96,7 @@ export default {
 @import "../../assets/stylus/variable.styl"
 .forum
   height 100%
-  background #abcee8
+  background #abb6bf
 .f-header
   background $bg-color
   height 120px

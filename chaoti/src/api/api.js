@@ -20,5 +20,9 @@ const api = {
     getexper: `${serverUrl}my/getexper`, // 获取经验值
     getmyrno: `${serverUrl}my/getmyrno`, // 获取排行榜
     updateuserpwd: `${serverUrl}user/updateuserpwd`, // 修改密码
+
+    // 帖子列表
+    getpostlist: `${serverUrl}discuss/getpostlist`, // 获取帖子列表
+    gettabletype: `${serverUrl}discuss/gettabletype`, // 获取发帖类型
 }
 Vue.prototype.$api = api

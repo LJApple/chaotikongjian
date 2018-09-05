@@ -8,7 +8,12 @@ import Mint from "mint-ui"
 import axios from 'axios'
 // mintui样式导入
 import 'mint-ui/lib/style.css'
+// require styles
+import 'swiper/dist/css/swiper.css'
 import './assets/stylus/index.styl'
+import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+Vue.use(VueAwesomeSwiper)
 // 导入api
 import './api/api'
 // 应用mintui

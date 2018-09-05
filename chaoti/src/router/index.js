@@ -101,7 +101,7 @@ const router = new Router({
       name: 'post',
       component: post,
       meta: {
-        title: '发布帖子'
+        title: '意见反馈'
       }
     }
   ]
