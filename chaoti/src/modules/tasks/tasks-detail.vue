@@ -14,19 +14,23 @@
            <div class="uplad">
               <upload @fileList="fileList" :isHaveUpload="isHaveUpload" :fileName="taskDetail.fileName"></upload>  
             </div>
-          <div class="revieseTask" v-if="taskType === 0">
-            <mt-button v-if="taskDetail.receiveStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+          <div class="revieseTask pd20" v-if="taskType === 0">
+            <mt-button v-if="taskDetail.receiveStatus === 0 && taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 1 && taskDetail.taskStatus === 0" size="large" type="primary">已领取</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 待提交任务 -->
-          <div class="stayTask" v-if="taskType === 1">
+          <div class="stayTask pd20" v-if="taskType === 1">
             <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>          
-            <mt-button v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
+            <mt-button class="gray" v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
+          </div>
+          <!-- 未完成任务 -->
+          <div class="comTask pd20" v-if="taskType === 3">
+            <mt-button class="gray" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 已完成任务 -->
-          <div class="comTask" v-if="taskType === 2">
-            <mt-button v-if="taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+          <div class="comTask pd20" v-if="taskType === 2">
+            <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">修改</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
         </div>
@@ -76,6 +80,11 @@ export default {
           console.log('response', response)
           const { data, success } = response.data
           if (success) {
+            if (this.taskType === 0) {
+              data.fileName = data.fileName.split('|')[0]
+            } else {
+              data.fileName = data.fileName.split('|')[1]
+            }
             this.taskDetail = data
           }
         })
@@ -100,13 +109,13 @@ export default {
     satyTask() {
       if (!this.fileData) return this.$toast("请上传任务书！")
       let params = {
-            "TaskID": this.taskId,
-            "UploadFile": this.fileData.uploadFile,//附件路径
-            "FileName": this.fileData.fileName//附件名称
+            "taskId": this.taskId,
+            "file": this.fileData.uploadFile//附件路径
+            // "FileName": this.fileData.fileName//附件名称
       }
       // params = common.splicingJson(params)
       // const url = this.$api.submittask + params
-      this.$axios.post(this.$api.submittask, qs.stringify(params)).then((response) => {
+      this.$axios.post(this.$api.submittask, params).then((response) => {
         const {success} = response.data
         if (success) {
            MessageBox.alert('提交成功', '提示').then(action => {
@@ -130,6 +139,8 @@ export default {
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
+.pd20
+  padding-bottom 20px
 .td-list
   font-size $fs16
   .tdl-title
@@ -151,4 +162,6 @@ export default {
       padding 12px 0
 .revieseTask
   padding 12px
+.comTask, .stayTask
+  margin-top 20px
 </style>

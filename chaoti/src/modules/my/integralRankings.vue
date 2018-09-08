@@ -1,0 +1,77 @@
+<template>
+ <transition name="slide">
+  <div class="ranking">
+      <div class="r-list" v-for="(item, index) in ranking" :key="item.userId">
+          <div class="rl-num">{{index + 1}}</div>
+          <div class="rl-photo">
+              <img v-if="!item.photo" src="../../assets/images/default.png" alt="">
+              <img v-else src="../../assets/images/default.png" alt="">
+          </div>
+          <div class="rl-name">{{item.userName}}</div>
+          <div class="rl-dpt">{{item.deptName}}</div>
+          <div class="rl-rnk"><span class="rlr-text">{{item.sumExperience}}</span>分</div>
+      </div>
+  </div>
+ </transition>
+</template>
+
+<script type="text/ecmascript-6">
+export default {
+  components:{},
+  props:{},
+  data(){
+    return {
+        ranking: [
+            {id: 1, photo: '', name: '张三', dpt: '生活部', rank: 3}
+        ]
+    }
+  },
+  watch:{},
+  computed:{},
+  methods:{
+    // 获取排行榜
+    getmyrno() {
+      const url = this.$api.getmyrno
+      this.$axios.get(url).then(response => {
+        const { success, data } = response.data;
+        if (success) {
+            this.ranking = data
+        }
+      })
+    },
+  },
+  created(){
+    this.getmyrno()
+  },
+  mounted(){}
+}
+</script>
+<style lang="stylus" scoped rel="stylesheet/stylus">
+@import "../../assets/stylus/variable.styl"
+.r-list
+    display flex
+    height 70px
+    align-items center
+    background #ffffff
+    margin-bottom 10px
+    font-size 14px
+    .rl-photo
+        img 
+            height 60px
+            width @height
+    .rl-num
+        width 5%
+        font-weight bolder
+        text-align center
+    .rl-name
+        width 40%
+        padding-left 10px
+        box-sizing border-box
+    .rl-dpt
+        width 25%
+    .rl-rnk
+        width 20%
+        .rlr-text
+            font-size 16px
+            font-weight bolder
+</style>

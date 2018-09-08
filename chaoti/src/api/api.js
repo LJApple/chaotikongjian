@@ -8,6 +8,7 @@ const api = {
     updateuserdata: `${serverUrl}user/updateuserdata`, // 修改用户信息
     upload: `/upload/uploadfile`, // 上传  
     taskOneTap: `${serverUrl}gettasklist`, // 领取任务
+    getmytask: `${serverUrl}getmytask`, // 获取我的任务
     taskTwoTap: `${serverUrl}getrecievetasklist`, // 待完成任务
     taskThreeTap: `${serverUrl}gethassubmittasklist`, // 已完成任务
     recieveTask: `${serverUrl}receivetask`, // 领取任务
@@ -16,9 +17,10 @@ const api = {
     // 我的
     getrules: `${serverUrl}my/getrules`, // 获取规则和纪律说明内容 
     getuserinfo: `${serverUrl}user/getuserdata`, // 获取用户信息
-    signin: `${serverUrl}my/signin`, // 签到
+    signin: `${serverUrl}my/signin`, // 签到   /api/my/getsigndata
+    getissign: `${serverUrl}my/getissign`, // 是否签到
     getexper: `${serverUrl}my/getexper`, // 获取经验值
-    getmyrno: `${serverUrl}my/getmyrno`, // 获取排行榜
+    getmyrno: `${serverUrl}my/getrno`, // 获取排行榜
     updateuserpwd: `${serverUrl}user/updateuserpwd`, // 修改密码
 
     // 帖子列表

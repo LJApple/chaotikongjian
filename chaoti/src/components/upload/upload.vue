@@ -9,13 +9,14 @@
         </div>
         <div class="u-img" v-if="isHaveUpload">
             <div class="uploadBtn"><img src="../../assets/images/upload.png" alt="Alternate Text" /></div>
-            <input type="file" class="file-btn" accept="image/*" @change="getFile"/>
+            <input type="file" class="file-btn"  @change="getFile"/>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
 import common from '../../utils/common'
+import { Indicator } from 'mint-ui'
 import qs from 'qs'
 export default {
   components:{},
@@ -43,6 +44,7 @@ export default {
         console.log('files', files)
         this.filesUrlList = []
         this.fileName = files[0].name
+        Indicator.open('加载中...')
         for (var i = 0; i < files.length; i++) {
             this.fileName = files[i].name
             this.filesUrlList.push(value)
@@ -63,6 +65,7 @@ export default {
                     fileName: this.fileName,
                     uploadFile: this.uploadFile
                 }
+                Indicator.close()
                 this.$emit('fileList', fileList)
             }).catch((error) => {
                 // handle error

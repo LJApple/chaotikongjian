@@ -12,7 +12,7 @@ const tasksDetail = resolve => require.ensure([], () => resolve(require('../modu
 // 我的
 const my = resolve => require.ensure([], () => resolve(require('../modules/my/my')), 'my')
 // 设置
-const setting = resolve => require.ensure([], () => resolve(require('../modules/my/setting')), 'setting')
+const integralRankings = resolve => require.ensure([], () => resolve(require('../modules/my/integralRankings')), 'integralRankings')
 // 论坛
 const  forum = resolve => require.ensure([], () => resolve(require('../modules/forum/forum')), 'forum')
 // 发过的主题
@@ -57,16 +57,17 @@ const router = new Router({
       name: 'my',
       component: my,
       meta: {
+        keepAlive: true,
         title: '超积分',
         requireAuth: true
       }
     },
     {
-      path: '/setting',
-      name: 'setting',
-      component: setting,
+      path: '/integralRankings',
+      name: 'integralRankings',
+      component: integralRankings,
       meta: {
-        title: '设置'
+        title: '积分排行榜'
       }
     },
     {
@@ -107,6 +108,9 @@ const router = new Router({
   ]
 })
 router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
   const account_token =   window.sessionStorage.getItem('account_token')
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
       if (account_token) { // 判断当前的token是否存在

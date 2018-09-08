@@ -2,28 +2,28 @@
   <div class="tasks">
     <div class="t-header"></div>
     <div class="page-navbar">
-        <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+        <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
                 <span>未领取</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 2"  v-for="(item, index) in getTaskListTwo" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+        <div class="pn-list" v-if="val === 2"  v-for="(item, index) in getTaskListTwo" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
                 <span>已领取</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 3"  v-for="(item, index) in getTaskListThree" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+        <div class="pn-list" v-if="val === 3"  v-for="(item, index) in getTaskListThree" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link :title="item.title">
                 <span>已完成</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 4"  v-for="(item, index) in getTaskListFour" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+        <div class="pn-list" v-if="val === 4"  v-for="(item, index) in getTaskListFour" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link :title="item.title">
-                <span>未完成</span>
+                <span>已过期</span>
             </mt-cell>
         </div>
         <!-- 全部 -->
-         <div class="pn-list"  v-if="val === 5" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+         <div class="pn-list"  v-if="val === 5" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 0" :title="item.title">
                 <span>未领取</span>
             </mt-cell>
@@ -43,7 +43,7 @@
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">未领取</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">已领取</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">未完成</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">已过期</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(5)"><div class="classRadio" v-if="isExpend">全部</div></div>
    </mt-palette-button>
   </div>
@@ -88,11 +88,6 @@ export default {
     },
     // 将事件派发
     toTaskDetail(taskId, isHaveUpload, taskType) {
-     if ( isHaveUpload === 0 ) {
-         isHaveUpload = false
-     } else {
-         isHaveUpload = true
-     }
       this.$router.push({
         name: 'tasksDetail',
         params: { taskId },
@@ -157,38 +152,6 @@ export default {
       }).then(() =>{
       })
     },
-    //  // 获取任务列表 第二步
-    // getTaskTwoTap() {
-    //   this.$axios.get(this.$api.taskTwoTap).then((response) => {
-    //     console.log('response', response)
-    //     const { data, success } = response.data
-    //     if (success) {
-    //       for (const v of data) {
-    //         v.submitByTime = v.submitByTime.substring(0, 10)
-    //       }
-    //       this.toComTaskList = data
-    //     }
-    //   }).catch((error) => {
-        
-    //   }).then(() =>{
-    //   })
-    // },
-    //  // 获取任务列表 第三步
-    // getTaskThreeTap() {
-    //   this.$axios.get(this.$api.taskThreeTap).then((response) => {
-    //     console.log('response', response)
-    //     const { data, success } = response.data
-    //     if (success) {
-    //       for (const v of data) {
-    //         v.submitByTime = v.submitByTime.substring(0, 10)
-    //       }
-    //       this.completedTaskList = data
-    //     }
-    //   }).catch((error) => {
-        
-    //   }).then(() =>{
-    //   })
-    // },
     ...mapMutations({
       setTaskDetail: 'SET_TASK_LIST_DETAIL'
     })

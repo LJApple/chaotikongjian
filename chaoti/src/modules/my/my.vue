@@ -14,12 +14,12 @@
         <div class="thr-left">
           <div class="thrl-top">
             <div class="thrlt-name">{{userInfo.name}}</div>
-            <div class="thrlt-asign">签到</div>
+            <!-- <div class="thrlt-asign">签到</div>
             <div class="thrlt-img" @click="questionClick">
                 <img src="../../assets/images/question.png" alt="">
-            </div>
+            </div> -->
           </div>
-          <div class="thrl-bottom">
+          <!-- <div class="thrl-bottom">
             <div>
               <div class="thrl-center">级别 {{userInfo.lvl}}</div>
               <div class="thrl-bottom">经验值 {{userInfo.score}}</div>
@@ -28,9 +28,10 @@
               <div class="thrr-btn" @click="showModal(1)">奖励规则</div>
               <div class="thrr-btn" @click="showModal(2)">纪律说明</div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
+      <div class="thrlt-logo"><img src="../../assets/images/logo.png" alt=""></div>
     </div>
     <div class="page-navbar">
       <mt-navbar class="page-part paddingLR12" v-model="selected">
@@ -46,47 +47,84 @@
           <mt-cell title="已完成任务"  to="/tasks?selected=3" is-link>
             <img slot="icon" src="../../assets/images/done.png" width="18" height="18">
           </mt-cell> -->
-          <div class="pn-list"  v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, 1)">
-            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 0" :title="item.title">
-                <span>领取任务</span>
+          <div class="pn-list" v-if="val === 1"  v-for="item in getTaskListOne" :key="item.taskId" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link  :title="item.title">
+                <span>已领取</span>
             </mt-cell>
-            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 1" :title="item.title">
-                <span>提交任务</span>
-            </mt-cell>
-            <mt-cell class="pnl-list" is-link v-if="item.taskStatus === 2" :title="item.title">
+          </div>
+          <div class="pn-list" v-if="val === 2" v-for="item in getTaskListTwo" :key="item.taskId" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link :title="item.title">
                 <span>已完成</span>
             </mt-cell>
           </div>
+          <div class="pn-list" v-if="val === 3" v-for="item in getTaskListThree" :key="item.taskId" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link :title="item.title">
+                <span>已过期</span>
+            </mt-cell>
+          </div>
+          <div class="pn-list" v-if="val === 4" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 1" :title="item.title">
+                <span>已领取</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 2" :title="item.title">
+                <span>已完成</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 3" :title="item.title">
+                <span>已过期</span>
+            </mt-cell>
+          </div>
           <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
-            direction="lt" class="changeClass" :radius="60" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
-            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">待完成</div></div>
+            direction="lt" class="changeClass" :radius="120" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
+            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">已领取</div></div>
             <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio" v-if="isExpend">已完成</div></div>
+            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(3)"><div class="classRadio" v-if="isExpend">已过期</div></div>
+            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(4)"><div class="classRadio" v-if="isExpend">全部</div></div>
           </mt-palette-button>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
-          <div class="total">
+          <div class="animation">
+            <img src="../../assets/images/exprience-bg.jpg" alt="">
+            <div class="a-count">{{sumExperience}}</div>
+          </div>
+          <!-- <div class="total">
              <mt-cell title="个人总体验值">
             <span class="my-ex">11分</span>
             <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-          </div>
+          </div> -->
           <mt-cell title="总积分">
-            <span class="my-ex">11分</span>
+            <span class="my-ex">{{exper.sumExperience}}分</span>
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+          </mt-cell>
+           <mt-cell title="活动积分" class="all-list">
+            <span class="my-ex">{{exper.activeExperience}}分</span>
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+          </mt-cell>
+           <mt-cell title="专题积分" class="all-list">
+            <span class="my-ex">{{exper.specialExperience}}分</span>
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+          </mt-cell>
+           <mt-cell title="日常反馈" class="all-list">
+            <span class="my-ex">{{exper.dailyExperience}}分</span>
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+          </mt-cell>
+           <mt-cell title="其它" class="all-list">
+            <span class="my-ex">{{exper.otherExperience}}分</span>
             <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
           <mt-cell title="已经使用" class="borderTop">
-            <span class="my-ex">1分</span>
+            <span class="my-ex">{{exper.convertExperience}}分</span>
             <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
            <mt-cell title="剩余积分" class="borderTop">
-            <span class="my-ex">1分</span>
+            <span class="my-ex">{{exper.sumExperience - exper.convertExperience}}分</span>
             <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
            <mt-cell title="您的排名" class="borderTop">
-            <span class="my-ex">1分</span>
+            <span class="my-ex">第{{exper.experienceSort}}名</span>
             <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-          <div class="mc-bottom">距离第9名只差3分哦 <span>积分排行榜</span></div>
+          <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" to="/IntegralRankings">积分排行榜</router-link></div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
           <!-- <div class="type1" :hidden="isClass">
@@ -149,13 +187,19 @@
                     </div>
                     <mt-field class="s-padding" label="用户名" placeholder="用户名" v-model="userInfo.name"></mt-field>
                 </div>
+                <div class="sl-list">
+                    <div class="sll-img">
+                        <img src="../../assets/images/done.png" alt="">
+                    </div>
+                    <mt-field class="s-padding" label="部门" placeholder="部门" v-model="userInfo.profession"></mt-field>
+                </div>  
                 <div class="sl-list sex">
                     <div class="sll-left">
                         <img src="../../assets/images/done.png" alt="">
-                        <span>性别</span>
+                        <span style="padding-left: 12px">性别</span>
                     </div>
                     <mt-radio class="s-radio"
-                        v-model="userInfo.type"
+                        v-model="sextype"
                         align="right"
                         :options="options">
                     </mt-radio>
@@ -211,6 +255,7 @@
 
 <script type="text/ecmascript-6">
 import { MessageBox } from "mint-ui"
+import common from '../../utils/common'
 import qs from 'qs'
 export default {
   components: {},
@@ -243,9 +288,15 @@ export default {
       }, // 文件内容
       rules: null, // 规则
       rulesText: null, // 规则内容
-      exper: null, // 积分
+      exper: {}, // 积分
       isExpend: false,
-      getTaskList: null
+      getTaskList: [],
+      getTaskListOne: [],
+      getTaskListTwo: [],
+      getTaskListThree: [],
+      val: 4,
+      sumExperience: 0,
+      sextype: '0'
     }
   },
   watch: {
@@ -260,7 +311,7 @@ export default {
         console.log("点击了2")
          this.getexper()
       } else if (val === "3") {
-        console.log("点击了3");
+        this.getUserInfo()
       }
       console.log("seleced", val, oldVal);
     }
@@ -276,22 +327,33 @@ export default {
         }
     },
     sub_log(val) {
-        console.log('sub_log', val)
-        if (val === 1) {
-
-        } else if (val === 2) {
-
-        } else if (val === 3) {
-
-        }
+        this.val = val
+         console.log('his.val', val)
         this.$refs.target_1.collapse()
+        return false
     },
     // 获取任务列表
     getTaskOneTap() {
-      this.$axios.get(this.$api.taskOneTap).then((response) => {
+      this.getTaskList = []
+      this.getTaskListOne = []
+      this.getTaskListTwo = []
+      this.getTaskListThree = []
+      this.$axios.get(this.$api.getmytask).then((response) => {
         console.log('response', response)
         const { data, success } = response.data
         if (success) {
+          for (const item of data) {
+            item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
+            const {receiveStatus} = item 
+            if (receiveStatus === 1) {
+              this.getTaskListOne.push(item)
+            } else if (receiveStatus === 2) {
+              this.getTaskListTwo.push(item)
+            } else if (receiveStatus === 3) {
+              this.getTaskListThree.push(item)
+            }
+          }
+          console.log(' this.getTaskListOne',  this.getTaskListOne)
           this.getTaskList = data
         }
       }).catch((error) => {
@@ -311,7 +373,7 @@ export default {
         params: { taskId },
         query: {isHaveUpload, taskType}
       })
-      this.setTaskDetail(taskId)
+      // this.setTaskDetail(taskId)
     },
     // 打开规则窗口
     showModal(type) {
@@ -358,9 +420,14 @@ export default {
     // 获取用户信息
     getUserInfo() {
       this.$axios.get(this.$api.getuserinfo).then(response => {
-        const { success, data } = response.data;
+        const { success, data } = response.data
         if (success) {
-          this.userInfo = data;
+          if (data.sex === '男') {
+            this.sextype = '0'
+          } else {
+            this.sextype = '1'
+          }
+          this.userInfo = data
         }
       })
     },
@@ -374,20 +441,17 @@ export default {
     },
     // 获取经验值
     getexper() {
+      this.sumExperience = 0
+      let exp
+      clearInterval(exp)
       this.$axios.get(this.$api.getexper).then(response => {
         const { success, data } = response.data;
         if (success) {
             this.exper = data
-        }
-      })
-    },
-    // 获取排行榜
-    getmyrno() {
-      let isAll = 0;
-      const url = this.$api.getmyrno + "?isAll=" + isAll;
-      this.$axios.get(url).then(response => {
-        const { success } = response.data;
-        if (success) {
+            exp = setInterval(() => {
+              this.sumExperience += 1
+               if (this.sumExperience === data.sumExperience - data.convertExperience) clearInterval(exp)
+            }, 10)
         }
       })
     },
@@ -413,15 +477,16 @@ export default {
           return
         }
         let param = {
-            pwd: this.pwd,
-            pwdAgin: this.pwdAgin
+            pwd: this.pwd
         }
         param = common.splicingJson(param)
         const url = this.$api.updateuserpwd + param
         this.$axios.post(url).then((response) => {
-            const { message, success } = res.data
+            const { message, success } = response.data
             if (success) {
-              MessageBox.alert('提交成功，请前往您的邮箱修改密码')
+              MessageBox.alert('修改成功').then(action => {
+                this.isShowModal = false
+              })
             } else {
               MessageBox.alert(message)
             }
@@ -429,11 +494,27 @@ export default {
     },
     // 提交数据
     submitData() {
-        let param = this.userInfo
+        let {sex, phone, email, photo} = this.userInfo
+        if(!sex || !phone || !email) {
+          MessageBox.alert('参数不能为空')
+        }
+        if (this.sextype === '0') {
+          sex = '男'
+        } else {
+          sex = '女'
+        }
+        if (!photo) photo = '无'
+        let param = {
+          sex,
+          phone,
+          email,
+          photo
+        }
+        debugger
         console.log('this.userInfo', param, qs.stringify(param))
-        // param = common.splicingJson(param)
-        // const url = this.$api.updateuserdata + param
-        this.$axios.post(this.$api.updateuserdata, qs.stringify(param)).then((res) => {
+        param = common.splicingJson(param)
+        const url = this.$api.updateuserdata + param
+        this.$axios.post(url).then((res) => {
             const { message, success } = res.data
             if (success) {
               MessageBox.alert('修改成功')
@@ -473,20 +554,31 @@ export default {
             })
         }
         e.target.value = null
+      },
+      // 是否签到
+      getissign() {
+         this.$axios.get(this.$api.getissign).then(response => {
+          const { success } = response.data;
+          if (success) {
+          }
+        })
       }
   },
-  activated() {},
+  activated() {
+    // this.getTaskOneTap()
+  },
   created() {
     // 获取奖励规则
-    this.rulesData()
-    // 获取用户信息
-    this.getUserInfo();
+    // this.rulesData()
     // 获取任务列表
     this.getTaskOneTap()
+    this.getUserInfo()
     // // 获取积分
     // this.getexper()
     // // 获取排行榜
     // this.getmyrno()
+    // 是或签到
+    // this.getissign()
   },
   mounted() {}
 }
@@ -499,8 +591,8 @@ export default {
         padding-left: 10px
     .mc-bottom
         text-align: center
-        position: absolute
-        bottom: -20px
+        height: 100px
+        line-height: @height
 .total
   margin-bottom: 10px
 
@@ -722,35 +814,32 @@ export default {
   }
 }
 
-.sex {
+.sex
   display: flex;
   // justify-content space-between
   background: #ffffff;
   font-size: 16px;
   border-bottom: 1px solid #dddddd;
 
-  /deep/ .mint-cell-wrapper {
+  /deep/ .mint-cell-wrapper
     background-image: none !important
     background: #ffffff
     padding: 0
-  }
+  /deep/ .s-radio
+    padding-left: 10px
 
-  .sll-left {
-    height: 48px;
-    width: 112px;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-    padding-left: 10px;
-    box-sizing: border-box;
-
-    img {
+  .sll-left
+    height: 48px
+    width: 112px
+    display: flex
+    align-items: center
+    justify-content: left
+    padding-left: 10px
+    box-sizing: border-box
+    img
       height: 20px;
       width: @height;
-      margin-right: 10px;
-    }
-  }
-}
+      margin-right: 10px
 
 .s-radio {
   display: flex;
@@ -798,4 +887,39 @@ export default {
     opacity: 0
 .borderTop
     border-top: 1px solid #ddd
+.thrlt-logo
+  position: absolute
+  right: 12px
+  img
+    height: 30px
+    width: @height
+.animation
+  height: 100px
+  width: 100%
+  display: flex
+  justify-content center
+  align-items center
+  position relative
+  background-color: #ffffff
+  margin-bottom: 10px
+  img
+    height: 70px
+    width: @height
+  .a-count
+    position absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    margin: auto
+    height: 70px
+    display flex
+    justify-content center
+    align-items center
+    width: @height
+    font-weight bolder
+    font-size 22px
+.all-list
+  padding-left: 20px
+  border-top: 1px solid #ddd
 </style>
