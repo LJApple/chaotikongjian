@@ -21,15 +21,23 @@ Vue.use(Mint)
 // 将所有的请求加加上account_token
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
+    console.log('config', config)
     const account_token = window.sessionStorage.getItem('account_token')
     Object.assign(config.headers, { 'account_token': account_token })
-        return config
-    },error =>{
-        Promise.reject(error)
-    }
-)
+    return config
+},error =>{
+    Promise.reject(error)
+})
 axios.interceptors.response.use(response => response,error => {
-    console.log('error', error)
+   const {status} =  error.response
+   const {fullPath} = router.history.current
+   if (status === 403) {
+    window.sessionStorage.removeItem('account_token')
+    router.replace({
+        path: '/login',
+        query: { redirect: fullPath }
+    })
+   }
 })
 // 挂在axios
 Vue.prototype.$axios = axios

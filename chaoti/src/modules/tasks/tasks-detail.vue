@@ -5,22 +5,27 @@
         <div class="td-list">
           <div class="tdl-title"><span class="bloder">任务标题：</span>{{taskDetail.title}}</div>
           <div class="tdl-content">
-            <div><span class="bloder">内容:</span>{{taskDetail.details}}</div>
+            <div class="tdlc-con"><span class="bloder">内容：</span>{{taskDetail.details}}</div>
+            <div class="tdlc-time">
+              <div>创建时间：{{taskDetail.createTime}}</div>
+              <div>截止时间：{{taskDetail.receiveByTime}}</div>  
+            </div>
           </div>
            <div class="uplad">
               <upload @fileList="fileList" :isHaveUpload="isHaveUpload" :fileName="taskDetail.fileName"></upload>  
             </div>
-          <div class="revieseTask" v-if="taskType === 1">
-            <mt-button v-if="taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+          <div class="revieseTask" v-if="taskType === 0">
+            <mt-button v-if="taskDetail.receiveStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.receiveStatus === 1 && taskDetail.taskStatus === 0" size="large" type="primary">已领取</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 待提交任务 -->
-          <div class="stayTask" v-if="taskType === 2">
+          <div class="stayTask" v-if="taskType === 1">
             <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>          
             <mt-button v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 已完成任务 -->
-          <div class="comTask" v-if="taskType === 3">
+          <div class="comTask" v-if="taskType === 2">
             <mt-button v-if="taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
@@ -138,7 +143,12 @@ export default {
     background #ffffff
     padding 20px $pagePadding 
     margin-top 10px
-    line-height 20px
+    line-height 24px
+    .tdlc-time
+      display flex
+      justify-content space-between
+      font-size 12px
+      padding 12px 0
 .revieseTask
   padding 12px
 </style>

@@ -172,9 +172,9 @@
                     </div>
                     <mt-field class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
                 </div>
-                <div  @click="changPwd">
+                <div class="sl-list" @click="changPwd">
                     <mt-cell title="修改密码" value="" class="hasArrow borderBt"  is-link>
-                        <img slot="icon"  class="paddingLR10" src="../../assets/images/done.png" width="18" height="18">
+                        <img slot="icon" src="../../assets/images/done.png" width="20" height="20">
                     </mt-cell>
                 </div>
                 <!-- <mt-cell title="修改头像"  value="" class="hasArrow"  is-link>
@@ -197,8 +197,8 @@
       <div class="ep-box">
         <div class="e-title">请输入您密码</div>
         <div class="ep-content">
-          <input class="e-input"  type="password" placeholder="请输入您的密码" v-model="pwd"/>
-          <input class="e-input"  type="password" placeholder="请在此输入您的密码" v-model="pwdAgin" />
+          <input class="e-input"  type="password" placeholder="请输入您的新密码" v-model="pwd"/>
+          <input class="e-input"  type="password" placeholder="请再次输入您的新密码" v-model="pwdAgin" />
         </div>
         <div class="epb-btn">
           <div class="epbb-cancle" @click="cancle">取消</div>

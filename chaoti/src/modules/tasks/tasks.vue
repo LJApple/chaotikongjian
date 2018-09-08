@@ -2,24 +2,50 @@
   <div class="tasks">
     <div class="t-header"></div>
     <div class="page-navbar">
-        <div class="pn-list"  v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, 1)">
-            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 0" :title="item.title">
-                <span>领取任务</span>
+        <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link  :title="item.title">
+                <span>未领取</span>
             </mt-cell>
-            <mt-cell class="pnl-list" is-link  v-if="item.taskStatus === 1" :title="item.title">
-                <span>提交任务</span>
+        </div>
+        <div class="pn-list" v-if="val === 2"  v-for="(item, index) in getTaskListTwo" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link  :title="item.title">
+                <span>已领取</span>
             </mt-cell>
-            <mt-cell class="pnl-list" is-link v-if="item.taskStatus === 2" :title="item.title">
+        </div>
+        <div class="pn-list" v-if="val === 3"  v-for="(item, index) in getTaskListThree" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link :title="item.title">
                 <span>已完成</span>
+            </mt-cell>
+        </div>
+        <div class="pn-list" v-if="val === 4"  v-for="(item, index) in getTaskListFour" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link :title="item.title">
+                <span>未完成</span>
+            </mt-cell>
+        </div>
+        <!-- 全部 -->
+         <div class="pn-list"  v-if="val === 5" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, item.taskStatus, item.receiveStatus)">
+            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 0" :title="item.title">
+                <span>未领取</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 1" :title="item.title">
+                <span>已领取</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 2" :title="item.title">
+                <span>已完成</span>
+            </mt-cell>
+            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 3" :title="item.title">
+                <span>未完成</span>
             </mt-cell>
         </div>
     </div>
     <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
-    direction="lt" class="changeClass" :radius="80" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
-    <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">领取</div></div>
-    <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio" v-if="isExpend">待完成</div></div>
-    <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
-    </mt-palette-button>
+    direction="lt" class="changeClass" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">未领取</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">已领取</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">未完成</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(5)"><div class="classRadio" v-if="isExpend">全部</div></div>
+   </mt-palette-button>
   </div>
 </template>
 
@@ -34,7 +60,12 @@ export default {
   data(){
     return {
      getTaskList: [],
-     isExpend: false
+     getTaskListOne: [],
+     getTaskListTwo: [],
+     getTaskListThree: [],
+     getTaskListFour: [],
+     isExpend: false,
+     val: 1
     }
   },
   watch:{
@@ -51,14 +82,9 @@ export default {
     },
     sub_log(val) {
         console.log('sub_log', val)
-        if (val === 1) {
-
-        } else if (val === 2) {
-
-        } else if (val === 3) {
-
-        }
+        this.val = val
         this.$refs.target_1.collapse()
+        return false
     },
     // 将事件派发
     toTaskDetail(taskId, isHaveUpload, taskType) {
@@ -104,8 +130,27 @@ export default {
       this.$axios.get(this.$api.taskOneTap).then((response) => {
         console.log('response', response)
         const { data, success } = response.data
+        this.getTaskList = []
+        this.getTaskListOne = []
+         this.getTaskListTwo = []
+        this.getTaskListThree = []
+        this.getTaskListFour = []
         if (success) {
+          for (const item of data) {
+            item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
+            const {receiveStatus} = item 
+            if (receiveStatus === 0) {
+              this.getTaskListOne.push(item)
+            } else if (receiveStatus === 1) {
+              this.getTaskListTwo.push(item)
+            } else if (receiveStatus === 2) {
+              this.getTaskListThree.push(item)
+            } else if (receiveStatus === 3) {
+               this.getTaskListFour.push(item)
+            }
+          }
           this.getTaskList = data
+          console.log('this.', this.getTaskList)
         }
       }).catch((error) => {
         
@@ -149,16 +194,13 @@ export default {
     })
   },
   activated () {
-    const {selected} = this.$route.query
     // 缓存返回卸卸载这里
-    this.changeSelected()
-    // if (selected) this.selected = selected
-    console.log('this.selected', this.selected)
+    this.getTaskOneTap()
   },
   created(){
     // this.changeSelected()
     // 领取任务列表数据
-    this.getTaskOneTap()
+    // this.getTaskOneTap()
   },
   mounted(){
 
@@ -171,10 +213,13 @@ export default {
     height 100%   
     .pnl-list
         margin-top 10px
+    .classH
+      height 58px
+      width 58px
     .changeClass
         position: fixed
-        right: 20px
-        bottom: 20px
+        right: 30px
+        bottom: 30px
         width: 58px
         height: 58px
         z-index 99999

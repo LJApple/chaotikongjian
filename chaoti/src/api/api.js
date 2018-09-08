@@ -10,7 +10,7 @@ const api = {
     taskOneTap: `${serverUrl}gettasklist`, // 领取任务
     taskTwoTap: `${serverUrl}getrecievetasklist`, // 待完成任务
     taskThreeTap: `${serverUrl}gethassubmittasklist`, // 已完成任务
-    recieveTask: `${serverUrl}recievetask`, // 领取任务
+    recieveTask: `${serverUrl}receivetask`, // 领取任务
     gettask: `${serverUrl}gettaskdetails`, // 领取详情
     submittask: `${serverUrl}submittask`, // 提交任务
     // 我的
