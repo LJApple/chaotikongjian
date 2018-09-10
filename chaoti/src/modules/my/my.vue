@@ -510,7 +510,6 @@ export default {
           email,
           photo
         }
-        debugger
         console.log('this.userInfo', param, qs.stringify(param))
         param = common.splicingJson(param)
         const url = this.$api.updateuserdata + param

@@ -29,7 +29,7 @@
             <mt-button class="gray" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 已完成任务 -->
-          <div class="comTask pd20" v-if="taskType === 2">
+          <div class="stayTask pd20" v-if="taskType === 2">
             <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">修改</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
@@ -74,7 +74,7 @@ export default {
     // 获取任务数据
     gettask() {
       this.taskId = this.$route.params.taskId
-      this.taskType = this.$route.query.taskType
+      this.taskType = parseInt(this.$route.query.taskType)
       const url = `${this.$api.gettask}?taskId=${this.taskId}`
       this.$axios.get(url).then((response) => {
           console.log('response', response)
@@ -83,7 +83,7 @@ export default {
             if (this.taskType === 0) {
               data.fileName = data.fileName.split('|')[0]
             } else {
-              data.fileName = data.fileName.split('|')[1]
+              data.fileName = data.fileName.split('|')[1] ? '': data.fileName
             }
             this.taskDetail = data
           }
@@ -164,4 +164,5 @@ export default {
   padding 12px
 .comTask, .stayTask
   margin-top 20px
+  padding 0 12px 20px 12px
 </style>

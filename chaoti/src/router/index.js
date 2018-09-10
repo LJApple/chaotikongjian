@@ -17,11 +17,12 @@ const integralRankings = resolve => require.ensure([], () => resolve(require('..
 const  forum = resolve => require.ensure([], () => resolve(require('../modules/forum/forum')), 'forum')
 // 发过的主题
 const  myForum = resolve => require.ensure([], () => resolve(require('../modules/forum/my-forum')), 'my-forum ')
-// 论坛详情
+// 论坛列表
 const  forumDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/forumDetail')), 'forumDetail')
 // 发帖
 const  post = resolve => require.ensure([], () => resolve(require('../modules/forum/post')), 'post')
-
+// 帖子详情
+const  forumListDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/forumListDetail')), 'forumListDetail')
 const router = new Router({
   mode : 'history',
   base: '/t2/',  //添加的地方
@@ -86,6 +87,15 @@ const router = new Router({
       component: forumDetail,
       meta: {
         title: '模块1',
+        keepAlive: true
+      }
+    },
+    {
+      path: '/forumListDetail',
+      name: 'forumListDetail',
+      component: forumListDetail,
+      meta: {
+        title: '帖子详情',
         keepAlive: true
       }
     },

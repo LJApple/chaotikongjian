@@ -7,40 +7,37 @@
      <div class="v-list">
         <!-- swiper -->
         <swiper :options="swiperOption">
-            <swiper-slide data-index="0">热门帖</swiper-slide>
-            <swiper-slide data-index="1">最新帖</swiper-slide>
-            <swiper-slide data-index="2">系统反馈</swiper-slide>
-            <swiper-slide data-index="3">产品反馈</swiper-slide>
-            <swiper-slide data-index="4">活动反馈</swiper-slide>
-            <swiper-slide data-index="5">其他</swiper-slide>
+            <swiper-slide @click="selctPostsType()">全部</swiper-slide>
+            <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
         </swiper>
     </div>
     <div class="fd-list">
-        <templete v-if="forumDetailList">
-             <div class="fdl-list" v-for="(item, index) in forumDetailList" :key="index">
+        <div v-if="forumDetailList">
+             <div class="fdl-list" @click="navToDetail(item.postsId)" v-for="item in forumDetailList" :key="item.id">
                 <div class="fdll-top">
-                    <img src="/assets/images/default.jpg" class="da-icon">
+                    <img v-if="!item.photo" src="../../assets/images/default.png" alt="/assets/images/comment.png">
+                    <img v-else :src="item.photo" alt="/assets/images/comment.png">
                     <div class="df-flex">
-                        <div class="df-if1">{{item.Name}}</div>
-                        <div class="df-if2">{{item.CreateTime}}</div>
+                        <div class="df-if1">{{item.name}}</div>
+                        <div class="df-if2">{{item.createTime}}</div>
                     </div>
                 </div>
                 <div class="fdll-mess">
-                    {{item.Details}}
+                    {{item.details}}
                 </div>
                 <div class="fdll-btnbox">
                     <div class="fdllb-btns">
                         <img src="../../assets/images/comment.png" alt="/assets/images/comment.png">
-                        <span>{{item.count}}</span>
+                        <span>{{item.commentCount}}</span>
                     </div>
-                    <span class="fdllb-btns">
-                        <img src="../../assets/images/comment.png" alt="/assets/images/like.png">
-                        <img src="../../assets/images/comment.png" alt="/assets/images/like-active.png">
-                        <span>{{item.count}}</span>
+                    <span class="fdllb-btns" @click.stop="clickLike(item.postsId)">
+                        <img v-if="!item.good" src="../../assets/images/like.png" alt="/assets/images/like.png">
+                        <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png">
+                        <span>{{item.goodCount}}</span>
                     </span>
                 </div>
             </div>
-        </templete>
+        </div>
         <div class="fdl-null" v-else>暂无帖子</div>
     </div>
     <div class="post" @click="toPost">
@@ -73,12 +70,13 @@ export default {
             },
             on: {
                 click: function (e) {
-                    const {index} = e.target.dataset
-                    self.swiperData(index)
+                    const {id} = e.target.dataset
+                    self.selctPostsType(id)
                 }
             }
         },
-        forumDetailList: null
+        forumDetailList: null,
+        postsTypes: []
     }
   },
   watch:{},
@@ -95,41 +93,63 @@ export default {
         this.$router.push({
           path: '/post',
           query: {
-              form: this.$route.query.from
+              from: this.$route.query.from
           }
        })
     },
-    // 切换数据
-    swiperData(type) {
-        console.log('type', type)
-        // 热门帖
-        if (type === 0) {
-
-        } else if(type === 1) {
-            // 最新帖
-        } else if(type === 2) {
-            // 系统反馈
-        } else if(type === 3) {
-            // 产品反馈
-        } else if(type === 4) {
-            // 活动反馈
-        } else {
-            // 其他
-        }
+    // 获取帖子类型
+    getPostsType() {
+        // param = common.splicingJson(param)
+        const url = this.$api.getPostsType + '?typeId=' + this.$route.query.from
+        this.$axios.get(url).then((response) => {
+            const { data, success } = response.data
+            if (success) {
+               this.postsTypes = data
+               this.selctPostsType()
+            }
+        })
     },
     // 获取帖子列表
-    getpostlist() {
-        this.$axios.get(this.$api.getpostlist).then((response) => {
+    selctPostsType(postsTypeId) {
+        // sectionId postsTypeId
+        const url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&postsTypeId=${postsTypeId}`
+        this.$axios.get(url).then((response) => {
         const { data, success } = response.data
         if (success) {
-          this.forumDetailList = data
+            this.forumDetailList = data
+        } else {
+            this.forumDetailList = null
         }
       })
+    },
+    // 点赞
+    clickLike(postsId) {
+        for (const item of this.forumDetailList) {
+            if (postsId === item.postsId) {
+                const url = `${this.$api.postspraise}?postsId=${postsId}&replyId=0&lv=0`
+                this.$axios.post(url).then((response) => {
+                    const { data, success } = response.data
+                    if (success) {
+                        item.goodCount = item.good ? item.goodCount - 1 : item.goodCount + 1
+                        item.good = item.good ? 0 : 1
+                    }
+                })
+            }
+        }
+    },
+    // 跳转到帖子详情
+    navToDetail(postsId) {
+        this.$router.push({
+          path: '/forumListDetail',
+          query: {
+              postsId
+          }
+       })
     }
   },
   created(){
-      // 获取帖子列表
-      this.getpostlist()
+      // 获取帖子类型
+      this.getPostsType()
   },
   mounted(){}
 }
@@ -180,11 +200,51 @@ export default {
     height @width
     border-radius @width
     right 20px
-    background #b8bbbf
+    background rgba(0, 0, 0, 0.5)
     display flex
     justify-content center
     align-items center
     img
-        height 50px
+        height 40px
         width @height
+.fd-list
+    margin-top 101px
+    .fdl-list
+        margin-top 10px
+        padding 12px
+        background #ffffff
+        .fdll-top
+            display flex
+            align-items center
+            height 40px
+            img 
+                height 40px
+                width @height
+                border-radius 100%
+            .df-flex
+                padding-left 10px
+                .df-if1
+                    padding-bottom 10px
+                    font-weight bolder
+                .df-if2
+                    font-size 12px
+        .fdll-mess
+            padding 10px 0
+            line-height 20px
+        .fdll-btnbox
+            display flex
+            padding-top 12px
+            img 
+                height 20px
+                width 20px
+            span 
+                padding 0 10px
+                font-size 16px
+            .fdllb-btns
+                width 50%
+                display flex
+                align-items center
+                justify-content center
+
+
 </style>

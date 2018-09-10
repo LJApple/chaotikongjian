@@ -122,6 +122,7 @@ export default {
   .l-input
     display flex
     flex-direction column
+    height 98px
     ::-webkit-input-placeholder
       color #ffffff
     input 

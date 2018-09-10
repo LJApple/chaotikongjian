@@ -20,7 +20,7 @@
       </div>
     </div>
     <div class="f-list">
-      <div class="fl-img" @click="toDetail('typeone')">
+      <div class="fl-img" @click="toDetail(5)">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
             <div class="">意见反馈</div>
@@ -32,7 +32,7 @@
             <div class="">全民体验坊</div>
         </div>
       </div>
-      <div class="fl-img" @click="toDetail('typethree')">
+      <div class="fl-img" @click="toDetail(2)">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
             <div class="">我要点赞</div>
@@ -78,7 +78,7 @@ export default {
           path: '/myForum'
         })
       },
-      // 跳转到详情 type 分别表示对应的类型
+      // 跳转到详情 type 分别表示对应的类型 意见反馈=5 我要点赞=2
       toDetail(param) {
         this.$router.push({
           path: '/forumDetail',

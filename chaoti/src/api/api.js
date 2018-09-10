@@ -23,8 +23,11 @@ const api = {
     getmyrno: `${serverUrl}my/getrno`, // 获取排行榜
     updateuserpwd: `${serverUrl}user/updateuserpwd`, // 修改密码
 
-    // 帖子列表
-    getpostlist: `${serverUrl}discuss/getpostlist`, // 获取帖子列表
-    gettabletype: `${serverUrl}discuss/gettabletype`, // 获取发帖类型
+    // 帖子列表 /api/posts/posting
+    getpostlist: `${serverUrl}posts/getpostlist`, // 获取帖子列表
+    getPostsType: `${serverUrl}posts/getPostsType`, // 获取发帖类型 
+    posting: `${serverUrl}posts/posting`, // 发布帖子 
+    postspraise: `${serverUrl}posts/postspraise`, // 帖子点赞
+    getpostdetial: `${serverUrl}posts/getpostdetial`, // 帖子详情  
 }
 Vue.prototype.$api = api
