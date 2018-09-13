@@ -27,15 +27,18 @@
               <div>{{forumListDetailInfo.createTime}}</div>
           </div>
       </div>
+      <preview :imgList="forumListDetailInfo.uploadFileUrl"></preview>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import preview from 'components/preview/preview'
 export default {
   components:{
     swiper,
-    swiperSlide
+    swiperSlide,
+    preview
   },
   props:{},
   data(){
@@ -110,8 +113,12 @@ export default {
     .fd-banner
         height 200px
         overflow hidden
+        .swiper-slide
+            display flex
+            justify-content center
         img 
-            max-height 200px
+           width 100%
+           position absolute
     .fd-content
         padding 0 12px
       .fd-opr

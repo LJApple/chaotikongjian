@@ -1,6 +1,8 @@
 import Vue from 'vue'
-const serverUrl = '/api/' // 本地调试时 
-// const serverUrl = 'http://139.159.163.177:1002/api/'  // 打包部署上线时 
+import url from '../../static/utils/config'
+const serverUrl = '/api/' // 本地调试时
+// const serverUrl = url + '/api/'  // 打包部署上线时
+// console.log('serverUrl', serverUrl)
 const api = {
     login: `${serverUrl}login`, // 登录接口  
     forgetpwd: `${serverUrl}retrievepassword`, // 忘记密码 

@@ -56,7 +56,8 @@ export default {
       }
       param = common.splicingJson(param)
       const url = this.$api.login + param
-      this.$axios.post(url).then((res) => {
+      console.log('url', url)
+      this.$axios.post(url, ).then((res) => {
         const { success, data } = res.data
         if (success) {
           window.sessionStorage.setItem('account_token', data)

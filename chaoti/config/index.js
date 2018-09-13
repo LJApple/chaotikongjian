@@ -12,14 +12,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-          target:'http://139.159.163.177:1002/api',
+          target:'http://www.junfanchen.com:1002/api',
           changeOrigin:true,
           pathRewrite:{
               '^/api':''
           }
       },
       '/upload':{
-        target:'http://139.159.163.177:1002/upload',
+        target:'http://www.junfanchen.com:1002/upload',
         changeOrigin:true,
         pathRewrite:{
             '^/upload':''

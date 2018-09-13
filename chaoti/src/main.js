@@ -23,11 +23,12 @@ axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
     console.log('config', config)
     const account_token = window.sessionStorage.getItem('account_token')
-    Object.assign(config.headers, { 'account_token': account_token })
+    Object.assign(config.headers, { 'account_token': account_token}, {'Content-Type':'application/json;charset=UTF-8'})
     return config
 },error =>{
     Promise.reject(error)
 })
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
 axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
    const {fullPath} = router.history.current
@@ -42,7 +43,7 @@ axios.interceptors.response.use(response => response,error => {
 // 挂在axios
 Vue.prototype.$axios = axios
 // Vue.config.productionTip = false
-Vue.prototype.HOST = '/api'
+// Vue.prototype.HOST = '/api'
 
 /* eslint-disable no-new */
 new Vue({
