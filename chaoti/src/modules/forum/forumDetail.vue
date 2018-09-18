@@ -239,14 +239,15 @@ export default {
             display flex
             padding-top 12px
             img 
-                height 16px
-                width 16px
+                height 22px
+                width @height
             span 
                 padding 0 10px
                 font-size 16px
             .fdllb-btns
                 width 50%
                 display flex
+                height 22px
                 align-items center
                 justify-content center
                 color #333
