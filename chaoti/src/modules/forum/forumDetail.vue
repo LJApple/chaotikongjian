@@ -105,7 +105,7 @@ export default {
             const { data, success } = response.data
             if (success) {
                this.postsTypes = data
-               this.selctPostsType()
+            //    this.selctPostsType()
             }
         })
     },
@@ -146,6 +146,10 @@ export default {
           }
        })
     }
+  },
+   activated () {
+    // 缓存返回卸卸载这里
+    this.selctPostsType()
   },
   created(){
       // 获取帖子类型
@@ -235,8 +239,8 @@ export default {
             display flex
             padding-top 12px
             img 
-                height 20px
-                width 20px
+                height 16px
+                width 16px
             span 
                 padding 0 10px
                 font-size 16px
@@ -245,6 +249,7 @@ export default {
                 display flex
                 align-items center
                 justify-content center
+                color #333
 
 
 </style>

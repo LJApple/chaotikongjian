@@ -12,14 +12,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api':{
-          target:'http://www.junfanchen.com:1002/api',
+          target:'http://tyg.sztymk.com:1002/api',
           changeOrigin:true,
           pathRewrite:{
               '^/api':''
           }
       },
       '/upload':{
-        target:'http://www.junfanchen.com:1002/upload',
+        target:'http://tyg.sztymk.com:1002/upload',
         changeOrigin:true,
         pathRewrite:{
             '^/upload':''
@@ -27,8 +27,8 @@ module.exports = {
       }
     },
     // host: 'localhost', // can be overwritten by process.env.HOST
-    // host: '192.168.1.38',
-    host: '192.168.1.103',
+    host: '192.168.1.38',
+    // host: '192.168.1.103',
     // Various Dev Server settings
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,

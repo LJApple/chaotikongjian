@@ -7,7 +7,7 @@
       </div>
        <swiper class="fd-banner" :options="swiperOption">
         <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
-            <img :src="item" alt=""></swiper-slide>
+            <img :src="item" alt="" @click="clickImg"></swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
       <div class="fd-content">
@@ -27,7 +27,12 @@
               <div>{{forumListDetailInfo.createTime}}</div>
           </div>
       </div>
-      <preview :imgList="forumListDetailInfo.uploadFileUrl"></preview>
+      <preview v-if="showImageList" :imgList="forumListDetailInfo.uploadFileUrl" @showImageList="close"></preview>
+      <div class="fd-input">
+          <div class="fdi-img"><img src="../../assets/images/smile.png" alt=""></div>
+          <textarea placeholder="写个回复走走心" class="fdi-text"></textarea>
+          <!-- <div class="fdi-btn">发送</div> -->
+      </div>
   </div>
 </template>
 
@@ -48,7 +53,8 @@ export default {
           pagination: {
             el: '.swiper-pagination'
           }
-        }
+        },
+        showImageList: false
     }
   },
   watch:{},
@@ -78,7 +84,15 @@ export default {
                     }
                 })
             }
-    },
+     },
+     // 全图
+     clickImg() {
+        this.showImageList = true
+     },
+     // 关闭
+     close(e) {
+        this.showImageList = e
+     }
   },
   created(){
     // 获取帖子详情
@@ -116,6 +130,7 @@ export default {
         .swiper-slide
             display flex
             justify-content center
+            align-items center
         img 
            width 100%
            position absolute
@@ -141,5 +156,35 @@ export default {
         .fdc-text
             color #333333
             line-height 20px
-                
+
+.fd-input
+    position fixed
+    bottom 0
+    width 100%
+    background #f6f6f6
+    height 42px
+    display flex
+    align-items center
+    .fdi-img
+        width 52px
+        display flex
+        align-items center
+        justify-content center
+        img 
+            height 28px
+            width @height
+    .fdi-text
+        height 30px
+        width 100%
+        border 0
+        background #ffffff
+        border-radius 6px
+        padding 0 10px
+        box-sizing border-box
+    .fdi-btn
+        color #377cdb
+        width:81px
+        display flex
+        justify-content center
+        align-items center
 </style>

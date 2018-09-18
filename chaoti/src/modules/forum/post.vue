@@ -215,7 +215,7 @@ export default {
         }
         // param = common.splicingJson(param)
         // const url = this.$api.posting + param
-        this.$axios.post(this.$api.posting, qs.stringify(param)).then((response) => {
+        this.$axios.post(this.$api.posting, param).then((response) => {
             const { data, success } = response.data
             if (success) {
                 MessageBox.alert('发布成功').then(action => {
