@@ -22,7 +22,7 @@ Vue.use(Mint)
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
     console.log('config', config)
-    const account_token = window.sessionStorage.getItem('account_token')
+    const account_token = window.localStorage.getItem('account_token')
     Object.assign(config.headers, { 'account_token': account_token}, {'Content-Type':'application/json;charset=UTF-8'})
     return config
 },error =>{
@@ -33,7 +33,7 @@ axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
    const {fullPath} = router.history.current
    if (status === 403) {
-    window.sessionStorage.removeItem('account_token')
+    window.localStorage.removeItem('account_token')
     router.replace({
         path: '/login',
         query: { redirect: fullPath }

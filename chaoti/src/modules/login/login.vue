@@ -60,7 +60,7 @@ export default {
       this.$axios.post(url, ).then((res) => {
         const { success, data } = res.data
         if (success) {
-          window.sessionStorage.setItem('account_token', data)
+          window.localStorage.setItem('account_token', data)
           const path = this.$route.query.redirect
           this.$router.push({path: path})
         } else {
