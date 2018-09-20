@@ -103,9 +103,9 @@
     <!-- 回复列表结束 -->
 
       <preview v-if="showImageList" :imgList="imgList" @showImageList="close"></preview>
-     <div class="fd-input">
+     <div class="fd-input" @click="inputFocus">
           <!-- <div class="fdi-img"><img src="../../assets/images/smile.png" alt=""></div> -->
-          <input @focus="inputFocus" placeholder="写个回复走走心" class="fdi-text"/>
+          <input disabled="true" placeholder="写个回复走走心" class="fdi-text"/>
           <!-- <div class="fdi-btn">发送</div> -->
       </div>
       <div class="fd-send" v-if="showSendModal" @click="closeSendModal">
