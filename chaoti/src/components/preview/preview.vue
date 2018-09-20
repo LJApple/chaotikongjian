@@ -48,7 +48,7 @@ export default {
 .preview
     position fixed
     top 0
-    z-index 2
+    z-index 20
     height 100%
     width 100% 
     background rgba(0, 0,0 0.8)

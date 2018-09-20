@@ -1,6 +1,7 @@
 <template>
   <div class="fd">
       <div class="fd-header">
+          <img class="fdh-img" v-if="!forumListDetailInfo.photo" src="../../assets/images/default.png" alt="">
           <img class="fdh-img" :src="forumListDetailInfo.photo" alt="">
           <div class="fdh-name">{{forumListDetailInfo.name}}</div>
           <div v-if="forumListDetailInfo.isDel" class="fdh-isDel">删除</div>
@@ -14,7 +15,7 @@
           <div class="fd-opr">
               <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div>
               <div class="fdo-right">
-                <span><img src="../../assets/images/comment.png" alt="/assets/images/comment.png"></span>
+                <span @click="inputFocus"><img src="../../assets/images/comment.png" alt="/assets/images/comment.png"></span>
                 <span class="fdllb-btns" @click.stop="clickLike(forumListDetailInfo.postsId, 0, 0)">
                     <img v-if="!forumListDetailInfo.isGood" src="../../assets/images/like.png" alt="/assets/images/like.png">
                     <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png">
@@ -37,8 +38,8 @@
                 <div>{{item.name}}</div>
             </div>
             <div class="cn-content">{{item.details}}</div>
-            <div class="cn-imgList">
-                 <swiper class="cn-swiper" :options="swiperOption">
+            <div class="cn-imgList" v-if="item.uploadFileUrl.length > 0">
+                 <swiper class="cn-swiper contetnL" :options="swiperOption">
                     <swiper-slide v-for="(itemlist, index) in item.uploadFileUrl" :key="index">
                         <img :src="itemlist" alt="" @click="clickOneImg(item.uploadFileUrl)"></swiper-slide>
                     <div class="swiper-pagination" slot="pagination"></div>
@@ -50,7 +51,7 @@
                     <div class="cnp-del" @click="delmypostsreply(item.replyId)" v-if="item.isDel">删除</div>
                 </div>
                 <div class="cnp-reply">
-                    <div class="cnp-re" @click="reply(item.replyId, item.replyUserId, 1)"
+                    <div class="cnp-re" @click="reply(item.replyId, item.replyId, 1)"
                     v-if="item.isDel === false">回复</div>
                     <span class="cnpr-circle"  v-if="item.isDel === false">·</span>
                     <div class="cnpr-like" @click.stop="clickLike(forumListDetailInfo.postsId, item.replyId, 1)">
@@ -60,26 +61,34 @@
                         <span class="red" v-else>赞</span>
                     </div>
                 </div>
-                <div class="cn-otherComment" v-if="item.postReplyList.length">
+              
+            </div>
+              <div class="cn-otherComment" v-if="item.postReplyList.length">
                     <div v-for="relyList in item.postReplyList" :key="relyList.replyId"> 
                         <div class="cno-list">
                             <div class="cno-user">
-                                <div v-if="item.userId === relyList.beReplyUserId">
-                                    <img :src="relyList.userPic">
-                                    <span>{{relyList.name}}</span>
-                                </div>
+                                <img v-if = "relyList.photo" src="../../assets/images/default.png"/>
+                                <img v-else :src="relyList.photo"/>
+                                <div>{{relyList.name}}</div>
                             </div>
                             <div class="cno-content">{{relyList.details}}</div>
+                             <div class="cno-imgList" v-if="item.uploadFileUrl.length > 0">
+                                <swiper class="cn-swiper" :options="swiperOption">
+                                    <swiper-slide v-for="(itemlist, index) in relyList.uploadFileUrl" :key="index">
+                                        <img :src="itemlist" alt="" @click="clickOneImg(relyList.uploadFileUrl)"></swiper-slide>
+                                    <div class="swiper-pagination" slot="pagination"></div>
+                                </swiper>
+                            </div>
                             <div class="cno-praise">
                                 <div class="cnop-time">
                                     <div>{{relyList.createTime}}</div>
-                                    <div class="cnp-del" delmypostsreply(relyList.replyId) v-if="relyList.isDel">删除</div>
+                                    <div class="cnp-del" @click="delmypostsreply(relyList.replyId)" v-if="relyList.isDel">删除</div>
                                 </div>
                                 <div class="cnop-reply">
-                                    <div class="cnop-re" @click="reply(relyList.replyId, relyList.replyPostsId, 2)" v-if="relyList.isDel === false">回复</div>
+                                    <div class="cnop-re" @click="reply(relyList.replyId, relyList.replyId, 2)" v-if="relyList.isDel === false">回复</div>
                                     <span class="cnopr-circle" v-if="relyList.isDel === false">·</span>
                                     <div class="cnopr-like" @click.stop="clickLike(forumListDetailInfo.postsId, relyList.replyId,2)">
-                                         <img v-if="relyList.isGood" src="../../assets/images/praise.png">
+                                         <img v-if="!relyList.isGood" src="../../assets/images/praise.png">
                                          <img v-else src="../../assets/images/praise--active.png">
                                         <span class="red" v-if="relyList.goodCount !== 0">{{relyList.goodCount}}</span>
                                         <span class="red" v-else>赞</span>
@@ -89,7 +98,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
     <!-- 回复列表结束 -->
@@ -176,8 +184,15 @@ export default {
             const { data, success } = response.data
             if (success) {
                 data.uploadFileUrl = data.uploadFileUrl.split('|')
-                for (const rList of data.postReplyList) {
-                    rList.uploadFileUrl = rList.uploadFileUrl.split('|')
+                if (!data.postReplyList.length > 0) {
+                    for (const rList of data.postReplyList) {
+                        rList.uploadFileUrl = rList.uploadFileUrl.split('|')
+                        if (rList.postReplyList.length > 0) {
+                            for (const rListTwo of rList.postReplyList) {
+                                rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
+                            }
+                        }
+                    }
                 }
                 this.forumListDetailInfo = data
                 this.postReplyList = data.postReplyList
@@ -360,7 +375,6 @@ export default {
     },
     // 删除评论
     delmypostsreply(replyId) {
-        debugger
         const url = `${this.$api.delmypostsreply}?replyId=${replyId}`
         this.$axios.post(url).then(response => {
             const { data, success, message } = response.data
@@ -415,6 +429,8 @@ export default {
         img 
            width 100%
            position absolute
+    .cn-imgList
+        padding-right 12px
     .fd-content
         padding 0 12px
         border-bottom 1px solid #ddd
@@ -584,21 +600,22 @@ export default {
 $userBigPhoto = 40px
 $pageL = 12px
 $color999 = #999999
-$contentL = 50px
+$contentL = 62px
 $commentBg = #F5F8FF
-$userSmallPhoto = 24px
+$userSmallPhoto = 30px
 .commont-new
     background #ffffff
     margin-top 20px
     padding-bottom 70px
     .cn-list
-        padding 12px
+        padding 12px 0
         padding-bottom 25px
         border-bottom 1px solid #ddd
         .cn-user
             display flex
             align-items center
             height $userBigPhoto 
+            padding 0 12px
             img
                 height $userBigPhoto
                 width @height 
@@ -622,7 +639,7 @@ $userSmallPhoto = 24px
             padding-left: $contentL
             width: 100%
             box-sizing: border-box
-            padding: 0 0 0 $contentL
+            padding: 0 12px 0 $contentL
             align-content: center
             box-sizing: border-box
             .cnp-reply
@@ -661,24 +678,26 @@ $userSmallPhoto = 24px
                     color blue
                     padding-left 10px
           .cn-otherComment
-            margin: 0 12px 0 $contentL
-            font-size: $fs24
+            margin: 0 0 0 $contentL
+            font-size: 12px
             background-color: $commentBg
-            padding: 12px 0 0 15px
+            padding 12px 0 12px 12px
             .cno-list
                 padding-bottom: 12px
+                padding-right 12px
                 &:last-child
                     padding-bottom: 8px
             .cno-user
+                display flex
+                height $userSmallPhoto
+                align-items center
                 .bnou-photo
                     display: inline-block
-                    singleOverflows()
-                    max-width 566px
                 .cnou-list
                     height @height
                     display: flex
                     align-items: center
-                image
+                img
                     height $userSmallPhoto
                     width: @height 
                     border-radius: @height 
@@ -693,29 +712,29 @@ $userSmallPhoto = 24px
                 font-size: 13px
                 line-height: 20px
                 color: #333333
-                padding-right: 12px
-                word-break:break-all
-                word-wrap:break-word
-                white-space:pre-wrap
             .cno-praise
-                display: flex
+                display flex
                 justify-content space-between
-                box-sizing: border-box
-                align-content: center
-                box-sizing: border-box
+                .cnop-time
+                    display flex
+                    align-items center
+                    .cnp-del
+                        color blue
+                        padding-left 10px
+
                 .cnop-reply
                     position relative
                     display: flex
-                    height: $priseH
+                    height 27px
                     align-items: center
                     .cnop-re
                         font-size: 12px
                         color: $color999
                         padding: 0 10px
-                        // right 80px
-                        background-color: $commentBg 
                     .cnopr-circle
-                        color: #333333
+                        font-size: 12px
+                        top: 14px
+                        color: $color999
                         align-items: center
                     .cnopr-like
                         padding: 0
@@ -725,22 +744,24 @@ $userSmallPhoto = 24px
                         display: flex
                         align-items: center
                         text-align: right 
-                        padding:0 12px 0 10px
-                        background-color: transparent 
-                        image
-                            width: $fs26
-                            height $fs26
-                            margin-right: 10px
-
+                        padding:0 0 0 10px
+                        img
+                            width: 13px
+                            height 13px
+                            margin-right: 4px
+       
 .cn-swiper
     height 150px
     overflow hidden
-    margin 5px 0 5px $contentL
+    margin 5px 0 5px 0
     .swiper-slide
         display flex
         justify-content center
         align-items center
-    img 
         width 100%
-        position absolute    
+    img 
+        max-width 100%
+        position absolute 
+.contetnL
+    padding-left $contentL
 </style>
