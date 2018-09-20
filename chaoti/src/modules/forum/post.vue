@@ -310,23 +310,6 @@ export default {
     img
         height: 30px
         width: 30px
-// 表情
-.emoticon
-    width 100%
-    height 330px
-    display flex
-    flex-wrap wrap
-    padding 0 12px
-    box-sizing border-box
-    .e-list
-        width 35px
-        height 30px 
-        display flex
-        align-items center
-        justify-content center
-        .el-img 
-            width 25px
-            height @width 
 // 上传图片
 .p-image
     background #ffffff

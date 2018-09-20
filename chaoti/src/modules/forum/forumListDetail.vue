@@ -27,18 +27,50 @@
               <div>{{forumListDetailInfo.createTime}}</div>
           </div>
       </div>
-      <preview v-if="showImageList" :imgList="forumListDetailInfo.uploadFileUrl" @showImageList="close"></preview>
-      <div class="fd-input">
-          <div class="fdi-img"><img src="../../assets/images/smile.png" alt=""></div>
-          <textarea placeholder="写个回复走走心" class="fdi-text"></textarea>
+      <preview v-if="showImageList" :imgList="imgList" @showImageList="close"></preview>
+     <div class="fd-input">
+          <!-- <div class="fdi-img"><img src="../../assets/images/smile.png" alt=""></div> -->
+          <input @focus="inputFocus" placeholder="写个回复走走心" class="fdi-text"/>
           <!-- <div class="fdi-btn">发送</div> -->
+      </div>
+      <div class="fd-send" v-if="showSendModal" @click="closeSendModal">
+          <div class="fds-box" @click.stop>
+              <textarea class="fdsb-area" v-model="sendMsg"></textarea>
+              <div class="fdsb-img">
+                  <div class="fdsbi-list">
+                      <div @click="clickRepImg" class="fdsbil-img" v-for="(item, index) in imgUrl" :key="index">
+                           <img :src="item.imgUrl" alt="">
+                           <div class="close"  @click.stop="closeImg(item.imgUrl)"><img src="../../assets/images/close.png" alt=""></div>
+                      </div>
+                      <div class="add">
+                          <img src="../../assets/images/addPhoto.png" alt="">
+                          <input type="file" multiple="multiple" class="file-btn" accept="img/*" @change="getFile"/>
+                      </div>
+                  </div>
+                  <div class="fdsb-smile"  @click="showEmoticon">
+                      <img src="../../assets/images/smile.png" alt="">
+                  </div>
+              </div>
+              <div class="fdsb-bottom">
+                  <button class="fdsbb-btn" @click="closeSendModal">取消</button>
+                  <button class="fdsbb-btn" @click="sendData">发送</button>
+              </div>
+          </div>
+        <!-- 表情列表 -->
+        <div class="emoticon fd-p" v-if="isShowEmoticon">
+            <div class="e-list" @click.stop @click="selectEmo(item.name)" v-for="(item, index) in emoticon" :key="index">
+                <img class="el-img" :src="item.path" alt="">
+            </div>
+        </div>
       </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { swiper, swiperSlide } from 'vue-awesome-swiper'
-import preview from 'components/preview/preview'
+import emoticon from "utils/emoticon"
+import { swiper, swiperSlide } from "vue-awesome-swiper"
+import preview from "components/preview/preview"
+import { MessageBox, Indicator } from "mint-ui"
 export default {
   components:{
     swiper,
@@ -54,7 +86,14 @@ export default {
             el: '.swiper-pagination'
           }
         },
-        showImageList: false
+        showImageList: false,
+        showSendModal: false,
+        sendMsg: "",
+        emoticon: [], // 表情列表
+        isShowEmoticon: false,
+        imgUrl: [], // 图片路径
+        imgList: [], // 大图列表
+        postReplyList: [] // 回复列表
     }
   },
   watch:{},
@@ -86,17 +125,114 @@ export default {
             }
      },
      // 全图
-     clickImg() {
-        this.showImageList = true
-     },
-     // 关闭
-     close(e) {
-        this.showImageList = e
-     }
+    clickImg() {
+      this.showImageList = true
+      this.imgList = this.forumListDetailInfo.uploadFileUrl
+    },
+    // 关闭
+    close(e) {
+      this.showImageList = e
+    },
+    // 选择表情
+    selectEmo(name) {
+      this.sendMsg += name;
+      console.log("name", name);
+    },
+    // 初始化表情
+    initEmo() {
+      this.emoticon = emoticon;
+    },
+    // 显示表情
+    showEmoticon() {
+      this.isShowEmoticon = !this.isShowEmoticon;
+    },
+    hideEmotion() {
+      this.isShowEmoticon = false;
+    },
+    // 获取文件
+    getFile(e) {
+      const { files, value } = e.target;
+      if (this.imgUrl.length >= 5) return MessageBox.alert("最多上传五张图片");
+      for (var i = 0; i < files.length; i++) {
+        const name = files[i].name;
+        let param = new FormData();
+        param.append("file", files[i]);
+        let option = {
+          method: "POST",
+          headers: { "content-type": "application/x-www-form-urlencoded" },
+          data: param,
+          processData: false,
+          url: this.$api.upload
+        };
+        Indicator.open("上传中...");
+        this.$axios(option)
+          .then(res => {
+            const { data, success, message } = res.data;
+            if (success) {
+              this.imgUrl.push({ fileName: name, imgUrl: data });
+              Indicator.close();
+            } else {
+              // this.$toast('头像上传失败')
+            }
+          })
+          .catch(error => {
+            // handle error
+            console.log(error);
+          });
+      }
+      e.target.value = null;
+    },
+    // 删除照片
+    closeImg(imgUrl) {
+      for (const [index, item] of this.imgUrl.entries()) {
+        if (item.imgUrl === imgUrl) {
+          this.imgUrl.splice(index, 1);
+        }
+      }
+    },
+    inputFocus() {
+      this.showSendModal = true;
+    },
+    closeSendModal() {
+      this.showSendModal = false;
+      this.resetReply();
+    },
+    // 发送回复-评论帖子
+    sendData() {
+      const imgUrl = this.imgUrl.map(v => v.imgUrl).join("|");
+      const param = {
+        postsId: this.$route.query.postsId,
+        replyPostsId: "",
+        detail: this.sendMsg,
+        imgUrl,
+        lv: 0
+      };
+      this.$axios.post(this.$api.replyposts, param).then(response => {
+        const { data, success, message } = response.data;
+        if (success) {
+          this.$toast(message);
+          this.resetReply();
+        }
+      });
+    },
+    // 清空回复窗口数据
+    resetReply() {
+      this.imgUrl = [];
+      this.isShowEmoticon = false;
+      this.showSendModal = false;
+      this.sendMsg = "";
+    },
+    // 预览回复窗口 图片
+    clickRepImg() {
+      this.showImageList = true;
+      this.imgList = this.imgUrl.map(v => v.imgUrl);
+    }
   },
   created(){
     // 获取帖子详情
     this.getpostdetial()
+     // 初始化表情列表
+    this.initEmo()
   },
   mounted(){}
 }
@@ -165,6 +301,8 @@ export default {
     height 42px
     display flex
     align-items center
+    padding 0 12px
+    box-sizing border-box
     .fdi-img
         width 52px
         display flex
@@ -187,4 +325,112 @@ export default {
         display flex
         justify-content center
         align-items center
+.fd-send
+    position fixed
+    top 0
+    height 100%
+    width 100%
+    background rgba(0, 0, 0, 0.4)
+    z-index 1
+
+    .fds-box
+        background #ffffff
+
+        .fdsb-area
+            width 100%
+            -webkit-box-sizing border-box
+            box-sizing border-box
+            padding 12px
+            font-size 14px
+            background #fff
+            height 100px
+            resize none
+            border none
+
+        .fdsb-img
+            padding 12px
+            position relative
+
+            .fdsbi-list
+                display flex
+                flex-wrap wrap
+                max-width 315px
+
+                .fdsbil-img
+                    height 80px
+                    width @height
+                    display flex
+                    align-content center
+                    justify-content center
+                    position relative
+                    background #dddddd
+                    margin 0 10px 10px 0
+
+                    .close
+                        position absolute
+                        top 0
+                        right 0
+                        line-height 1
+                        font-size 16px
+                        width 25px
+                        height @width
+                        color #ffffff
+                        // background rgba(0, 0,0, 0.5)
+                        display flex
+                        align-items center
+                        justify-content center
+
+                        img
+                            width 20px
+                            height @width
+                    img
+                        max-height 80px
+                        max-width @height
+
+                .add
+                    position relative
+
+                    .file-btn
+                        position absolute
+                        width 80px
+                        height @width
+                        top 0
+                        left 0
+                        outline none
+                        background-color transparent
+                        opacity 0
+                    img
+                        height 80px
+                        width @height
+                        border 1px solid #dddddd !important
+            .fdsb-smile
+                position absolute
+                right 12px
+                top 35px
+                width 35px
+                height @width
+                img
+                    width 35px
+                    height @width
+     .fdsb-bottom
+        height 50px
+        display flex
+        justify-content flex-end
+        padding 0 12px
+        align-items center
+        border-top 1px solid #dddddd
+
+    .fdsbb-btn
+        padding 6px 12px
+        border-radius 20px
+        background #ed4b4b
+        border 0
+        line-height 1
+        color #ffffff
+        margin-left 10px
+
+        &first-child
+            background #eeeeee
+.fd-p
+    height: 400px
 </style>
