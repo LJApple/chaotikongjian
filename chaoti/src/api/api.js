@@ -31,6 +31,7 @@ const api = {
     posting: `${serverUrl}posts/posting`, // 发布帖子 
     postspraise: `${serverUrl}posts/postspraise`, // 帖子点赞
     getpostdetial: `${serverUrl}posts/getpostdetial`, // 帖子详情
-    replyposts: `${serverUrl}posts/replyposts` // 回复帖子
+    replyposts: `${serverUrl}posts/replyposts`, // 回复帖子
+    delmypostsreply: `${serverUrl}posts/delmypostsreply` // 删除帖子
 }
 Vue.prototype.$api = api

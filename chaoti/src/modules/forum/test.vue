@@ -1,81 +1,81 @@
 <template>
   <div class="fd">
-      <div class="fd-header">
-          <img class="fdh-img" :src="forumListDetailInfo.photo" alt="">
-          <div class="fdh-name">{{forumListDetailInfo.name}}</div>
-          <div v-if="forumListDetailInfo.isDel" class="fdh-isDel">删除</div>
-      </div>
-       <swiper class="fd-banner" :options="swiperOption">
-        <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
-            <img :src="item" alt="" @click="clickImg"></swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-      </swiper>
-      <div class="fd-content">
-          <div class="fd-opr">
-              <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div>
-              <div class="fdo-right">
-                <span><img src="../../assets/imgs/comment.png" alt="/assets/imgs/comment.png"></span>
-                <span class="fdllb-btns" @click.stop="clickLike(forumListDetailInfo.postsId)">
-                    <img v-if="!forumListDetailInfo.good" src="../../assets/imgs/like.png" alt="/assets/imgs/like.png">
-                    <img v-else src="../../assets/imgs/like-active.png" alt="/assets/imgs/like-active.png">
-                </span>
-              </div>
-          </div>
-          <div class="fdc-text">{{forumListDetailInfo.details}}</div>
-          <div class="fdc-tiem">
-              <div>共{{forumListDetailInfo.commentCount}}条回复</div>
-              <div>{{forumListDetailInfo.createTime}}</div>
-          </div>
-      </div>
-      <preview v-if="showimgList" :imgList="imgList" @showimgList="close"></preview>
-      <div class="fd-input">
-          <!-- <div class="fdi-img"><img src="../../assets/imgs/smile.png" alt=""></div> -->
-          <input @focus="inputFocus" placeholder="写个回复走走心" class="fdi-text"/>
-          <!-- <div class="fdi-btn">发送</div> -->
-      </div>
-      <div class="fd-send" v-if="showSendModal" @click="closeSendModal">
-          <div class="fds-box" @click.stop>
-              <textarea class="fdsb-area" v-model="sendMsg"></textarea>
-              <div class="fdsb-img">
-                  <div class="fdsbi-list">
-                      <div @click="clickRepImg" class="fdsbil-img" v-for="(item, index) in imgUrl" :key="index">
-                           <img :src="item.imgUrl" alt="">
-                           <div class="close"  @click.stop="closeImg(item.imgUrl)"><img src="../../assets/imgs/close.png" alt=""></div>
-                      </div>
-                      <div class="add">
-                          <img src="../../assets/imgs/addPhoto.png" alt="">
-                          <input type="file" multiple="multiple" class="file-btn" accept="img/*" @change="getFile"/>
-                      </div>
-                  </div>
-                  <div class="fdsb-smile"  @click="showEmoticon">
-                      <img src="../../assets/imgs/smile.png" alt="">
-                  </div>
-              </div>
-              <div class="fdsb-bottom">
-                  <button class="fdsbb-btn" @click="closeSendModal">取消</button>
-                  <button class="fdsbb-btn" @click="sendData">发送</button>
-              </div>
-          </div>
-        <!-- 表情列表 -->
-        <div class="emoticon fd-p" v-if="isShowEmoticon">
-            <div class="e-list" @click.stop @click="selectEmo(item.name)" v-for="(item, index) in emoticon" :key="index">
-                <img class="el-img" :src="item.path" alt="">
+     <div class="commont-new" id="common">
+        <div v-for="item in postReplyList" :key="item.commentId">
+            <div class="cn-list">
+                <div class="cn-user">
+                    <img mode="aspectFill" src="{{item.userPic}}"/>
+                    <text>{{item.userName}}</text>
+                </div>
+                <div class="cn-content">{{item.content}}</div>
+                <div class="cn-praise">
+                    <div class="cnp-time">{{item.createTime}}</div>
+                    <div class="cnp-reply">
+                        <button class="cnp-re"
+                        v-if="item.userId !== currentUserId"
+                        @click="toRegistrationProcess">回复</button>
+                        <text class="cnpr-circle"  v-if="item.userId !== currentUserId">·</text>
+                        <button class="cnpr-like" @click="toRegistrationProcess">
+                            <img mode="aspectFill" v-if="!item.isPraise" src="../../assets/images/praise.png">
+                            <img mode="aspectFill" v-else src="../../assets/images/praise--active.png">
+                            <text v-if="item.praiseNum===0">赞</text>
+                            <text class="item.isPraise ? 'red' : ''" v-else>{{item.praiseNum}}</text>
+                        </button>
+                    </div>
+                </div>
+                <div class="cn-otherComment" v-if="item.replyList.length">
+                    <div v-for="relyList in item.replyList" :key="relyList.replyId"> 
+                        <div class="cno-list">
+                            <div class="cno-user">
+                                <div @click="toIdentifyCard" 
+                                v-if="item.userId === relyList.beReplyUserId">
+                                    <img mode="aspectFill" :src="relyList.userPic">
+                                    <text>{{relyList.userName}}</text>
+                                </div>
+                                <div v-else class="bnou-photo">
+                                    <img data-title="跳转-个人主页" @click="toIdentifyCard" :src="relyList.userPic">
+                                    <text data-title="跳转-个人主页" @click="toIdentifyCard" v-if="relyList.userId === authorId">{{relyList.userName}}（作者）</text>
+                                    <text data-title="跳转-个人主页" @click="toIdentifyCard" v-else>{{relyList.userName}}</text>
+                                    <text style="padding: 0 20rpx">></text>
+                                    <text data-title="跳转-个人主页" @click="toIdentifyCard" v-if="relyList.beReplyUserId === authorId">{{relyList.beReplyUserName}}（作者）</text>
+                                    <text data-title="跳转-个人主页" @click="toIdentifyCard" v-else>{{relyList.beReplyUserName}}</text>
+                                </div> 
+                            </div>
+                            <div class="cno-content">{{relyList.content}}</div>
+                            <div class="cno-praise">
+                                <div class="cnop-time">{{relyList.createTime}}</div>
+                                <div class="cnop-reply">
+                                    <button class="cnop-re"
+                                    v-if="relyList.userId !== currentUserId"
+                                    @click="toRegistrationProcess">回复</button>
+                                    <text class="cnopr-circle" v-if="relyList.userId !== currentUserId">·</text>
+                                    <button class="cnopr-like"
+                                    @click="toRegistrationProcess">
+                                        <img mode="aspectFill" v-if="!relyList.isPraise" src="../../assets/images/praise.png">
+                                        <img mode="aspectFill" v-else src="../../assets/images/praise-active.png">
+                                        <text>{{relyList.praiseNum}}</text>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-      </div>
+     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import emoticon from "utils/emoticon"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
-import preview from "components/preview/preview"
+import prediv from "components/prediv/prediv"
 import { MessageBox, Indicator } from "mint-ui"
 export default {
   components: {
     swiper,
     swiperSlide,
-    preview
+    prediv
   },
   props: {},
   data() {

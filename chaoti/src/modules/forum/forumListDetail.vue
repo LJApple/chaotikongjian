@@ -15,8 +15,8 @@
               <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div>
               <div class="fdo-right">
                 <span><img src="../../assets/images/comment.png" alt="/assets/images/comment.png"></span>
-                <span class="fdllb-btns" @click.stop="clickLike(forumListDetailInfo.postsId)">
-                    <img v-if="!forumListDetailInfo.good" src="../../assets/images/like.png" alt="/assets/images/like.png">
+                <span class="fdllb-btns" @click.stop="clickLike(forumListDetailInfo.postsId, 0, 0)">
+                    <img v-if="!forumListDetailInfo.isGood" src="../../assets/images/like.png" alt="/assets/images/like.png">
                     <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png">
                 </span>
               </div>
@@ -27,6 +27,73 @@
               <div>{{forumListDetailInfo.createTime}}</div>
           </div>
       </div>
+
+    <!-- 回复列表开始  -->
+    <div class="commont-new" >
+         <div class="cn-list" v-for="item in postReplyList" :key="item.replyId">
+            <div class="cn-user">
+                <img v-if = "item.photo" src="../../assets/images/default.png"/>
+                <img v-else :src="item.photo"/>
+                <div>{{item.name}}</div>
+            </div>
+            <div class="cn-content">{{item.details}}</div>
+            <div class="cn-imgList">
+                 <swiper class="cn-swiper" :options="swiperOption">
+                    <swiper-slide v-for="(itemlist, index) in item.uploadFileUrl" :key="index">
+                        <img :src="itemlist" alt="" @click="clickOneImg(item.uploadFileUrl)"></swiper-slide>
+                    <div class="swiper-pagination" slot="pagination"></div>
+                </swiper>
+            </div>
+            <div class="cn-praise">
+                <div class="cnp-time">
+                    <div>{{item.createTime}}</div>
+                    <div class="cnp-del" @click="delmypostsreply(item.replyId)" v-if="item.isDel">删除</div>
+                </div>
+                <div class="cnp-reply">
+                    <div class="cnp-re" @click="reply(item.replyId, item.replyUserId, 1)"
+                    v-if="item.isDel === false">回复</div>
+                    <span class="cnpr-circle"  v-if="item.isDel === false">·</span>
+                    <div class="cnpr-like" @click.stop="clickLike(forumListDetailInfo.postsId, item.replyId, 1)">
+                        <img v-if="!item.isGood" src="../../assets/images/praise.png">
+                        <img v-else src="../../assets/images/praise--active.png">
+                        <span class="red" v-if="item.goodCount !== 0">{{item.goodCount}}</span>
+                        <span class="red" v-else>赞</span>
+                    </div>
+                </div>
+                <div class="cn-otherComment" v-if="item.postReplyList.length">
+                    <div v-for="relyList in item.postReplyList" :key="relyList.replyId"> 
+                        <div class="cno-list">
+                            <div class="cno-user">
+                                <div v-if="item.userId === relyList.beReplyUserId">
+                                    <img :src="relyList.userPic">
+                                    <span>{{relyList.name}}</span>
+                                </div>
+                            </div>
+                            <div class="cno-content">{{relyList.details}}</div>
+                            <div class="cno-praise">
+                                <div class="cnop-time">
+                                    <div>{{relyList.createTime}}</div>
+                                    <div class="cnp-del" delmypostsreply(relyList.replyId) v-if="relyList.isDel">删除</div>
+                                </div>
+                                <div class="cnop-reply">
+                                    <div class="cnop-re" @click="reply(relyList.replyId, relyList.replyPostsId, 2)" v-if="relyList.isDel === false">回复</div>
+                                    <span class="cnopr-circle" v-if="relyList.isDel === false">·</span>
+                                    <div class="cnopr-like" @click.stop="clickLike(forumListDetailInfo.postsId, relyList.replyId,2)">
+                                         <img v-if="relyList.isGood" src="../../assets/images/praise.png">
+                                         <img v-else src="../../assets/images/praise--active.png">
+                                        <span class="red" v-if="relyList.goodCount !== 0">{{relyList.goodCount}}</span>
+                                        <span class="red" v-else>赞</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 回复列表结束 -->
+
       <preview v-if="showImageList" :imgList="imgList" @showImageList="close"></preview>
      <div class="fd-input">
           <!-- <div class="fdi-img"><img src="../../assets/images/smile.png" alt=""></div> -->
@@ -93,7 +160,10 @@ export default {
         isShowEmoticon: false,
         imgUrl: [], // 图片路径
         imgList: [], // 大图列表
-        postReplyList: [] // 回复列表
+        postReplyList: [], // 回复列表
+        replyId: '',
+        replyPostsId: '',
+        sendType: '' // 0 帖子 1 回复
     }
   },
   watch:{},
@@ -106,23 +176,48 @@ export default {
             const { data, success } = response.data
             if (success) {
                 data.uploadFileUrl = data.uploadFileUrl.split('|')
-                console.log('uploadFileUrl',  data.uploadFileUrl)
+                for (const rList of data.postReplyList) {
+                    rList.uploadFileUrl = rList.uploadFileUrl.split('|')
+                }
                 this.forumListDetailInfo = data
+                this.postReplyList = data.postReplyList
+                console.log('this.postReplyList', this.postReplyList, this.forumListDetailInfo)
             }
         })
       },
-      clickLike(postsId) {
+      clickLike(postsId, replyId, type) {
         const forumListDetailInfo = this.forumListDetailInfo
-        if (postsId === forumListDetailInfo.postsId) {
-                const url = `${this.$api.postspraise}?postsId=${postsId}&replyId=0&lv=0`
-                this.$axios.post(url).then((response) => {
-                    const { data, success } = response.data
-                    if (success) {
-                        forumListDetailInfo.goodCount = forumListDetailInfo.good ? forumListDetailInfo.goodCount - 1 : forumListDetailInfo.goodCount + 1
-                        forumListDetailInfo.good = forumListDetailInfo.good ? 0 : 1
+        const url = `${this.$api.postspraise}?postsId=${postsId}&replyId=${replyId}&lv=${type}`
+        // const param = {
+        //    postsId,
+        //    replyId,
+        //    type
+        // }
+        this.$axios.post(url).then((response) => {
+            const { data, success } = response.data
+            if (success) {
+                if (type === 0) {
+                    forumListDetailInfo.goodCount = forumListDetailInfo.isGood ? forumListDetailInfo.goodCount - 1 : forumListDetailInfo.goodCount + 1
+                    forumListDetailInfo.isGood = forumListDetailInfo.isGood ? 0 : 1
+                } else if (type === 1) {
+                    for (const item of this.postReplyList) {
+                        if (item.replyId === replyId) {
+                            item.goodCount = item.isGood ? item.goodCount - 1 : item.goodCount + 1
+                            item.isGood = item.isGood ? 0 : 1
+                        }
                     }
-                })
+                } else {
+                     for (const item of this.postReplyList) {
+                        for (const itemList of item.postReplyList) {
+                            if (itemList.replyId === replyId) {
+                                itemList.goodCount = itemList.isGood ? itemList.goodCount - 1 : itemList.goodCount + 1
+                                itemList.isGood = itemList.isGood ? 0 : 1
+                            }
+                        }
+                    }
+                }
             }
+        })
      },
      // 全图
     clickImg() {
@@ -191,29 +286,50 @@ export default {
       }
     },
     inputFocus() {
-      this.showSendModal = true;
+      this.showSendModal = true
+      this.sendType = 0
     },
     closeSendModal() {
-      this.showSendModal = false;
+      this.showSendModal = false
       this.resetReply();
     },
     // 发送回复-评论帖子
     sendData() {
-      const imgUrl = this.imgUrl.map(v => v.imgUrl).join("|");
-      const param = {
-        postsId: this.$route.query.postsId,
-        replyPostsId: "",
-        detail: this.sendMsg,
-        imgUrl,
-        lv: 0
-      };
-      this.$axios.post(this.$api.replyposts, param).then(response => {
-        const { data, success, message } = response.data;
-        if (success) {
-          this.$toast(message);
-          this.resetReply();
+      const imgUrl = this.imgUrl.map(v => v.imgUrl).join("|")
+      let param
+      if (this.sendType === 0) {
+        param = {
+            postsId: this.$route.query.postsId,
+            replyPostsId: "",
+            detail: this.sendMsg,
+            imgUrl,
+            lv: 0
         }
-      });
+      } else if (this.sendType === 1) {
+        param = {
+            postsId: this.$route.query.postsId,
+            replyPostsId: this.replyPostsId,
+            detail: this.sendMsg,
+            imgUrl,
+            lv: 1
+        }
+      } else if (this.sendType === 2) {
+        param = {
+            postsId: this.$route.query.postsId,
+            replyPostsId: this.replyPostsId,
+            detail: this.sendMsg,
+            imgUrl,
+            lv: 2
+        }
+      }
+      this.$axios.post(this.$api.replyposts, param).then(response => {
+            const { data, success, message } = response.data
+            if (success) {
+                this.$toast(message)
+                this.resetReply()
+                this.getpostdetial()
+            }
+      })
     },
     // 清空回复窗口数据
     resetReply() {
@@ -226,6 +342,33 @@ export default {
     clickRepImg() {
       this.showImageList = true;
       this.imgList = this.imgUrl.map(v => v.imgUrl);
+    },
+    // 回复他人 第一层
+    reply(replyId, replyPostsId, type) {
+        this.showSendModal = true
+        this.replyId = replyId
+        this.replyPostsId = replyPostsId
+        if (type === 1) {
+            this.sendType = 1
+        } else if (type === 2){
+             this.sendType = 2
+        }
+    },
+    clickOneImg(imgList) {
+        this.showImageList = true
+        this.imgList = imgList
+    },
+    // 删除评论
+    delmypostsreply(replyId) {
+        debugger
+        const url = `${this.$api.delmypostsreply}?replyId=${replyId}`
+        this.$axios.post(url).then(response => {
+            const { data, success, message } = response.data
+            if (success) {
+                this.$toast(message)
+                this.getpostdetial()
+            }
+        })
     }
   },
   created(){
@@ -237,11 +380,13 @@ export default {
   mounted(){}
 }
 </script>
-<style lang="stylus" scoped rel="stylesheet/stylus">
+<style lang="stylus" scoped>
 @import "../../assets/stylus/variable.styl"
 .fd
     height 100%
     background #ffffff
+    padding-bottom 50px
+    box-sizing border-box
     .fd-header
         height 40px
         display flex
@@ -272,6 +417,7 @@ export default {
            position absolute
     .fd-content
         padding 0 12px
+        border-bottom 1px solid #ddd
       .fd-opr
           display flex
           justify-content space-between
@@ -303,6 +449,7 @@ export default {
     align-items center
     padding 0 12px
     box-sizing border-box
+    z-index 4
     .fdi-img
         width 52px
         display flex
@@ -433,4 +580,167 @@ export default {
             background #eeeeee
 .fd-p
     height: 400px
+
+$userBigPhoto = 40px
+$pageL = 12px
+$color999 = #999999
+$contentL = 50px
+$commentBg = #F5F8FF
+$userSmallPhoto = 24px
+.commont-new
+    background #ffffff
+    margin-top 20px
+    padding-bottom 70px
+    .cn-list
+        padding 12px
+        padding-bottom 25px
+        border-bottom 1px solid #ddd
+        .cn-user
+            display flex
+            align-items center
+            height $userBigPhoto 
+            img
+                height $userBigPhoto
+                width @height 
+                border-radius @height 
+                margin-right $pageL
+            text
+                font-size 16px
+                color $color999
+        .cn-content
+            font-size: 14px
+            color: #333333
+            padding-left: $contentL
+            padding-right: 12px
+            line-height: 20px
+            word-break: break-all
+            word-wrap: break-word
+            white-space: pre-wrap
+        .cn-praise
+            display: flex
+            justify-content space-between
+            padding-left: $contentL
+            width: 100%
+            box-sizing: border-box
+            padding: 0 0 0 $contentL
+            align-content: center
+            box-sizing: border-box
+            .cnp-reply
+                position relative
+                display: flex
+                height 27px
+                align-items: center
+                .cnp-re
+                    font-size: 12px
+                    color: $color999
+                    padding: 0 10px
+                .cnpr-circle
+                    font-size: 12px
+                    top: 14px
+                    color: $color999
+                    align-items: center
+                .cnpr-like
+                    padding: 0
+                    margin: 0
+                    font-size: 12px
+                    color: $color999
+                    display: flex
+                    align-items: center
+                    text-align: right 
+                    padding:0 0 0 10px
+                    img
+                        width: 13px
+                        height 13px
+                        margin-right: 4px
+            .cnp-time
+                display flex
+                font-size: 12px
+                color: $color999
+                line-height: 27px
+                .cnp-del
+                    color blue
+                    padding-left 10px
+          .cn-otherComment
+            margin: 0 12px 0 $contentL
+            font-size: $fs24
+            background-color: $commentBg
+            padding: 12px 0 0 15px
+            .cno-list
+                padding-bottom: 12px
+                &:last-child
+                    padding-bottom: 8px
+            .cno-user
+                .bnou-photo
+                    display: inline-block
+                    singleOverflows()
+                    max-width 566px
+                .cnou-list
+                    height @height
+                    display: flex
+                    align-items: center
+                image
+                    height $userSmallPhoto
+                    width: @height 
+                    border-radius: @height 
+                    margin-right: 12px
+                text
+                    font-size: 13px
+                    color: $color999
+                    line-height: $userSmallPhoto
+            .cno-content
+                // margin-left: 72px
+                padding-top: 10px
+                font-size: 13px
+                line-height: 20px
+                color: #333333
+                padding-right: 12px
+                word-break:break-all
+                word-wrap:break-word
+                white-space:pre-wrap
+            .cno-praise
+                display: flex
+                justify-content space-between
+                box-sizing: border-box
+                align-content: center
+                box-sizing: border-box
+                .cnop-reply
+                    position relative
+                    display: flex
+                    height: $priseH
+                    align-items: center
+                    .cnop-re
+                        font-size: 12px
+                        color: $color999
+                        padding: 0 10px
+                        // right 80px
+                        background-color: $commentBg 
+                    .cnopr-circle
+                        color: #333333
+                        align-items: center
+                    .cnopr-like
+                        padding: 0
+                        margin: 0
+                        font-size: 12px
+                        color: $color999
+                        display: flex
+                        align-items: center
+                        text-align: right 
+                        padding:0 12px 0 10px
+                        background-color: transparent 
+                        image
+                            width: $fs26
+                            height $fs26
+                            margin-right: 10px
+
+.cn-swiper
+    height 150px
+    overflow hidden
+    margin 5px 0 5px $contentL
+    .swiper-slide
+        display flex
+        justify-content center
+        align-items center
+    img 
+        width 100%
+        position absolute    
 </style>
