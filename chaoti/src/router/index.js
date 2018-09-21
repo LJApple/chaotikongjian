@@ -23,6 +23,10 @@ const  forumDetail = resolve => require.ensure([], () => resolve(require('../mod
 const  post = resolve => require.ensure([], () => resolve(require('../modules/forum/post')), 'post')
 // 帖子详情
 const  forumListDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/forumListDetail')), 'forumListDetail')
+// 全名体验坊 
+const  nationalWorkshop = resolve => require.ensure([], () => resolve(require('../modules/forum/nationalWorkshop')), 'nationalWorkshop')
+// 全名体验坊详情
+const  nwDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/nwDetail')), 'nwDetail')
 const router = new Router({
   mode : 'history',
   base: '/t2/',  //添加的地方
@@ -114,6 +118,20 @@ const router = new Router({
       meta: {
         title: '意见反馈'
       }
+    },
+    {
+        path: '/nationalWorkshop',
+        name: 'nationalWorkshop',
+        component: nationalWorkshop,
+        meta: {
+          title: '全名体验坊'
+        },
+        children: [
+            {
+              path: ':activityId',
+              component: nwDetail
+            }
+        ]
     }
   ]
 })

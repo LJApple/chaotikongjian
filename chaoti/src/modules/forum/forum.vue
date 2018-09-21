@@ -26,7 +26,7 @@
             <div class="">意见反馈</div>
         </div>
       </div>
-      <div class="fl-img" @click="toDetail('typetwo')">
+      <div class="fl-img" @click="toNWork">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
             <div class="">全民体验坊</div>
@@ -86,6 +86,11 @@ export default {
               from: param
           }
         })
+      },
+      toNWork() {
+        this.$router.push({
+          path: '/nationalWorkshop'
+        }) 
       }
   },
   created(){},

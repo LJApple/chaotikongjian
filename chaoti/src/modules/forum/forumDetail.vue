@@ -1,9 +1,6 @@
 <template>
   <div class="forum-detail">
-     <div class="fd-header">
-        <div>我是logo</div>
-        <!-- <div class="fdh-post" @click="publishTopic">发布话题</div> -->
-    </div>
+     <Header></Header>
      <div class="v-list">
         <!-- swiper -->
         <swiper :options="swiperOption">
@@ -48,10 +45,12 @@
 
 <script type="text/ecmascript-6">
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import Header from 'components/header/header'
 export default {
   components:{
     swiper,
-    swiperSlide
+    swiperSlide,
+    Header
   },
   props:{},
   data(){
@@ -160,22 +159,6 @@ export default {
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
-.fd-header
-    height 50px
-    position fixed
-    top 0
-    width 100%
-    padding $pagePadding
-    background $bg-color 
-    display flex
-    align-items center
-    justify-content space-between
-    box-sizing border-box
-    color #ffffff
-    .fdh-post
-        background #26a2ff
-        padding 10px
-        border-radius 10px
 .v-list
     position fixed
     top 50px
