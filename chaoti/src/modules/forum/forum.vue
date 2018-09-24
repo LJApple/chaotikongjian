@@ -38,10 +38,10 @@
             <div class="">我要点赞</div>
         </div>
       </div>
-      <div class="fl-img" @click="toDetail('typefour')">
+      <div class="fl-img" @click="toBulletin">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">我要点赞</div>
+            <div class="">热点公告</div>
         </div>
       </div>
     </div>
@@ -85,6 +85,11 @@ export default {
           query: {
               from: param
           }
+        })
+      },
+      toBulletin() {
+        this.$router.push({
+          path: '/bulletin'
         })
       },
       toNWork() {

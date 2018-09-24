@@ -27,6 +27,12 @@ const  forumListDetail = resolve => require.ensure([], () => resolve(require('..
 const  nationalWorkshop = resolve => require.ensure([], () => resolve(require('../modules/forum/nationalWorkshop')), 'nationalWorkshop')
 // 全名体验坊详情
 const  nwDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/nwDetail')), 'nwDetail')
+
+// 热点公告
+const  bulletin = resolve => require.ensure([], () => resolve(require('../modules/forum/bulletin')), 'bulletin')
+// 热点详情
+const  bulletinDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/bulletinDetail')), 'bulletinDetail')
+
 const router = new Router({
   mode : 'history',
   base: '/t2/',  //添加的地方
@@ -129,10 +135,30 @@ const router = new Router({
         children: [
             {
               path: ':activityId',
-              component: nwDetail
+              component: nwDetail,
+              meta: {
+                title: '活动详情'
+              },
             }
         ]
-    }
+    },
+    {
+      path: '/bulletin',
+      name: 'bulletin',
+      component: bulletin,
+      meta: {
+        title: '热点公告'
+      },
+      children: [
+          {
+            path: ':activityId',
+            component: bulletinDetail,
+            meta: {
+              title: '热点详情'
+            },
+          }
+      ]
+  }
   ]
 })
 router.beforeEach((to, from, next) => {
