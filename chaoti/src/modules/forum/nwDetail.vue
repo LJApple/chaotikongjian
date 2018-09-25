@@ -82,7 +82,6 @@ export default {
         const url = this.$api.saveactivity + '?activityId=' + activityId
         this.$axios.post(url).then((response) => {
             const { data, success,  message} = response.data
-            debugger
             if (success) {
                 MessageBox.alert("参与活动成功")
             }

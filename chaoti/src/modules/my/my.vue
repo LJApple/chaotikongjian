@@ -542,7 +542,6 @@ export default {
             this.$axios(option).then((res) => {
                 const { data, success, message } = res.data
                 if (success) {
-                    debugger
                     this.userInfo.photo = this.fileList.uploadFile = data
                     this.$toast(message)
                 } else {
