@@ -2,8 +2,10 @@
   <div class="login">
      <div class="l-img"><img class="li-img" src="../../assets/images/logo.png" alt=""></div>
      <div class="l-input">
-      <input placeholder="请输入用户名" resize="none" type="text" v-model="userName"/>
-      <input placeholder="请输入密码" resize="none" v-model="passWord" type="password"/>
+      <input placeholder="请输入用户名" v-model="userName"/>
+      <div class="line"></div>
+      <input placeholder="请输入密码" v-model="passWord" type="password"/>
+      <div class="line"></div>
     </div>
     <div class="l-btn" @click="login" :data-index="1">登录</div>
     <div class="l-forget" @click="forgetPwd">忘记密码?</div>
@@ -115,8 +117,7 @@ export default {
 .login
   background url(../../assets/images/bg.jpg) rgb(42,144,223) top no-repeat
   background-size 100%
-  height 100vh
-  overflow auto
+  height 100%
   display flex
   flex-direction column
   padding 30px 10% 0 10%
@@ -124,8 +125,7 @@ export default {
     display flex
     flex-direction column
     height 98px
-    min-height @height 
-    margin-top 50px
+    min-height @height
     ::-webkit-input-placeholder
       color #ffffff
     input 
@@ -134,7 +134,6 @@ export default {
       padding 0 10px
       font-size 16px
       background-color rgba(0, 0, 0, 0)
-      border-bottom 1px solid #ffffff
       box-sizing border-box
     .line
       border-bottom 1px solid #ffffff
@@ -150,8 +149,8 @@ export default {
   .l-img
     display flex
     justify-content center
+    height 240px
     align-items center
-    margin-top 50px
     .li-img
       height 120px
       width 120px
