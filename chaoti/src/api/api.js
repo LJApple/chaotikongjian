@@ -42,5 +42,9 @@ const api = {
 
     // 通知公告
     getnoticelist: `${serverUrl}notice/getnoticelist`, // 通知公告 GET
+
+    // 我发过的主题
+    getmypostslist: `${serverUrl}notice/getmypostslist`, // 我发过的主题 GET
+
 }
 Vue.prototype.$api = api

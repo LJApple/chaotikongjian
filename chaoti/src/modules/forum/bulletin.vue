@@ -11,10 +11,8 @@
 
 <script type="text/ecmascript-6">
 import emoticon from 'utils/emoticon'
-import { Actionsheet } from 'mint-ui'
 import common from '../../utils/common' 
-import { MessageBox } from "mint-ui"
-import { Indicator } from 'mint-ui'
+import { Indicator, MessageBox } from 'mint-ui'
 import Header from 'components/header/header'
 export default {
   components:{

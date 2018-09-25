@@ -18,10 +18,8 @@
 
 <script type="text/ecmascript-6">
 import emoticon from 'utils/emoticon'
-import { Actionsheet } from 'mint-ui'
 import common from '../../utils/common' 
-import { MessageBox } from "mint-ui"
-import { Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Actionsheet } from "mint-ui"
 import Header from 'components/header/header'
 export default {
   components:{
@@ -62,6 +60,10 @@ export default {
         return false
     },
     getactilist() {
+        this.actilist = []
+        this.actilistAll = []
+        this.actilistHave = []
+        this.actilistEnd = []
         this.$axios.get(this.$api.getactilist).then((response) => {
             const { data, success } = response.data
             if (success) {
