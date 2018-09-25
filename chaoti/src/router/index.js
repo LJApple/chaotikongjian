@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import common from '../utils/common'
 
 Vue.use(Router)
 
@@ -175,7 +176,8 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
   }
-  const account_token =  window.localStorage.getItem('account_token')
+//   const account_token =  window.localStorage.getItem('account_token')
+  const account_token =  common.getCookie('account_token')
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
       if (account_token) { // 判断当前的token是否存在
           next()

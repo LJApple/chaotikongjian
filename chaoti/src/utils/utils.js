@@ -182,17 +182,6 @@ class Common {
     }
     //去掉右边的空白 
     trimRight(s) {
-        // if (s == null) return ''
-        // var whitespace = new String(' \t\n\r')
-        // var str = new String(s)
-        // if (whitespace.indexOf(str.charAt(str.length - 1)) != -1) {
-        //     var i = str.length - 1
-        //     while (i >= 0 && whitespace.indexOf(str.charAt(i)) != -1) {
-        //         i--
-        //     }
-        //     str = str.substring(0, i + 1)
-        // }
-        // return str
         return str.replace(/[\s|\t\r\n]*$/, '')
     }
 
