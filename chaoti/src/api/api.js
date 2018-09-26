@@ -44,7 +44,7 @@ const api = {
     getnoticelist: `${serverUrl}notice/getnoticelist`, // 通知公告 GET
 
     // 我发过的主题
-    getmypostslist: `${serverUrl}notice/getmypostslist`, // 我发过的主题 GET
+    getmypostslist: `${serverUrl}posts/getmypostslist`, // 我发过的主题 GET
 
 }
 Vue.prototype.$api = api

@@ -2,21 +2,21 @@
   <div class="tasks">
     <Header></Header>
     <div class="page-navbar">
-        <div class="pn-list" v-if="val === 1"  v-for="item in mypostslistOne" :key="item.Id" @click="toTaskDetail(item.Id)">
-            <mt-cell class="pnl-list" is-link  :title="item.Title">
+        <div class="pn-list" v-if="val === 1"  v-for="item in mypostslistOne" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+            <mt-cell class="pnl-list" is-link  :title="item.details">
                 <span class="red">新的回复</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 2"  v-for="item in mypostslistTwo" :key="item.Id" @click="toTaskDetail(item.Id)">
-            <mt-cell class="pnl-list" is-link :title="item.Title">
+        <div class="pn-list" v-if="val === 2"  v-for="item in mypostslistTwo" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+            <mt-cell class="pnl-list" is-link :title="item.details">
                 <span>已回复</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 3"  v-for="item in mypostslist" :key="item.Id" @click="toTaskDetail(item.Id)">
-            <mt-cell class="pnl-list" v-if="item.receiveStatus === 0" is-link  :title="item.Title">
+        <div class="pn-list" v-if="val === 3"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+            <mt-cell class="pnl-list" v-if="item.receiveStatus === 0" is-link  :title="item.details">
                 <span class="red">新的回复</span>
             </mt-cell>
-            <mt-cell class="pnl-list" v-if="item.receiveStatus === 1" is-link :title="item.Title">
+            <mt-cell class="pnl-list" v-if="item.receiveStatus === 1" is-link :title="item.details">
                 <span>已回复</span>
             </mt-cell>
         </div>
@@ -73,39 +73,39 @@ export default {
         this.mypostslist = []
         this.mypostslistOne = []
         this.mypostslistTwo = []
-        const data = [
-            {receiveStatus:0, Title: '范德萨发送回家啊分手I·佛挡杀佛大法好大发大水很大范德萨大很大很大', Id: 1},
-            {receiveStatus:1, Title: '范德萨发送回家啊分手I·佛挡杀佛大法好大发大水很大范德萨大很大很大2', Id: 2}
-        ]
-        for (const item of data) {
-            const {receiveStatus} = item 
-            if (receiveStatus === 0) {
-                this.mypostslistOne.push(item)
-            } else if (receiveStatus === 1) {
-                this.mypostslistTwo.push(item)
+        // const data = [
+        //     {receiveStatus:0, Title: '范德萨发送回家啊分手I·佛挡杀佛大法好大发大水很大范德萨大很大很大', Id: 1},
+        //     {receiveStatus:1, Title: '范德萨发送回家啊分手I·佛挡杀佛大法好大发大水很大范德萨大很大很大2', Id: 2}
+        // ]
+        // for (const item of data) {
+        //     const {receiveStatus} = item 
+        //     if (receiveStatus === 0) {
+        //         this.mypostslistOne.push(item)
+        //     } else if (receiveStatus === 1) {
+        //         this.mypostslistTwo.push(item)
+        //     }
+        // }
+        // this.mypostslist = data
+    //   return
+      this.$axios.get(this.$api.getmypostslist).then((response) => {
+        console.log('response', response)
+        const { data, success } = response.data
+        if (success) {
+            for (const item of data) {
+                const {receiveStatus} = item 
+                if (receiveStatus === 0) {
+                    this.mypostslistOne.push(item)
+                } else if (receiveStatus === 1) {
+                    this.mypostslistTwo.push(item)
+                }
             }
+            debugger
+            this.mypostslist = data
         }
-        this.mypostslist = data
-      return
-    //   this.$axios.get(this.$api.getmypostslist).then((response) => {
-    //     console.log('response', response)
-    //     const { data, success } = response.data
-    //     if (success) {
-    //       for (const item of data) {
-    //         item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
-    //         const {receiveStatus} = item 
-    //         if (receiveStatus === 1) {
-    //           this.getTaskListOne.push(item)
-    //         } else if (receiveStatus === 2) {
-    //           this.getTaskListTwo.push(item)
-    //         }
-    //       }
-    //       this.mypostslist = data
-    //     }
-    //   }).catch((error) => {
+      }).catch((error) => {
         
-    //   }).then(() =>{
-    //   })
+      }).then(() =>{
+      })
     },
     // 跳转到任务详情
     toTaskDetail(taskId, isHaveUpload, taskType) {
