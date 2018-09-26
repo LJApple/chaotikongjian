@@ -57,13 +57,15 @@ export default {
       param = common.splicingJson(param)
       const url = this.$api.login + param
       console.log('url', url)
-      this.$axios.post(url, ).then((res) => {
+      this.$axios.post(url).then((res) => {
         const { success, data } = res.data
         if (success) {
         //   window.localStorage.setItem('account_token', data)
           common.setCookie('account_token', data, 2)
           const path = this.$route.query.redirect
-          this.$router.push({path: path})
+          setTimeout(() => {
+            this.$router.push({path: path})
+          }, 1000);
         } else {
           this.$toast(res.data.message)
         }

@@ -24,12 +24,12 @@ axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
     // const account_token = window.localStorage.getItem('account_token')
     const account_token = common.getCookie('account_token')
-    Object.assign(config.headers, { 'account_token': account_token}, {'Content-Type':'application/json;charset=UTF-8'})
+    // if(account_token) Object.assign(config.headers, { 'account_token': account_token})
+    if(account_token) config.headers.account_token = account_token
     return config
 },error =>{
     Promise.reject(error)
 })
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
 axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
    const {fullPath} = router.history.current

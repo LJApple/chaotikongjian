@@ -49,6 +49,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+import common from '../../utils/common'
 export default {
   components:{},
   props:{},
@@ -62,14 +63,16 @@ export default {
     // 退出登录
       logout() {
         // 清除session 返回login
+        common.delCookie('account_token')
         this.$router.push({
-          path: '/login'
+          path: '/login',
+           query: { redirect: 'forum' }
         })
       },
       // 设置
       setting() {
         this.$router.push({
-          path: '/setting'
+          path: '/my'
         })
       },
       // 跳转发过的主图
@@ -150,7 +153,7 @@ export default {
   flex-wrap wrap
   .fl-img
     width 50%
-    height 260px
+    padding 30px 0
     display flex
     justify-content center
     flex-direction column
