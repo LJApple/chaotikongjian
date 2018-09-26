@@ -13,7 +13,10 @@
             <div v-html="nwInfo.Details" class="nwdc-c">{{nwInfo.Details}}</div>
         </div>
         <div class="nwd-btn">
-            <div class="nwdb-red" @click="saveactivity" v-if="nwInfo.Status === 0">我要报名</div>
+            <div @click="saveactivity" v-if="nwInfo.Status === 0">
+                <div class="nwdb-red" v-if="nwState !== '已参与'">我要报名</div>
+                <div class="nwdb-gray" v-else>{{nwState}}</div>
+            </div>
             <div class="nwdb-gray" v-if="nwInfo.Status === 1">已结束/{{nwState}}</div>
         </div>
         <div class="ac-table">
@@ -83,6 +86,7 @@ export default {
         this.$axios.post(url).then((response) => {
             const { data, success,  message} = response.data
             if (success) {
+                this.nwState = '已参与'
                 MessageBox.alert("参与活动成功")
             }
         })
