@@ -23,9 +23,10 @@ Vue.use(Mint)
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
     // const account_token = window.localStorage.getItem('account_token')
-    const account_token = common.getCookie('account_token')
-    // if(account_token) Object.assign(config.headers, { 'account_token': account_token})
-    if(account_token) config.headers.account_token = account_token
+    // const account_token = common.getCookie('account_token')
+    // // if(account_token) Object.assign(config.headers, { 'account_token': account_token})
+    // if(account_token && !config.url.includes('account_token')) config.url += '?account_token=' + account_token
+    // console.log('config', config)
     return config
 },error =>{
     Promise.reject(error)

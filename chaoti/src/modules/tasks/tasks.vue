@@ -122,7 +122,8 @@ export default {
     },
     // 获取任务列表 第一步
     getTaskOneTap() {
-      this.$axios.get(this.$api.taskOneTap, {'account_token': common.getCookie('account_token')}).then((response) => {
+      const url = this.$api.taskOneTap  + '?account_token=' + common.getCookie('account_token')
+      this.$axios.get(url).then((response) => {
         console.log('response', response)
         const { data, success } = response.data
         this.getTaskList = []

@@ -14,10 +14,10 @@
         </div>
         <div class="pn-list" v-if="val === 3"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" v-if="item.receiveStatus === 0" is-link  :title="item.details">
-                <span class="red">新的回复</span>
+                <span v-if="item.isReply === 1" class="red">新的回复</span>
             </mt-cell>
             <mt-cell class="pnl-list" v-if="item.receiveStatus === 1" is-link :title="item.details">
-                <span>已回复</span>
+                <span v-if="item.isReply === 0">已回复</span>
             </mt-cell>
         </div>
     </div>
