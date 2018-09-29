@@ -75,7 +75,7 @@ export default {
         this.$axios.get(url).then((response) => {
             const { data, success,  message} = response.data
             if (success) {
-             this.activitycount = data
+                this.activitycount = data
             }
         })
     },
@@ -93,6 +93,7 @@ export default {
     }
   },
   created() {
+      debugger
       this.getactivitydetail()
   },
   mounted() {}

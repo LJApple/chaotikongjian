@@ -13,11 +13,9 @@
             </mt-cell>
         </div>
         <div class="pn-list" v-if="val === 3"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
-            <mt-cell class="pnl-list" v-if="item.receiveStatus === 0" is-link  :title="item.details">
-                <span v-if="item.isReply === 1" class="red">新的回复</span>
-            </mt-cell>
-            <mt-cell class="pnl-list" v-if="item.receiveStatus === 1" is-link :title="item.details">
+            <mt-cell class="pnl-list" is-link :title="item.details">
                 <span v-if="item.isReply === 0">已回复</span>
+                <span v-if="item.isReply === 1" class="red">新的回复</span>
             </mt-cell>
         </div>
     </div>
@@ -73,22 +71,7 @@ export default {
         this.mypostslist = []
         this.mypostslistOne = []
         this.mypostslistTwo = []
-        // const data = [
-        //     {receiveStatus:0, Title: '范德萨发送回家啊分手I·佛挡杀佛大法好大发大水很大范德萨大很大很大', Id: 1},
-        //     {receiveStatus:1, Title: '范德萨发送回家啊分手I·佛挡杀佛大法好大发大水很大范德萨大很大很大2', Id: 2}
-        // ]
-        // for (const item of data) {
-        //     const {receiveStatus} = item 
-        //     if (receiveStatus === 0) {
-        //         this.mypostslistOne.push(item)
-        //     } else if (receiveStatus === 1) {
-        //         this.mypostslistTwo.push(item)
-        //     }
-        // }
-        // this.mypostslist = data
-    //   return
-      this.$axios.get(this.$api.getmypostslist).then((response) => {
-        console.log('response', response)
+        this.$axios.get(this.$api.getmypostslist).then((response) => {
         const { data, success } = response.data
         if (success) {
             for (const item of data) {
@@ -99,27 +82,18 @@ export default {
                     this.mypostslistTwo.push(item)
                 }
             }
-            debugger
             this.mypostslist = data
         }
-      }).catch((error) => {
+        }).catch((error) => {
         
-      }).then(() =>{
-      })
+        }).then(() =>{
+        })
     },
     // 跳转到任务详情
-    toTaskDetail(taskId, isHaveUpload, taskType) {
-     if ( isHaveUpload === 0 ) {
-         isHaveUpload = false
-     } else {
-         isHaveUpload = true
-     }
-      this.$router.push({
-        name: 'tasksDetail',
-        params: { taskId },
-        query: {isHaveUpload, taskType}
-      })
-      // this.setTaskDetail(taskId)
+    toTaskDetail(activityId) {
+        this.$router.push({
+            path: `/myForum/${activityId}`
+        })
     }
   },
   activated() {

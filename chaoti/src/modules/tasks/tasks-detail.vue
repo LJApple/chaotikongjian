@@ -75,7 +75,7 @@ export default {
     gettask() {
       this.taskId = this.$route.params.taskId
       this.taskType = parseInt(this.$route.query.taskType)
-      const url = `${this.$api.gettask}?account_token=${common.getCookie('account_token')}&taskId=${this.taskId}`
+      const url = `${this.$api.gettask}?taskId=${this.taskId}`
       this.$axios.get(url).then((response) => {
           console.log('response', response)
           const { data, success } = response.data

@@ -80,7 +80,7 @@ export default {
     },
     // 跳转到详情
     navToWorkDetail(Id) {
-         this.$router.push({
+        this.$router.push({
           path: `/nationalWorkshop/${Id}`
         })
     }

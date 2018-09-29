@@ -122,7 +122,7 @@ export default {
     },
     // 获取任务列表 第一步
     getTaskOneTap() {
-      const url = this.$api.taskOneTap  + '?account_token=' + common.getCookie('account_token')
+      const url = this.$api.taskOneTap
       this.$axios.get(url).then((response) => {
         console.log('response', response)
         const { data, success } = response.data

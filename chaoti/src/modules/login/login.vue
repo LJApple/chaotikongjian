@@ -56,7 +56,6 @@ export default {
       }
       param = common.splicingJson(param)
       const url = this.$api.login + param
-      console.log('url', url)
       this.$axios.post(url).then((res) => {
         const { success, data } = res.data
         if (success) {
@@ -109,6 +108,7 @@ export default {
    }
   },
   created(){
+      common.delCookie('account_token')
   },
   mounted(){
   }
