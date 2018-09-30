@@ -22,7 +22,7 @@
                 </span>
               </div>
           </div>
-          <div class="fdc-text">{{forumListDetailInfo.details}}</div>
+          <div class="fdc-text" v-html="forumListDetailInfo.details">{{forumListDetailInfo.details}}</div>
           <div class="fdc-tiem">
               <div>共{{forumListDetailInfo.commentCount}}条回复</div>
               <div>{{forumListDetailInfo.createTime}}</div>
@@ -147,6 +147,7 @@ import { swiper, swiperSlide } from "vue-awesome-swiper"
 import preview from "components/preview/preview"
 import { MessageBox, Indicator } from "mint-ui"
 import { Toast } from 'vant'
+import common from '../../utils/common'
 export default {
   components:{
     swiper,
@@ -195,6 +196,7 @@ export default {
                         }
                     }
                 }
+                common.emoticon(data, emoticon, true)
                 this.forumListDetailInfo = data
                 this.postReplyList = data.postReplyList
                 console.log('this.postReplyList', this.postReplyList, this.forumListDetailInfo)
@@ -386,7 +388,7 @@ export default {
         })
     }
   },
-  created(){
+  created() {
     // 获取帖子详情
     this.getpostdetial()
      // 初始化表情列表

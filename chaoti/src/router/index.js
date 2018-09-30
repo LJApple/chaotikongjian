@@ -106,8 +106,7 @@ const router = new Router({
       name: 'forumListDetail',
       component: forumListDetail,
       meta: {
-        title: '帖子详情',
-        keepAlive: true
+        title: '帖子详情'
       }
     },
     {

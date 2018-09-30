@@ -19,7 +19,7 @@
                         <div class="df-if2">{{item.createTime}}</div>
                     </div>
                 </div>
-                <div class="fdll-mess">
+                <div class="fdll-mess" v-html="item.details">
                     {{item.details}}
                 </div>
                 <div class="fdll-btnbox">
@@ -47,6 +47,8 @@
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Header from 'components/header/header'
 import { Toast } from 'vant'
+import emoticon from 'utils/emoticon'
+import common from '../../utils/common'
 export default {
   components:{
     swiper,
@@ -118,6 +120,7 @@ export default {
         Toast.clear()
         const { data, success } = response.data
         if (success) {
+            common.emoticon(data, emoticon)
             this.forumDetailList = data
         } else {
             this.forumDetailList = null

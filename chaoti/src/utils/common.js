@@ -245,6 +245,36 @@ class common {
         if (cval != null)
         document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString()
     }
+
+    emoticon(data, emoticon, isInfo) {
+        if (isInfo) {
+            const arr = data.details.match(/\[([\u4e00-\u9fa5\w])+\]/g)
+            if (arr) {
+                for (const arritem of arr) {
+                    for (const iconList of emoticon) {
+                        if (iconList.name == arritem) {
+                            const img = '<img src="' + iconList.path + '" width="20" height="20"/>'
+                            data.details = data.details.replace(arritem, img)
+                        }   
+                    }
+                }   
+            } 
+        } else {
+            for (const item of data) {
+                const arr = item.details.match(/\[([\u4e00-\u9fa5\w])+\]/g)
+                if (arr) {
+                    for (const arritem of arr) {
+                        for (const iconList of emoticon) {
+                            if (iconList.name == arritem) {
+                                const img = '<img src="' + iconList.path + '" width="20" height="20"/>'
+                                item.details = item.details.replace(arritem, img)
+                            }   
+                        }
+                    }   
+                } 
+            }
+        }
+    }
 }
 
 export default common = new common()
