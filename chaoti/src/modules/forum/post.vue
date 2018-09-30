@@ -121,7 +121,7 @@ export default {
     getFile(e) {
         const { files, value } = e.target
         this.filesUrlList = []
-        if (this.fileList.length >= 5) return MessageBox.alert('最多上传五张图片')
+        if (files.length >= 5) return MessageBox.alert('最多上传五张图片')
         for (var i = 0; i < files.length; i++) {
             this.filesUrlList.push(value)
             const name =  files[i].name

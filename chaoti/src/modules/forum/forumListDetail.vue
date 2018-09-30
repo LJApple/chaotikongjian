@@ -4,7 +4,9 @@
           <img class="fdh-img" v-if="!forumListDetailInfo.photo" src="../../assets/images/default.png" alt="">
           <img class="fdh-img" :src="forumListDetailInfo.photo" alt="图片">
           <div class="fdh-name">{{forumListDetailInfo.name}}</div>
-          <van-tag class="fdh-isDel" v-if="forumListDetailInfo.isDel" mark type="danger">删除</van-tag>
+          <div  class="fdh-isDel" @click="delmyposts">
+               <van-tag v-if="forumListDetailInfo.isDel" mark type="danger">删除</van-tag>
+          </div>
       </div>
        <swiper class="fd-banner" :options="swiperOption">
         <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
@@ -145,7 +147,8 @@
 import emoticon from "utils/emoticon"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
 import preview from "components/preview/preview"
-import { MessageBox, Indicator } from "mint-ui"
+import { MessageBox } from "mint-ui"
+import { Dialog } from 'vant';
 import { Toast } from 'vant'
 import common from '../../utils/common'
 export default {
@@ -385,6 +388,23 @@ export default {
                 this.$toast(message)
                 this.getpostdetial()
             }
+        })
+    },
+    // 删除帖子
+    delmyposts() {
+        const url = `${this.$api.delmyposts}?postsId=${this.forumListDetailInfo.postsId}`
+        Dialog.confirm({
+            title: '提示',
+            message: '确定删除帖子吗？'
+        }).then(() => {
+            this.$axios.post(url).then(response => {
+                const { data, success, message } = response.data
+                if (success) {
+                    this.$router.go(-1)
+                }
+            })
+        }).catch(() => {
+        // on cancel
         })
     }
   },
