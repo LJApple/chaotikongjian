@@ -39,7 +39,7 @@
                 <img v-else :src="item.photo"/>
                 <div>{{item.name}}</div>
             </div>
-            <div class="cn-content">{{item.details}}</div>
+            <div class="cn-content" v-html="item.details">{{item.details}}</div>
             <div class="cn-imgList" v-if="item.uploadFileUrl.length > 0">
                  <swiper class="cn-swiper contetnL" :options="swiperOption">
                     <swiper-slide v-for="(itemlist, index) in item.uploadFileUrl" :key="index">
@@ -59,8 +59,8 @@
                     <div class="cnpr-like" @click.stop="clickLike(forumListDetailInfo.postsId, item.replyId, 1)">
                         <img v-if="!item.isGood" src="../../assets/images/praise.png">
                         <img v-else src="../../assets/images/praise--active.png">
-                        <span class="red" v-if="item.goodCount !== 0">{{item.goodCount}}</span>
-                        <span class="red" v-else>赞</span>
+                        <span v-if="item.goodCount !== 0">{{item.goodCount}}</span>
+                        <span v-else>赞</span>
                     </div>
                 </div>
               
@@ -73,7 +73,7 @@
                                 <img v-else :src="relyList.photo"/>
                                 <div>{{relyList.name}}</div>
                             </div>
-                            <div class="cno-content">{{relyList.details}}</div>
+                            <div class="cno-content" v-html="relyList.details">{{relyList.details}}</div>
                              <div class="cno-imgList" v-if="item.uploadFileUrl.length > 0">
                                 <swiper class="cn-swiper" :options="swiperOption">
                                     <swiper-slide v-for="(itemlist, index) in relyList.uploadFileUrl" :key="index">
@@ -189,11 +189,15 @@ export default {
             const { data, success } = response.data
             if (success) {
                 data.uploadFileUrl = data.uploadFileUrl.split('|')
-                if (!data.postReplyList.length > 0) {
+                if (data.postReplyList.length > 0) {
                     for (const rList of data.postReplyList) {
                         rList.uploadFileUrl = rList.uploadFileUrl.split('|')
+                        console.log('rList.details1', rList.details)
+                        common.emoticon(rList, emoticon, true)
+                        console.log('rList.details', rList.details)
                         if (rList.postReplyList.length > 0) {
                             for (const rListTwo of rList.postReplyList) {
+                                common.emoticon(rListTwo, emoticon, true)
                                 rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
                             }
                         }

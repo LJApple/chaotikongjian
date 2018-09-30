@@ -253,7 +253,7 @@ class common {
                 for (const arritem of arr) {
                     for (const iconList of emoticon) {
                         if (iconList.name == arritem) {
-                            const img = '<img src="' + iconList.path + '" width="20" height="20"/>'
+                            const img = '<img src="' + iconList.path + '" width="16" height="16"/>'
                             data.details = data.details.replace(arritem, img)
                         }   
                     }
