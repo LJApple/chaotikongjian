@@ -7,8 +7,11 @@ import store from './store'
 import Mint from "mint-ui"
 import axios from 'axios'
 import common from './utils/common'
+import Vant from 'vant'
+import 'vant/lib/vant-css/index.css'
 // mintui样式导入
 import 'mint-ui/lib/style.css'
+import 'vant/lib/vant-css/index.css'
 // require styles
 import 'swiper/dist/css/swiper.css'
 import './assets/stylus/index.styl'
@@ -19,6 +22,7 @@ Vue.use(VueAwesomeSwiper)
 import './api/api'
 // 应用mintui
 Vue.use(Mint)
+Vue.use(Vant)
 // 将所有的请求加加上account_token
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key

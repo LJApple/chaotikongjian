@@ -1,31 +1,30 @@
 <template>
   <div class="tasks">
     <Header></Header>
+    <div class="v-list">
+        <swiper :options="swiperOption">
+            <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
+        </swiper>
+    </div>
     <div class="page-navbar">
-        <div class="pn-list" v-if="val === 1"  v-for="item in mypostslistOne" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+        <div class="pn-list" v-if="type === 1"  v-for="item in mypostslistOne" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link  :title="item.details">
                 <span class="red">新的回复</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 2"  v-for="item in mypostslistTwo" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+        <div class="pn-list" v-if="type === 2"  v-for="item in mypostslistTwo" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link :title="item.details">
                 <span>已回复</span>
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 3"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+        <div class="pn-list" v-if="type === 3"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link :title="item.details">
                 <span v-if="item.isReply === 0">已回复</span>
                 <span v-if="item.isReply === 1" class="red">新的回复</span>
             </mt-cell>
         </div>
+        <div class="pn-null" v-if="(mypostslistOne.length === 0 && type === 1) || (mypostslistTwo.length === 0 && type === 2) ||  (mypostslist.length === 0 && type === 3)">暂无数据</div>
     </div>
-        
-    <mt-palette-button content="回复" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
-            direction="lt" class="changeClass" :radius="100" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
-            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">新回复</div></div>
-            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio" v-if="isExpend">已回复</div></div>
-            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(3)"><div class="classRadio" v-if="isExpend">全部</div></div>
-    </mt-palette-button>
     <router-view></router-view>
   </div>
 </template>
@@ -34,44 +33,60 @@
 import { MessageBox } from "mint-ui"
 import common from '../../utils/common'
 import Header from 'components/header/header'
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import { Toast } from 'vant'
 import qs from 'qs'
 export default {
   components: {
-    Header
+    Header,
+    swiperSlide,
+    swiper
   },
   props: {},
   data() {
+    const self = this
     return {
         mypostslist: [],
         mypostslistOne: [],
         mypostslistTwo: [],
-        val: 3,
-        isExpend: false
+        type: 3,
+        isExpend: false,
+        swiperOption: {
+            spaceBetween: 0,
+            slidesPerView: 'auto',
+            slideToClickedSlide: true,
+            preventClicks : false,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true
+            },
+            on: {
+                click: function (e) {
+                    Toast.loading({ mask: true })
+                    const {id} = e.target.dataset
+                    self.selctPostsType(parseInt(id))
+                }
+            }
+        },
+        postsTypes: [
+            {name: '全部', id: 3},
+            {name: '已回复', id: 1},
+            {name: '新消息', id: 2}
+        ]        
     }
   },
   watch: {
   },
   computed: {},
   methods: {
-    main_log(val) {
-        console.log('main_log', val)
-        if (val === 'expand') {
-            this.isExpend = true
-        } else if(val === 'collapse') {
-            this.isExpend = false
-        }
-    },
-    sub_log(val) {
-        this.val = val
-        this.$refs.target_1.collapse()
-        return false
-    },
     // 获取任务列表
     getmypostslist() {
         this.mypostslist = []
         this.mypostslistOne = []
         this.mypostslistTwo = []
+        Toast.loading({ mask: true })
         this.$axios.get(this.$api.getmypostslist).then((response) => {
+        Toast.clear()
         const { data, success } = response.data
         if (success) {
             for (const item of data) {
@@ -90,10 +105,19 @@ export default {
         })
     },
     // 跳转到任务详情
-    toTaskDetail(activityId) {
-        this.$router.push({
-            path: `/myForum/${activityId}`
-        })
+    toTaskDetail(postsId) {
+       this.$router.push({
+          path: '/forumListDetail',
+          query: {
+              postsId
+          }
+       })
+    },
+    selctPostsType(type) {
+        this.type = type
+       setTimeout(() => {
+            Toast.clear()
+       }, 200)
     }
   },
   activated() {
@@ -106,8 +130,11 @@ export default {
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import '../../assets/stylus/variable.styl'
+.swiper-slide
+    width 33.33333%
 .page-navbar
-    margin-top 60px
+    margin-top 100px
     .pn-list
         margin-top 10px
+        border-top 1px solid #dddddd
 </style>

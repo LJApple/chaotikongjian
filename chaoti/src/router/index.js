@@ -18,7 +18,6 @@ const integralRankings = resolve => require.ensure([], () => resolve(require('..
 const  forum = resolve => require.ensure([], () => resolve(require('../modules/forum/forum')), 'forum')
 // 发过的主题
 const  myForum = resolve => require.ensure([], () => resolve(require('../modules/forum/my-forum')), 'my-forum')
-const  mfDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/mfDetail')), 'mfDetail')
 // 论坛列表
 const  forumDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/forumDetail')), 'forumDetail')
 // 发帖
@@ -117,16 +116,7 @@ const router = new Router({
       component: myForum,
       meta: {
         title: '发过的主题'
-      },
-      children: [
-        {
-            path: ':id',
-            component: mfDetail,
-            meta: {
-                title: '主题详情'
-            },
-        }
-    ]
+      }
     },
     {
         path: '/post',

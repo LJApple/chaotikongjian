@@ -2,9 +2,9 @@
   <div class="fd">
       <div class="fd-header">
           <img class="fdh-img" v-if="!forumListDetailInfo.photo" src="../../assets/images/default.png" alt="">
-          <img class="fdh-img" :src="forumListDetailInfo.photo" alt="">
+          <img class="fdh-img" :src="forumListDetailInfo.photo" alt="图片">
           <div class="fdh-name">{{forumListDetailInfo.name}}</div>
-          <div v-if="forumListDetailInfo.isDel" class="fdh-isDel">删除</div>
+          <van-tag class="fdh-isDel" v-if="forumListDetailInfo.isDel" mark type="danger">删除</van-tag>
       </div>
        <swiper class="fd-banner" :options="swiperOption">
         <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
@@ -146,6 +146,7 @@ import emoticon from "utils/emoticon"
 import { swiper, swiperSlide } from "vue-awesome-swiper"
 import preview from "components/preview/preview"
 import { MessageBox, Indicator } from "mint-ui"
+import { Toast } from 'vant'
 export default {
   components:{
     swiper,
@@ -274,13 +275,13 @@ export default {
           processData: false,
           url: this.$api.upload
         };
-        Indicator.open("上传中...");
+        Toast.loading({ mask: true })
         this.$axios(option)
           .then(res => {
             const { data, success, message } = res.data;
             if (success) {
               this.imgUrl.push({ fileName: name, imgUrl: data });
-              Indicator.close();
+               Toast.clear()
             } else {
               // this.$toast('头像上传失败')
             }
@@ -414,11 +415,6 @@ export default {
         .fdh-isDel
             position absolute
             right 12px
-            background red
-            color #ffffff
-            padding 4px 10px
-            border-radius 20px
-            font-size 12px
     .fd-banner
         height 200px
         overflow hidden

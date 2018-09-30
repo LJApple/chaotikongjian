@@ -60,10 +60,10 @@
 
 <script type="text/ecmascript-6">
 import emoticon from 'utils/emoticon'
-import { Actionsheet } from 'mint-ui'
 import common from '../../utils/common'
-import { MessageBox } from "mint-ui"
-import { Indicator } from 'mint-ui'
+import { MessageBox, Indicator, Actionsheet } from "mint-ui"
+import { Toast } from 'vant'
+
 import qs from 'qs'
 export default {
   components:{},
@@ -134,12 +134,12 @@ export default {
                 processData: false,
                 url: this.$api.upload
             }
-            Indicator.open('上传中...')
+            Toast.loading({ mask: true })
             this.$axios(option).then((res) => {
                 const { data, success, message } = res.data
                 if (success) {
                     this.fileList.push({ fileName: name, uploadFile: data})
-                    Indicator.close()
+                    Toast.clear()
                 } else {
                     // this.$toast('头像上传失败')
                 }
@@ -195,6 +195,7 @@ export default {
         // ptypeId (integer, optional): 帖子类型 ,
         // detail (string, optional): 帖子详情 ,
         // imgPath (string, optional): 图片
+        Toast.loading({ mask: true })
         console.log('this.fileList', this.fileList)
         if (!this.ptypeId)  return MessageBox.alert('请选择系统类别')
         if (!this.detail)  return MessageBox.alert('请填写内容')
@@ -217,6 +218,7 @@ export default {
         // const url = this.$api.posting + param
         this.$axios.post(this.$api.posting, param).then((response) => {
             const { data, success } = response.data
+            Toast.clear()
             if (success) {
                 MessageBox.alert('发布成功').then(action => {
                    this.$router.go(-1)

@@ -124,4 +124,31 @@ html,body
             width 20%
             margin-right 0
             display flex
-            justify-content flex-end 
+            justify-content flex-end
+.v-list
+    position fixed
+    top 50px
+    width 100%
+    .swiper-slide
+        height 40px
+        width 100px
+        line-height @height
+        text-align center
+        background #ffffff
+        border-right 1px solid #dddddd
+        border-bottom 1px solid #dddddd
+        &:last-child
+            border-right 0
+.pn-null
+    height: 100vh
+    width: 100%
+    display: -webkit-box
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-size: 0.12rem;

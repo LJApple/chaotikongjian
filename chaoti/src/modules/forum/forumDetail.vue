@@ -12,8 +12,8 @@
         <div v-if="forumDetailList">
              <div class="fdl-list" @click="navToDetail(item.postsId)" v-for="item in forumDetailList" :key="item.id">
                 <div class="fdll-top">
-                    <img v-if="!item.photo" src="../../assets/images/default.png" alt="/assets/images/comment.png">
-                    <img v-else :src="item.photo" alt="/assets/images/comment.png">
+                    <img v-if="!item.photo" src="../../assets/images/default.png" alt="图片">
+                    <img v-else :src="item.photo" alt="头像">
                     <div class="df-flex">
                         <div class="df-if1">{{item.name}}</div>
                         <div class="df-if2">{{item.createTime}}</div>
@@ -24,12 +24,12 @@
                 </div>
                 <div class="fdll-btnbox">
                     <div class="fdllb-btns">
-                        <img src="../../assets/images/comment.png" alt="/assets/images/comment.png">
+                        <img src="../../assets/images/comment.png" alt="图片">
                         <span>{{item.commentCount}}</span>
                     </div>
                     <span class="fdllb-btns" @click.stop="clickLike(item.postsId)">
-                        <img v-if="!item.good" src="../../assets/images/like.png" alt="/assets/images/like.png">
-                        <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png">
+                        <img v-if="!item.good" src="../../assets/images/like.png" alt="图片">
+                        <img v-else src="../../assets/images/like-active.png" alt="图片">
                         <span>{{item.goodCount}}</span>
                     </span>
                 </div>
@@ -38,7 +38,7 @@
         <div class="fdl-null" v-else>暂无帖子</div>
     </div>
     <div class="post" @click="toPost">
-        <img src="../../assets/images/post.png" alt="/assets/images/post.png">
+        <img src="../../assets/images/post.png" alt="图片">
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@
 <script type="text/ecmascript-6">
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Header from 'components/header/header'
+import { Toast } from 'vant'
 export default {
   components:{
     swiper,
@@ -110,9 +111,11 @@ export default {
     },
     // 获取帖子列表
     selctPostsType(postsTypeId) {
+        Toast.loading({ mask: true })
         // sectionId postsTypeId
         const url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&postsTypeId=${postsTypeId}`
         this.$axios.get(url).then((response) => {
+        Toast.clear()
         const { data, success } = response.data
         if (success) {
             this.forumDetailList = data
@@ -159,20 +162,6 @@ export default {
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
-.v-list
-    position fixed
-    top 50px
-    width 100%
-    .swiper-slide
-        height 40px
-        width 100px
-        line-height @height
-        text-align center
-        background #ffffff
-        border-right 1px solid #dddddd
-        border-bottom 1px solid #dddddd
-        &:last-child
-            border-right 0
 .fdl-null
     height 100vh
     width 100%
