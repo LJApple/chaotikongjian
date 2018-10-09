@@ -117,9 +117,10 @@ export default {
 .swiper-slide
     width 33.33333%
 .nw
-    padding-top 100px
+    // padding-top 100px
 .nw-list
     height 48px
+    margin-top 10px
     display flex
     align-items center
     border-top 1px solid #d9d9d9 

@@ -133,7 +133,7 @@ export default {
 .swiper-slide
     width 33.33333%
 .page-navbar
-    margin-top 100px
+    // margin-top 100px
     .pn-list
         margin-top 10px
         border-top 1px solid #dddddd

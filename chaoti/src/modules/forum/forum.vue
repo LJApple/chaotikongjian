@@ -7,9 +7,10 @@
       </div>
       <div class="f-content">
         <div class="fc-user">
-          <img class="" src="../../assets/images/defalut-wihte.png" alt="">
+             <img class="" v-if="!userInfo.photo" src="../../assets/images/defalut-wihte.png" alt="">
+            <img v-else :src="userInfo.photo" alt="">
             <div class="fcuc-list">
-              <div class="fcuc-name">你好,王五</div>
+              <div class="fcuc-name">你好,{{userInfo.name}}</div>
               <div class="fcuc-use" @click="toMyForum">发过的主题</div>
             </div>
         </div>
@@ -55,26 +56,27 @@ export default {
   props:{},
   data(){
     return {
+      userInfo: {}
     }
   },
   watch:{},
   computed:{},
   methods:{
     // 退出登录
-      logout() {
-        // 清除session 返回login
-        common.delCookie('account_token')
-        this.$router.push({
-          path: '/login',
-           query: { redirect: 'forum' }
-        })
-      },
-      // 设置
-      setting() {
-        this.$router.push({
-          path: '/my'
-        })
-      },
+    logout() {
+      // 清除session 返回login
+      common.delCookie('account_token')
+      this.$router.push({
+        path: '/login',
+          query: { redirect: 'forum' }
+      })
+    },
+    // 设置
+    setting() {
+      this.$router.push({
+        path: '/my'
+      })
+    },
       // 跳转发过的主图
       toMyForum() {
          this.$router.push({
@@ -99,9 +101,20 @@ export default {
         this.$router.push({
           path: '/nationalWorkshop'
         }) 
+      },
+      // 获取用户信息
+      getUserInfo() {
+        this.$axios.get(this.$api.getuserinfo).then(response => {
+          const { success, data } = response.data
+          if (success) {
+            this.userInfo = data
+          }
+        })
       }
   },
-  created(){},
+  created(){
+    this.getUserInfo()
+  },
   mounted(){}
 }
 </script>
@@ -109,10 +122,10 @@ export default {
 @import "../../assets/stylus/variable.styl"
 .forum
   height 100%
-  background #abb6bf
+  background #ffffff
 .f-header
-  background $bg-color
-  height 120px
+  background $headerBg
+  height 140px
   width 100%
   padding $paddingPage
   position relative
@@ -131,12 +144,13 @@ export default {
   justify-content space-between
   padding 0 12px
   align-items center
-  height 120px
+  height 140px
   .fc-user
     display flex
     img 
       height 60px
       width @height
+      border-radius @height 
     .fcuc-list
       height 50px
       color #ffffff
@@ -144,13 +158,14 @@ export default {
         padding 12px 10px
       .fcuc-use
         padding-left 10px
-        color blue
+        color $bg-color
   .logo
     margin-top 10px
     color #ffffff
 .f-list
   display flex
   flex-wrap wrap
+  height 70%
   .fl-img
     width 50%
     padding 30px 0
@@ -159,16 +174,18 @@ export default {
     flex-direction column
     align-items center
     .fli-modal
-      height 150px
+      height 120px
       width @height 
       border-radius 150px
-      background #457ba5
+      background $bg-color
       color: #ffffff
       display flex
       justify-content center
       flex-direction column
       align-items center
     img 
-      width 70px
-      height 70px
+      width 60px
+      height 60px
+.logo
+  top 5px
 </style>

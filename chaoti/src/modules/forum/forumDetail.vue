@@ -187,7 +187,7 @@ export default {
         height 40px
         width @height
 .fd-list
-    margin-top 101px
+    // margin-top 101px
     .fdl-list
         margin-top 10px
         padding 12px

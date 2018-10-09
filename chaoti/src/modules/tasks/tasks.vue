@@ -1,6 +1,7 @@
 <template>
   <div class="tasks">
-    <div class="t-header"></div>
+    <!-- <div class="t-header"></div> -->
+    <Header></Header>
     <div class="page-navbar">
         <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
@@ -54,8 +55,11 @@ import { mapMutations } from 'vuex'
 import qs from 'qs'
 import common from '../../utils/common'
 import { MessageBox } from 'mint-ui'
+import Header from 'components/header/header'
 export default {
-  components:{},
+  components:{
+    Header
+  },
   props:{},
   data(){
     return {

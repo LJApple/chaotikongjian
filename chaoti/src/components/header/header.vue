@@ -1,15 +1,34 @@
 <template>
-    <div class="header">
-        <div>我是logo</div>
+    <div class="f-header">
+      <div class="setting">
+        <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div>
+        <!-- <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div> -->
+      </div>
+      <div class="f-content">
+        <div class="logo">
+            <!-- <img  class="logo" src="../../assets/images/logo.png" alt=""> -->
+            卡神来帮忙
+        </div>
+        <div class="fc-user">
+            <img class="" v-if="!userInfo.photo" src="../../assets/images/defalut-wihte.png" alt="">
+            <img v-else :src="userInfo.photo" alt="">
+            <div class="fcuc-list">
+              <div class="fcuc-name">你好,{{userInfo.name}}</div>
+            </div>
+        </div>
+      </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+import common from '../../utils/common'
+import { Dialog } from 'vant'
 export default {
   components:{},
   props:{},
   data(){
     return {
+        userInfo: {}
     }
   },
   watch:{
@@ -17,24 +36,81 @@ export default {
   computed:{
   },
   methods:{
+    // 退出登录
+    logout() {
+        Dialog.confirm({
+            title: '提示',
+            message: '确定退出系统吗？'
+        }).then(() => {
+            // 清除session 返回login
+            common.delCookie('account_token')
+            this.$router.push({
+                path: '/login',
+                query: { redirect: 'forum' }
+            })
+        }).catch(() => {
+        // on cancel
+        });
+    },
+    // 设置
+    setting() {
+      this.$router.push({
+        path: '/my'
+      })
+    },
+     // 获取用户信息
+    getUserInfo() {
+      this.$axios.get(this.$api.getuserinfo).then(response => {
+        const { success, data } = response.data
+        if (success) {
+          this.userInfo = data
+        }
+      })
+    }
   },
   created() {
+      this.getUserInfo()
   },
   mounted(){}
 }
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
-.header
-    height 50px
-    position fixed
-    top 0
-    width 100%
-    padding $pagePadding
-    background $bg-color 
+.f-header
+  background $headerBg
+  height 140px
+  width 100%
+  padding $paddingPage
+  position relative
+  .setting
+    position absolute
+    right 0
+    top: 0
     display flex
-    align-items center
-    justify-content space-between
-    box-sizing border-box
-    color #ffffff
+    .logout
+      padding 15px
+      img 
+        height 20px
+        width 20px
+.f-content
+  display flex
+  justify-content space-between
+  padding 0 12px
+  align-items center
+  height 140px
+  .fc-user
+    display flex
+    img 
+      height 60px
+      width @height
+      border-radius @height
+    .fcuc-list
+      height 50px
+      color #ffffff
+      .fcuc-name
+        padding 0px 10px
+        line-height 60px
+      .fcuc-use
+        padding-left 10px
+        color blue
 </style>
