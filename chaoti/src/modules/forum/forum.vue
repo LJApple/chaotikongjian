@@ -14,10 +14,7 @@
               <div class="fcuc-use" @click="toMyForum">发过的主题</div>
             </div>
         </div>
-        <div class="logo">
-            <!-- <img  class="logo" src="../../assets/images/logo.png" alt=""> -->
-            卡神来帮忙
-        </div>
+       <img  class="fc-logo" src="../../assets/images/logo.png" alt="">
       </div>
     </div>
     <div class="f-list">

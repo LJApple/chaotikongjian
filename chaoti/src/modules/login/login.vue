@@ -2,10 +2,28 @@
   <div class="login">
      <div class="l-img"><img class="li-img" src="../../assets/images/logo.png" alt=""></div>
      <div class="l-input">
-      <input placeholder="请输入用户名" v-model="userName"/>
-      <div class="line"></div>
+      <!-- <input placeholder="请输入用户名" v-model="userName"/>
       <input placeholder="请输入密码" v-model="passWord" type="password"/>
-      <div class="line"></div>
+      <div class="line"></div> -->
+      <van-field  
+          v-model="userName"
+          required
+          class="li-list"
+          :border="false"
+          clearable
+          label="用户名"
+          placeholder="请输入用户名"
+          @click-icon="$toast('question')"
+      />
+      <van-field
+          v-model="passWord"
+          type="password"
+          class="li-list"
+          label="密码"
+          :border="false"
+          placeholder="请输入密码"
+          required
+      />
     </div>
     <div class="l-btn" @click="login" :data-index="1">登录</div>
     <div class="l-forget" @click="forgetPwd">忘记密码?</div>
@@ -117,7 +135,7 @@ export default {
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
 .login
-  background url(../../assets/images/bg.jpg) rgb(42,144,223) top no-repeat
+  background #fff
   background-size 100%
   height 100%
   display flex
@@ -126,39 +144,34 @@ export default {
   .l-input
     display flex
     flex-direction column
-    height 98px
-    min-height @height
-    ::-webkit-input-placeholder
-      color #ffffff
-    input 
-      height 48px
-      color #ffffff
-      padding 0 10px
-      font-size 16px
-      background-color rgba(0, 0, 0, 0)
-      box-sizing border-box
-    .line
-      border-bottom 1px solid #ffffff
+    // margin-top 50px
+    // ::-webkit-input-placeholder
+    //   color #ffffff
+    .li-list
+        border 1px solid #cccccc
+        margin-top 25px
+        border-radius 4px
+        box-shadow 2rpx 2rpx 5rpx rgba(0, 0, 0,.2)
   .l-btn
     font-size 16px
-    height 30px
-    border-radius 30px
-    line-height 30px
-    color $bg-color
+    height 44px
+    border-radius 4px
+    line-height @height 
+    color #fff
     text-align center
-    background-color #ffffff
+    background linear-gradient(0deg, #ff5959 0, #ff3e3e 100%)
     margin-top 40px
   .l-img
     display flex
     justify-content center
-    height 240px
     align-items center
+    padding 50px 0
     .li-img
-      height 120px
-      width 120px
+      height 62px
+      width 161px
   .l-forget
     font-size 16px
-    color #ffffff
+    color #999999
     text-align center
     padding 30px 0
 </style>

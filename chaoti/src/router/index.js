@@ -87,7 +87,7 @@ const router = new Router({
       name: 'forum',
       component: forum,
       meta: {
-        title: '唠嗑儿',
+        title: '卡神来帮忙',
         keepAlive: true,
         requireAuth:true
       }
@@ -97,7 +97,7 @@ const router = new Router({
       name: 'forumDetail',
       component: forumDetail,
       meta: {
-        title: '模块1',
+        title: '意见反馈',
         keepAlive: true
       }
     },

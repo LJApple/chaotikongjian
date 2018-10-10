@@ -104,8 +104,8 @@ export default {
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
 @import "../../assets/stylus/mixin.styl"
-.nw
-    // padding-top 60px
+.swiper-slide
+    width 33.33333%
 .nw-list
     height 48px
     margin-top 10px

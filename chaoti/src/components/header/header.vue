@@ -5,10 +5,7 @@
         <!-- <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div> -->
       </div>
       <div class="f-content">
-        <div class="logo">
-            <!-- <img  class="logo" src="../../assets/images/logo.png" alt=""> -->
-            卡神来帮忙
-        </div>
+        <img class="fc-logo" src="../../assets/images/logo.png" alt="">
         <div class="fc-user">
             <img class="" v-if="!userInfo.photo" src="../../assets/images/defalut-wihte.png" alt="">
             <img v-else :src="userInfo.photo" alt="">
@@ -98,6 +95,7 @@ export default {
   padding 0 12px
   align-items center
   height 140px
+  position relative
   .fc-user
     display flex
     img 
