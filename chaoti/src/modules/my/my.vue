@@ -81,10 +81,13 @@
             <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(4)"><div class="classRadio" v-if="isExpend">全部</div></div>
           </mt-palette-button>
         </mt-tab-container-item>
-        <mt-tab-container-item id="2">
+        <mt-tab-container-item id="2" v-if="exper">
           <div class="animation">
-            <img src="../../assets/images/exprience-bg.jpg" alt="">
-            <div class="a-count">{{sumExperience}}</div>
+            <div class="a-change">
+                <img src="../../assets/images/exprience-bg.jpg" alt="">
+                <div class="a-count">{{sumExperience}}</div>
+            </div>
+            <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" to="/IntegralRankings">积分排行榜</router-link></div>
           </div>
           <!-- <div class="total">
              <mt-cell title="个人总体验值">
@@ -124,62 +127,8 @@
             <span class="my-ex">第{{exper.experienceSort}}名</span>
             <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-          <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" to="/IntegralRankings">积分排行榜</router-link></div>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
-          <!-- <div class="type1" :hidden="isClass">
-              <div class="header">
-                <div class="h-left">
-                  <img src="../../assets/images/done.png" alt="">
-                  <span>班级：</span>
-                </div>
-                <div class="h-name">信动人生体验团</div>
-                <div class="h-right">
-                  <img src="../../assets/images/done.png" alt="">
-                  <span>班级：</span>
-                </div>
-                <div class="h-name">第一名</div>
-              </div>
-              <div class="cell" v-for="(item, index) in classList" :key="index">
-                <div class="c-first">{{index + 1}}</div>
-                <div class="c-second">
-                  <img :src="item.imgUrl" alt="">
-                  <span>{{item.name}}</span>
-                </div>
-                <div class="c-three">级别 {{item.level}}</div>
-                <div class="c-four">{{item.core}}分</div>
-              </div>
-          </div>
-          <div class="type2" :hidden="!isClass">
-              <div v-for="(item, index) in allList" :key="index">
-                 <div class="header">
-                  <div class="h-left">
-                    <img src="../../assets/images/done.png" alt="">
-                    <span>班级：</span>
-                  </div>
-                  <div class="h-name">{{item.className}}</div>
-                  <div class="h-right">
-                    <img src="../../assets/images/done.png" alt="">
-                    <span>班级：</span>
-                  </div>
-                  <div class="h-name">第{{item.count}}名</div>
-                </div>
-                <div class="cell">
-                  <div class="c-first">{{index + 1}}</div>
-                  <div class="c-second">
-                    <img :src="item.imgUrl" alt="">
-                    <span>{{item.name}}</span>
-                  </div>
-                  <div class="c-three">级别 {{item.level}}</div>
-                  <div class="c-four">{{item.core}}分</div>
-                </div>
-              </div>
-          </div>
-          <mt-palette-button content="排名" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
-            direction="lt" class="pb changeClass" ref="target_1" :radius="60"  mainButtonStyle="color:#fff;background-color:#26a2ff;">
-            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio">班级</div></div>
-            <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio">全部</div></div>
-          </mt-palette-button> -->
            <div class="s-list">
                 <div class="sl-list">
                     <div class="sll-img">
@@ -288,7 +237,7 @@ export default {
       }, // 文件内容
       rules: null, // 规则
       rulesText: null, // 规则内容
-      exper: {}, // 积分
+      exper: null, // 积分
       isExpend: false,
       getTaskList: [],
       getTaskListOne: [],
@@ -442,17 +391,19 @@ export default {
     },
     // 获取经验值
     getexper() {
-      this.sumExperience = 0
       let exp
       clearInterval(exp)
+    //   this.sumExperience = 0
+      if (this.exper) return
       this.$axios.get(this.$api.getexper).then(response => {
         const { success, data } = response.data;
         if (success) {
             this.exper = data
+            this.sumExperience = data.sumExperience - data.convertExperience - 30
             exp = setInterval(() => {
-              this.sumExperience += 1
-               if (this.sumExperience === data.sumExperience - data.convertExperience) clearInterval(exp)
-            }, 10)
+                this.sumExperience += 1
+                if (this.sumExperience === data.sumExperience - data.convertExperience) clearInterval(exp)
+            }, 50)
         }
       })
     },
@@ -586,11 +537,12 @@ export default {
 @import '../../assets/stylus/variable.styl';
 .my-contain
     margin-top: 10px
+    padding-bottom 30px
     /deep/ .mint-cell-wrapper
         padding-left: 10px
     .mc-bottom
         text-align: center
-        height: 100px
+        height: 50px
         line-height: @height
 .total
   margin-bottom: 10px
@@ -598,7 +550,7 @@ export default {
   /deep/ .mint-cell-text
     font-weight: bolder
   /deep/ .my-ex
-    color: #26a2ff
+    color: $bg-color
 .header {
   display: flex;
   font-size: 14px;
@@ -890,34 +842,38 @@ export default {
   position: absolute
   right: 12px
   img
-    height: 30px
-    width: @height
+    height 50px
+    width 154px
 .animation
-  height: 100px
+  height: 150px
   width: 100%
   display: flex
   justify-content center
   align-items center
+  flex-direction column
   position relative
   background-color: #ffffff
   margin-bottom: 10px
-  img
-    height: 70px
-    width: @height
-  .a-count
-    position absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    margin: auto
-    height: 70px
-    display flex
-    justify-content center
-    align-items center
-    width: @height
-    font-weight bolder
-    font-size 22px
+  .a-change
+    height 70px
+    position relative
+    img
+        height: 70px
+        width: @height
+    .a-count
+        position absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        margin: auto
+        height: 70px
+        display flex
+        justify-content center
+        align-items center
+        width: @height
+        font-weight bolder
+        font-size 22px
 .all-list
   padding-left: 20px
   border-top: 1px solid #ddd

@@ -166,7 +166,7 @@ export default {
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
 .fdl-null
-    height 100vh
+    height 70vh
     width 100%
     display flex
     align-items center
@@ -188,6 +188,7 @@ export default {
         width @height
 .fd-list
     // margin-top 101px
+    padding-bottom 30px
     .fdl-list
         margin-top 10px
         padding 12px
