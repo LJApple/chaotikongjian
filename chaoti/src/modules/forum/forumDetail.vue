@@ -215,11 +215,13 @@ export default {
             display flex
             padding-top 12px
             img 
-                height 22px
+                height 18px
                 width @height
             span 
                 padding 0 10px
                 font-size 16px
+                line-height 22px
+                display block
             .fdllb-btns
                 width 50%
                 display flex
