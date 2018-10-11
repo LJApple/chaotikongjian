@@ -147,6 +147,7 @@ export default {
     // margin-top 50px
     // ::-webkit-input-placeholder
     //   color #ffffff
+    min-height 136px
     .li-list
         border 1px solid #cccccc
         margin-top 25px

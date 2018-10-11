@@ -7,23 +7,23 @@
         </swiper>
     </div>
     <div class="page-navbar">
-        <div class="pn-list" v-if="type === 1"  v-for="item in mypostslistOne" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+        <div class="pn-list" v-if="type === 2"  v-for="item in mypostslistOne" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link  :title="item.details">
-                <span class="red">新的回复</span>
+                <!-- <span class="red">新的回复</span> -->
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="type === 2"  v-for="item in mypostslistTwo" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+        <div class="pn-list" v-if="type === 1"  v-for="item in mypostslistTwo" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link :title="item.details">
-                <span>已回复</span>
+                <!-- <span>已回复</span> -->
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="type === 3"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
+        <div class="pn-list" v-if="type === 0"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link :title="item.details">
-                <span v-if="item.isReply === 0">已回复</span>
-                <span v-if="item.isReply === 1" class="red">新的回复</span>
+                <!-- <span v-if="item.isReply === 0">已回复</span>
+                <span v-if="item.isReply === 1" class="red">新的回复</span> -->
             </mt-cell>
         </div>
-        <div class="pn-null" v-if="(mypostslistOne.length === 0 && type === 1) || (mypostslistTwo.length === 0 && type === 2) ||  (mypostslist.length === 0 && type === 3)">暂无数据</div>
+        <div class="pn-null" v-if="(mypostslistOne.length === 0 && type === 2) || (mypostslistTwo.length === 0 && type === 1) ||  (mypostslist.length === 0 && type === 0)">暂无数据</div>
     </div>
     <router-view></router-view>
   </div>
@@ -49,7 +49,7 @@ export default {
         mypostslist: [],
         mypostslistOne: [],
         mypostslistTwo: [],
-        type: 3,
+        type: 0,
         isExpend: false,
         swiperOption: {
             spaceBetween: 0,
@@ -69,9 +69,9 @@ export default {
             }
         },
         postsTypes: [
-            {name: '全部', id: 3},
-            {name: '已回复', id: 1},
-            {name: '新消息', id: 2}
+            {name: '全部', id: 0},
+            {name: '已回复', id: 2},
+            {name: '新消息', id: 1}
         ]        
     }
   },
@@ -90,10 +90,10 @@ export default {
         const { data, success } = response.data
         if (success) {
             for (const item of data) {
-                const {receiveStatus} = item 
-                if (receiveStatus === 0) {
+                const {isReply} = item 
+                if (isReply === 0) {
                     this.mypostslistOne.push(item)
-                } else if (receiveStatus === 1) {
+                } else if (isReply === 1) {
                     this.mypostslistTwo.push(item)
                 }
             }

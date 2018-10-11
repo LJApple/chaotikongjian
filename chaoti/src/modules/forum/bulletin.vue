@@ -9,7 +9,7 @@
         </div>
         <div class="nw-list" v-if="bulletinList.length" @click="navToWorkDetail(item.Id)" :key="item.Id" v-for="item in bulletinList">
             <div class="nwl-title">{{item.Title}}</div>
-            <div class="nwl-tip">{{item.TypeName}}</div>
+            <!-- <div class="nwl-tip">{{item.TypeName}}</div> -->
         </div>
         <router-view></router-view>
     </div>

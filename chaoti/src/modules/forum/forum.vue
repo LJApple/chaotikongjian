@@ -71,7 +71,7 @@ export default {
     // 设置
     setting() {
       this.$router.push({
-        path: '/my'
+        path: '/setting'
       })
     },
       // 跳转发过的主图

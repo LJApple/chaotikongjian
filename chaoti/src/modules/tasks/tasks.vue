@@ -5,22 +5,22 @@
     <div class="page-navbar">
         <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
-                <span>未领取</span>
+                <!-- <span>未领取</span> -->
             </mt-cell>
         </div>
         <div class="pn-list" v-if="val === 2"  v-for="(item, index) in getTaskListTwo" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
-                <span>已领取</span>
+                <!-- <span>已领取</span> -->
             </mt-cell>
         </div>
         <div class="pn-list" v-if="val === 3"  v-for="(item, index) in getTaskListThree" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link :title="item.title">
-                <span>已完成</span>
+                <!-- <span>已完成</span> -->
             </mt-cell>
         </div>
         <div class="pn-list" v-if="val === 4"  v-for="(item, index) in getTaskListFour" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link :title="item.title">
-                <span>已过期</span>
+                <!-- <span>已过期</span> -->
             </mt-cell>
         </div>
         <!-- 全部 -->

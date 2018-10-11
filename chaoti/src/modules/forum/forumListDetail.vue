@@ -11,7 +11,7 @@
        <swiper class="fd-banner" :options="swiperOption">
         <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
             <img :src="item" alt="" @click="clickImg"></swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
+        <div class="swiper-pagination" v-if="forumListDetailInfo.uploadFileUrl.length > 1" slot="pagination"></div>
       </swiper>
       <div class="fd-content">
           <div class="fd-opr">

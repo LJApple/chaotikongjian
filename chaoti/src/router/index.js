@@ -33,7 +33,8 @@ const  nwDetail = resolve => require.ensure([], () => resolve(require('../module
 const  bulletin = resolve => require.ensure([], () => resolve(require('../modules/forum/bulletin')), 'bulletin')
 // 热点详情
 const  bulletinDetail = resolve => require.ensure([], () => resolve(require('../modules/forum/bulletinDetail')), 'bulletinDetail')
-
+// 设置
+const  setting = resolve => require.ensure([], () => resolve(require('../modules/my/setting')), 'setting')
 const router = new Router({
   mode : 'history',
   base: '/t2/',  //添加的地方
@@ -74,6 +75,15 @@ const router = new Router({
         requireAuth: true
       }
     },
+    {
+        path: '/setting',
+        name: 'setting',
+        component: setting,
+        meta: {
+          title: 'setting',
+          requireAuth: true
+        }
+      },
     {
       path: '/integralRankings',
       name: 'integralRankings',

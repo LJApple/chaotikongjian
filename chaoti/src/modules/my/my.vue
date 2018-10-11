@@ -49,28 +49,28 @@
           </mt-cell> -->
           <div class="pn-list" v-if="val === 1"  v-for="item in getTaskListOne" :key="item.taskId" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
-                <span>已领取</span>
+                <!-- <span>已领取</span> -->
             </mt-cell>
           </div>
           <div class="pn-list" v-if="val === 2" v-for="item in getTaskListTwo" :key="item.taskId" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link :title="item.title">
-                <span>已完成</span>
+                <!-- <span>已完成</span> -->
             </mt-cell>
           </div>
           <div class="pn-list" v-if="val === 3" v-for="item in getTaskListThree" :key="item.taskId" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link :title="item.title">
-                <span>已过期</span>
+                <!-- <span>已过期</span> -->
             </mt-cell>
           </div>
           <div class="pn-list" v-if="val === 4" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 1" :title="item.title">
-                <span>已领取</span>
+                <!-- <span>已领取</span> -->
             </mt-cell>
             <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 2" :title="item.title">
-                <span>已完成</span>
+                <!-- <span>已完成</span> -->
             </mt-cell>
             <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 3" :title="item.title">
-                <span>已过期</span>
+                <!-- <span>已过期</span> -->
             </mt-cell>
           </div>
           <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
@@ -175,7 +175,7 @@
                 </mt-cell> -->
                 </div>
             <div class="submit" >
-                <mt-button type="primary" size="large" @click="submitData">提交</mt-button>
+                <mt-button class="red" type="primary" size="large" @click="submitData">提交</mt-button>
             </div>
         </mt-tab-container-item>
       </mt-tab-container>
@@ -399,7 +399,11 @@ export default {
         const { success, data } = response.data;
         if (success) {
             this.exper = data
-            this.sumExperience = data.sumExperience - data.convertExperience - 30
+            const sum = data.sumExperience - data.convertExperience
+            if (!sum) return
+            if (sum > 30) {
+               this.sumExperience = sum - 30
+            }
             exp = setInterval(() => {
                 this.sumExperience += 1
                 if (this.sumExperience === data.sumExperience - data.convertExperience) clearInterval(exp)
