@@ -5,7 +5,7 @@
       <!-- <input placeholder="请输入用户名" v-model="userName"/>
       <input placeholder="请输入密码" v-model="passWord" type="password"/>
       <div class="line"></div> -->
-      <van-field  
+      <van-field
           v-model="userName"
           required
           class="li-list"
@@ -126,7 +126,7 @@ export default {
    }
   },
   created(){
-      common.delCookie('account_token')
+      // common.delCookie('account_token')
   },
   mounted(){
   }
@@ -157,7 +157,7 @@ export default {
     font-size 16px
     height 44px
     border-radius 4px
-    line-height @height 
+    line-height @height
     color #fff
     text-align center
     background linear-gradient(0deg, #ff5959 0, #ff3e3e 100%)
