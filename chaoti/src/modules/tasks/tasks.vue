@@ -26,26 +26,26 @@
         <!-- 全部 -->
          <div class="pn-list"  v-if="val === 5" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 0" :title="item.title">
-                <span>未领取</span>
+                <span>领任务</span>
             </mt-cell>
             <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 1" :title="item.title">
-                <span>已领取</span>
+                <span>待提交</span>
             </mt-cell>
             <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 2" :title="item.title">
                 <span>已完成</span>
             </mt-cell>
             <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 3" :title="item.title">
-                <span>未完成</span>
+                <span>已过期</span>
             </mt-cell>
         </div>
     </div>
     <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
     direction="lt" class="changeClass" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">未领取</div></div>
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">已领取</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">领任务</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">待提交</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">已过期</div></div>
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(5)"><div class="classRadio" v-if="isExpend">全部</div></div>
+    <!-- <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(5)"><div class="classRadio" v-if="isExpend">全部</div></div> -->
    </mt-palette-button>
   </div>
 </template>
@@ -69,7 +69,8 @@ export default {
      getTaskListThree: [],
      getTaskListFour: [],
      isExpend: false,
-     val: 1
+     val: 1,
+     content: '领任务'
     }
   },
   watch:{
