@@ -8,20 +8,20 @@
             <div class="tdlc-con"><span class="bloder">内容：</span>{{taskDetail.details}}</div>
             <div class="tdlc-time">
               <div>创建时间：{{taskDetail.createTime}}</div>
-              <div>截止时间：{{taskDetail.receiveByTime}}</div>  
+              <div>截止时间：{{taskDetail.receiveByTime}}</div>
             </div>
           </div>
            <div class="uplad">
-              <upload @fileList="fileList" :isHaveUpload="isHaveUpload" :fileName="taskDetail.fileName"></upload>  
+              <upload @fileList="fileList" :isHaveUpload="isHaveUpload" :fileName="taskDetail.fileName"></upload>
             </div>
           <div class="revieseTask pd20" v-if="taskType === 0">
-            <mt-button v-if="taskDetail.receiveStatus === 0 && taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="red" v-if="taskDetail.receiveStatus === 0 && taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 1 && taskDetail.taskStatus === 0" size="large" type="primary">已领取</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 待提交任务 -->
           <div class="stayTask pd20" v-if="taskType === 1">
-            <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>          
+            <mt-button class="red" v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
           </div>
           <!-- 未完成任务 -->
@@ -146,13 +146,13 @@ export default {
   .tdl-title
     font-size $fs18
     background #ffffff
-    padding 20px $pagePadding 
+    padding 20px $pagePadding
     line-height 25px
     textOverflowEs(2)
   .tdl-content
     font-size $fs16
     background #ffffff
-    padding 20px $pagePadding 
+    padding 20px $pagePadding
     margin-top 10px
     line-height 24px
     .tdlc-time

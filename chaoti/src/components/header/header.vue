@@ -2,7 +2,7 @@
     <div class="f-header">
       <div class="setting">
         <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div>
-        <!-- <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div> -->
+        <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
       <div class="f-content">
         <img class="fc-logo" src="../../assets/images/logo.png" alt="">
@@ -52,7 +52,7 @@ export default {
     // 设置
     setting() {
       this.$router.push({
-        path: '/my'
+        path: '/setting'
       })
     },
      // 获取用户信息
@@ -87,7 +87,7 @@ export default {
     display flex
     .logout
       padding 15px
-      img 
+      img
         height 20px
         width 20px
 .f-content
@@ -99,7 +99,7 @@ export default {
   position relative
   .fc-user
     display flex
-    img 
+    img
       height 60px
       width @height
       border-radius @height
