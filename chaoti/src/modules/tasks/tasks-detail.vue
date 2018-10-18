@@ -19,7 +19,7 @@
             <mt-button class="red" v-if="taskDetail.receiveStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 1" size="large" type="primary">已过期</mt-button>
             <mt-button class="red" v-if="taskDetail.receiveStatus === 2" @click="satyTask" size="large" type="primary">提交任务</mt-button>
-            <mt-button class="red" v-if="taskDetail.receiveStatus === 3"  size="large" type="primary">修改</mt-button>
+            <mt-button class="red" v-if="taskDetail.receiveStatus === 3" @click="satyTask" size="large" type="primary">修改</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 4" size="large" type="primary">已完成</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 5" size="large" type="primary">已领取，未提交</mt-button>
           </div>
@@ -90,10 +90,10 @@ export default {
             } else {
                this.isHaveUpload = false
             }
-            if (this.taskType === 0) {
-              data.fileName = data.fileName.split('|')[0]
+            if (data.receiveStatus === 3 || data.receiveStatus === 4) {
+              data.fileName = data.fileName.split('|')[1]
             } else {
-              data.fileName = data.fileName.split('|')[1] ? '': data.fileName
+              data.fileName = data.fileName.split('|')[0]
             }
             this.taskDetail = data
           }
