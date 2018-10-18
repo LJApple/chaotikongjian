@@ -14,25 +14,28 @@
            <div class="uplad">
               <upload @fileList="fileList" :isHaveUpload="isHaveUpload" :fileName="taskDetail.fileName"></upload>
             </div>
-          <div class="revieseTask pd20" v-if="taskType === 0">
-            <mt-button class="red" v-if="taskDetail.receiveStatus === 0 && taskDetail.taskStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
-            <mt-button class="gray" v-if="taskDetail.receiveStatus === 1 && taskDetail.taskStatus === 0" size="large" type="primary">已领取</mt-button>
-            <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
+          <div class="revieseTask pd20">
+            <mt-button class="red" v-if="taskDetail.receiveStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.receiveStatus === 1" size="large" type="primary">已过期</mt-button>
+            <mt-button class="red" v-if="taskDetail.receiveStatus === 2" @click="satyTask" size="large" type="primary">提交任务</mt-button>
+            <mt-button class="gray" v-if="taskDetail.receiveStatus === 3"  size="large" type="primary">修改</mt-button>
+            <mt-button class="gray" v-if="taskDetail.receiveStatus === 4" size="large" type="primary">已完成</mt-button>
+            <mt-button class="gray" v-if="taskDetail.receiveStatus === 5" size="large" type="primary">已领取，未提交</mt-button>
           </div>
           <!-- 待提交任务 -->
-          <div class="stayTask pd20" v-if="taskType === 1">
+          <!-- <div class="stayTask pd20" v-if="taskType === 1">
             <mt-button class="red" v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">提交任务</mt-button>
-            <mt-button class="gray" v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已过期</mt-button>
-          </div>
+            <mt-button class="gray" v-if="taskDetail.taskStatus === 1" @click="satyTask" size="large" type="primary">已领取，未提交</mt-button>
+          </div> -->
           <!-- 未完成任务 -->
-          <div class="comTask pd20" v-if="taskType === 3">
+          <!-- <div class="comTask pd20" v-if="taskType === 3">
             <mt-button class="gray" size="large" type="primary">已过期</mt-button>
-          </div>
+          </div> -->
           <!-- 已完成任务 -->
-          <div class="stayTask pd20" v-if="taskType === 2">
+          <!-- <div class="stayTask pd20" v-if="taskType === 2">
             <mt-button v-if="taskDetail.taskStatus === 0" @click="satyTask" size="large" type="primary">修改</mt-button>
             <mt-button class="gray" v-if="taskDetail.taskStatus === 1" size="large" type="primary">已过期</mt-button>
-          </div>
+          </div> -->
         </div>
     </div>
   </transition>
@@ -77,9 +80,13 @@ export default {
       this.taskType = parseInt(this.$route.query.taskType)
       const url = `${this.$api.gettask}?taskId=${this.taskId}`
       this.$axios.get(url).then((response) => {
-          console.log('response', response)
           const { data, success } = response.data
           if (success) {
+            if (data.receiveStatus === 0 || data.receiveStatus === 2 || data.receiveStatus === 3) {
+              this.isHaveUpload = true
+            } else {
+               this.isHaveUpload = false
+            }
             if (this.taskType === 0) {
               data.fileName = data.fileName.split('|')[0]
             } else {
@@ -133,7 +140,7 @@ export default {
   mounted(){
     const params = this.$route.params
     const query = this.$route.query
-    this.isHaveUpload = query.isHaveUpload
+    // this.isHaveUpload = query.isHaveUpload
   }
 }
 </script>

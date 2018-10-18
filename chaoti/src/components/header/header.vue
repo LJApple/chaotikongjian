@@ -5,7 +5,7 @@
         <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
       <div class="f-content">
-        <img class="fc-logo" src="../../assets/images/logo.png" alt="">
+        <img class="fc-logo" src="../../assets/images/logo-in.png" alt="">
         <div class="fc-user">
             <img class="" v-if="!userInfo.photo" src="../../assets/images/defalut-wihte.png" alt="">
             <img v-else :src="userInfo.photo" alt="">
@@ -67,9 +67,11 @@ export default {
     }
   },
   created() {
-    this.getUserInfo()
+    // this.getUserInfo()
   },
-  mounted(){}
+  mounted(){
+    this.getUserInfo()
+  }
 }
 </script>
 <style lang="stylus" scoped rel="stylesheet/stylus">

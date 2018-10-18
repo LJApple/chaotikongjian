@@ -1,5 +1,5 @@
 <template>
-   <div class="upload">
+   <div class="upload"  v-if="isHaveUpload">
         <div class="u-title">
             <div class="ut-title">任务书:</div>
             <div class="ut-content">{{fileName}}</div>
@@ -7,7 +7,7 @@
         <div class="u-Imglist" v-if="isShowImg">
            <img v-for="(item, index) in filesUrlList" :key="index" :src="item" alt="">
         </div>
-        <div class="u-img" v-if="isHaveUpload">
+        <div class="u-img">
             <div class="uploadBtn"><img src="../../assets/images/upload.png" alt="Alternate Text" /></div>
             <input type="file" class="file-btn"  @change="getFile"/>
         </div>
@@ -87,6 +87,7 @@ export default {
     margin-top 10px
 .u-img 
     padding 10px 0
+    position relative
     .file-btn 
         position: absolute
         width: 100%

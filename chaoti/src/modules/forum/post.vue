@@ -300,6 +300,7 @@ export default {
             height 30px
             width 30px
 .u-img 
+    position relative
     .file-btn 
         position: absolute
         width: 25%

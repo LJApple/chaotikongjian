@@ -81,7 +81,7 @@ const router = new Router({
         name: 'setting',
         component: setting,
         meta: {
-          title: 'setting',
+          title: '设置',
           requireAuth: true
         }
       },

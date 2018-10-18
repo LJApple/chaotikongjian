@@ -23,6 +23,7 @@
                 <!-- <span>已过期</span> -->
             </mt-cell>
         </div>
+        <div class="pn-null" v-if="(getTaskListOne.length === 0 && val === 1) || (getTaskListTwo.length === 0 && val === 2)|| (getTaskListThree.length === 0 && val === 3)|| (getTaskListFour.length === 0 && val === 4)">暂无数据</div>
         <!-- 全部 -->
          <div class="pn-list"  v-if="val === 5" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 0" :title="item.title">
@@ -138,15 +139,15 @@ export default {
         this.getTaskListFour = []
         if (success) {
           for (const item of data) {
-            item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
-            const {receiveStatus} = item 
-            if (receiveStatus === 0) {
+            // item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
+            const {receiveStatus, taskStatus} = item 
+            if (taskStatus === 0) {
               this.getTaskListOne.push(item)
             } else if (receiveStatus === 1) {
               this.getTaskListTwo.push(item)
             } else if (receiveStatus === 2) {
               this.getTaskListThree.push(item)
-            } else if (receiveStatus === 3) {
+            } else if (taskStatus === 1) {
                this.getTaskListFour.push(item)
             }
           }
