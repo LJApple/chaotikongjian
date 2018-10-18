@@ -4,7 +4,7 @@
       <div class="r-list" v-for="(item, index) in ranking" :key="item.userId">
           <div class="rl-num">{{index + 1}}</div>
           <div class="rl-photo">
-              <img v-if="!item.photo" src="../../assets/images/default.png" alt="">
+              <img v-if="item.photo" :src="item.photo" alt="">
               <img v-else src="../../assets/images/default.png" alt="">
           </div>
           <div class="rl-name">{{item.userName}}</div>
@@ -55,8 +55,9 @@ export default {
     font-size 14px
     .rl-photo
         img 
-            height 60px
+            height 50px
             width @height
+            border-radius @height 
     .rl-num
         width 5%
         font-weight bolder

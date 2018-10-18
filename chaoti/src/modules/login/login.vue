@@ -15,7 +15,7 @@
           :border="false"
           clearable
           label="工号"
-          placeholder="请输入用户名"
+          placeholder="请输入工号"
           @click-icon="$toast('question')"
       />
       <van-field
