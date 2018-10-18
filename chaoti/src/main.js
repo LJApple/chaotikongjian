@@ -56,7 +56,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
    const {fullPath} = router.history.current
-   if (status === 403) {
+   if (status === 403 || status === 401) {
     // window.localStorage.removeItem('account_token')
     common.delCookie('account_token')
     router.replace({
