@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="task-detail">
-        <div class="t-header"></div>
+        <Header></Header>
         <div class="td-list">
           <div class="tdl-title"><span class="bloder">任务标题：</span>{{taskDetail.title}}</div>
           <div class="tdl-content">
@@ -45,11 +45,13 @@
 import { mapGetters } from 'vuex'
 import upload from 'components/upload/upload'
 import { MessageBox } from 'mint-ui'
+import Header from 'components/header/header'
 import common from '../../utils/common'
 import qs from 'qs'
 export default {
   components: {
-      upload
+    upload,
+    Header
   },
   props:{},
   data(){
@@ -82,7 +84,7 @@ export default {
       this.$axios.get(url).then((response) => {
           const { data, success } = response.data
           if (success) {
-            if (data.receiveStatus === 0 || data.receiveStatus === 2 || data.receiveStatus === 3) {
+            if (data.receiveStatus === 2 || data.receiveStatus === 3) {
               this.isHaveUpload = true
             } else {
                this.isHaveUpload = false
