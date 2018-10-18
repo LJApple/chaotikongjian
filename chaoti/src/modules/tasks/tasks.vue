@@ -3,42 +3,12 @@
     <!-- <div class="t-header"></div> -->
     <Header :isShowSetting="true"></Header>
     <div class="page-navbar">
-        <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
+        <div class="pn-list" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
                 <!-- <span>未领取</span> -->
             </mt-cell>
         </div>
-        <div class="pn-list" v-if="val === 2"  v-for="(item, index) in getTaskListTwo" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
-            <mt-cell class="pnl-list" is-link  :title="item.title">
-                <!-- <span>已领取</span> -->
-            </mt-cell>
-        </div>
-        <div class="pn-list" v-if="val === 3"  v-for="(item, index) in getTaskListThree" :key="index" @click="toTaskDetail(item.taskId, true, item.receiveStatus)">
-            <mt-cell class="pnl-list" is-link :title="item.title">
-                <!-- <span>已完成</span> -->
-            </mt-cell>
-        </div>
-        <div class="pn-list" v-if="val === 4"  v-for="(item, index) in getTaskListFour" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
-            <mt-cell class="pnl-list" is-link :title="item.title">
-                <!-- <span>已过期</span> -->
-            </mt-cell>
-        </div>
-        <div class="pn-null" v-if="(getTaskListOne.length === 0 && val === 1) || (getTaskListTwo.length === 0 && val === 2)|| (getTaskListThree.length === 0 && val === 3)|| (getTaskListFour.length === 0 && val === 4)">暂无数据</div>
-        <!-- 全部 -->
-         <div class="pn-list"  v-if="val === 5" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
-            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 0" :title="item.title">
-                <span>领任务</span>
-            </mt-cell>
-            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 1" :title="item.title">
-                <span>待提交</span>
-            </mt-cell>
-            <mt-cell class="pnl-list" is-link v-if="item.receiveStatus === 2" :title="item.title">
-                <span>已完成</span>
-            </mt-cell>
-            <mt-cell class="pnl-list" is-link  v-if="item.receiveStatus === 3" :title="item.title">
-                <span>已过期</span>
-            </mt-cell>
-        </div>
+        <div class="pn-null" v-if="getTaskList.length === 0">暂无数据</div>
     </div>
     <mt-palette-button :content="content" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
     direction="lt" class="changeClass" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
@@ -65,10 +35,6 @@ export default {
   data(){
     return {
      getTaskList: [],
-     getTaskListOne: [],
-     getTaskListTwo: [],
-     getTaskListThree: [],
-     getTaskListFour: [],
      isExpend: false,
      val: 1,
      content: '领任务'
@@ -138,34 +104,13 @@ export default {
     },
     // 获取任务列表 第一步
     getTaskOneTap() {
-      const url = this.$api.taskOneTap
+      this.getTaskList = []
+      const url = this.$api.taskOneTap + '?type=' + (this.val - 1)
       this.$axios.get(url).then((response) => {
         console.log('response', response)
         const { data, success } = response.data
-        this.getTaskList = []
-        this.getTaskListOne = []
-         this.getTaskListTwo = []
-        this.getTaskListThree = []
-        this.getTaskListFour = []
         if (success) {
-          for (const item of data) {
-            // item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
-            const {receiveStatus, taskStatus} = item
-            console.log('receiveStatus', receiveStatus)
-            if (receiveStatus === 0 && taskStatus === 0) {
-              this.getTaskListOne.push(item)
-            } 
-            if (receiveStatus === 1) {
-              this.getTaskListTwo.push(item)
-            } else if (receiveStatus === 2) {
-              this.getTaskListThree.push(item)
-            } 
-            if (taskStatus === 1) {
-               this.getTaskListFour.push(item)
-            }
-          }
           this.getTaskList = data
-          console.log('this.', this.getTaskListTwo)
         }
       }).catch((error) => {
         
