@@ -1,7 +1,7 @@
 <template>
   <transition name="slide">
     <div class="task-detail">
-        <Header :isShowSetting="false"></Header>
+        <Header :isShowSetting="false" :isShowsetImg="false"></Header>
         <div class="td-list">
           <div class="tdl-title"><span class="bloder">任务标题：</span>{{taskDetail.title}}</div>
           <div class="tdl-content">

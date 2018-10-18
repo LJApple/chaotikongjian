@@ -2,7 +2,7 @@
     <div class="f-header">
       <div class="setting" v-if="isShowSetting">
         <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div>
-        <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
+        <div class="logout" v-if="isShowsetImg" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
       <div class="f-content">
         <img class="fc-logo" src="../../assets/images/logo-in.png" alt="">
@@ -23,7 +23,8 @@ import { Dialog } from 'vant'
 export default {
   components:{},
   props:{
-    isShowSetting: true
+    isShowSetting: true,
+    isShowsetImg: true
   },
   data(){
     return {

@@ -3,12 +3,12 @@
     <div class="t-header">
       <div class="setting">
         <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div>
-        <!-- <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div> -->
+        <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
       <div class="th-photo">
         <img v-if="userInfo.photo === ''" src="../../assets/images/defalut-wihte.png" alt="">
         <img v-else :src="userInfo.photo" alt="">
-        <input type="file" class="file-btn" accept="image/*" @change="getFile"/>
+        <!-- <input type="file" class="file-btn" accept="image/*" @change="getFile"/> -->
       </div>
       <div class="th-right">
         <div class="thr-left">
@@ -31,7 +31,7 @@
           </div> -->
         </div>
       </div>
-      <div class="thrlt-logo"><img src="../../assets/images/logo.png" alt=""></div>
+      <div class="thrlt-logo"><img src="../../assets/images/logo-in.png" alt=""></div>
     </div>
     <div class="page-navbar">
       <mt-navbar class="page-part paddingLR12" v-model="selected">
@@ -165,17 +165,17 @@
                     </div>
                     <mt-field class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
                 </div>
-                <div class="sl-list" @click="changPwd">
+                <!-- <div class="sl-list" @click="changPwd">
                     <mt-cell title="修改密码" value="" class="hasArrow borderBt"  is-link>
                         <img slot="icon" src="../../assets/images/done.png" width="20" height="20">
                     </mt-cell>
-                </div>
+                </div> -->
                 <!-- <mt-cell title="修改头像"  value="" class="hasArrow"  is-link>
                     <img slot="icon" class="paddingLR10" src="../../assets/images/done.png" width="20" height="20">
                 </mt-cell> -->
                 </div>
             <div class="submit" >
-                <mt-button class="red" type="primary" size="large" @click="submitData">提交</mt-button>
+                <!-- <mt-button class="red" type="primary" size="large" @click="submitData">提交</mt-button> -->
             </div>
         </mt-tab-container-item>
       </mt-tab-container>
