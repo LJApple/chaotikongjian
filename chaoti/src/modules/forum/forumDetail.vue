@@ -154,11 +154,13 @@ export default {
   },
    activated () {
     // 缓存返回卸卸载这里
-    this.selctPostsType()
+    // this.selctPostsType()
   },
   created(){
-      // 获取帖子类型
-      this.getPostsType()
+    // 缓存返回卸卸载这里
+    this.selctPostsType()
+    // 获取帖子类型
+    this.getPostsType()
   },
   mounted(){}
 }
