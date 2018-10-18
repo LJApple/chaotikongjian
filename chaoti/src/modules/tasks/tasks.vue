@@ -40,7 +40,7 @@
             </mt-cell>
         </div>
     </div>
-    <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
+    <mt-palette-button :content="content" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
     direction="lt" class="changeClass" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">领任务</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">待提交</div></div>
@@ -89,6 +89,15 @@ export default {
     sub_log(val) {
         console.log('sub_log', val)
         this.val = val
+        if (val === 1) {
+          this.content = '领任务'
+        } else if (val === 2) {
+          this.content = '待提交'
+        } else if (val === 3) {
+          this.content = '已完成'
+        } else if (val === 4) {
+          this.content = '已过期'
+        }
         this.$refs.target_1.collapse()
         return false
     },
@@ -165,12 +174,12 @@ export default {
   },
   activated () {
     // 缓存返回卸卸载这里
-    this.getTaskOneTap()
+    // this.getTaskOneTap()
   },
   created(){
     // this.changeSelected()
     // 领取任务列表数据
-    // this.getTaskOneTap()
+    this.getTaskOneTap()
   },
   mounted(){
 

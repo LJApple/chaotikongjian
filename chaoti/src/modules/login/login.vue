@@ -46,6 +46,7 @@
 <script type="text/ecmascript-6">
 import { getData } from '../../assets/js/dom'
 import common from '../../utils/common'
+import { Toast } from 'vant'
 import { mapMutations } from 'vuex'
 import { MessageBox } from 'mint-ui'
 import qs from 'qs'
@@ -113,12 +114,14 @@ export default {
         }
         param = common.splicingJson(param)
         const url = this.$api.forgetpwd + param
+        Toast.loading({ mask: true })
         this.$axios.post(url).then((res) => {
             const { message, success } = res.data
             if (success) {
                MessageBox.alert('提交成功，请前往您的邮箱修改密码').then(action => {
                    this.isShowModal = false
                })
+               Toast.clear()
             } else {
                this.$toast(message)
             }
