@@ -1,6 +1,6 @@
 <template>
     <div class="f-header">
-      <div class="setting">
+      <div class="setting" v-if="isShowSetting">
         <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div>
         <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
@@ -22,10 +22,12 @@ import common from '../../utils/common'
 import { Dialog } from 'vant'
 export default {
   components:{},
-  props:{},
+  props:{
+    isShowSetting: true
+  },
   data(){
     return {
-        userInfo: {}
+      userInfo: {},
     }
   },
   watch:{

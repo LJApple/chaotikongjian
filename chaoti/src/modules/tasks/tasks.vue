@@ -89,6 +89,7 @@ export default {
     sub_log(val) {
         console.log('sub_log', val)
         this.val = val
+        this.getTaskOneTap()
         if (val === 1) {
           this.content = '领任务'
         } else if (val === 2) {
@@ -149,19 +150,22 @@ export default {
         if (success) {
           for (const item of data) {
             // item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
-            const {receiveStatus, taskStatus} = item 
-            if (taskStatus === 0) {
+            const {receiveStatus, taskStatus} = item
+            console.log('receiveStatus', receiveStatus)
+            if (receiveStatus === 0 && taskStatus === 0) {
               this.getTaskListOne.push(item)
-            } else if (receiveStatus === 1) {
+            } 
+            if (receiveStatus === 1) {
               this.getTaskListTwo.push(item)
             } else if (receiveStatus === 2) {
               this.getTaskListThree.push(item)
-            } else if (taskStatus === 1) {
+            } 
+            if (taskStatus === 1) {
                this.getTaskListFour.push(item)
             }
           }
           this.getTaskList = data
-          console.log('this.', this.getTaskList)
+          console.log('this.', this.getTaskListTwo)
         }
       }).catch((error) => {
         
