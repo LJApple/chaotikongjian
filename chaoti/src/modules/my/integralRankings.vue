@@ -21,9 +21,7 @@ export default {
   props:{},
   data(){
     return {
-        ranking: [
-            {id: 1, photo: '', name: '张三', dpt: '生活部', rank: 3}
-        ]
+        ranking: []
     }
   },
   watch:{},

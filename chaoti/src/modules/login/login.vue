@@ -1,6 +1,9 @@
 <template>
   <div class="login">
-     <div class="l-img"><img class="li-img" src="../../assets/images/logo.png" alt=""></div>
+     <div class="l-img">
+       <img v-if="isForum" class="li-img" src="../../assets/images/logo.png" alt="">
+       <img v-else class="li-img" src="../../assets/images/bg_login.png" alt="">
+      </div>
      <div class="l-input">
       <!-- <input placeholder="请输入用户名" v-model="userName"/>
       <input placeholder="请输入密码" v-model="passWord" type="password"/>
@@ -11,7 +14,7 @@
           class="li-list"
           :border="false"
           clearable
-          label="用户名"
+          label="工号"
           placeholder="请输入用户名"
           @click-icon="$toast('question')"
       />
@@ -59,7 +62,8 @@ export default {
       passWord: null,
       number: null,
       email: null,
-      isShowModal: false
+      isShowModal: false,
+      isForum: false
     }
   },
   methods:{
@@ -130,6 +134,11 @@ export default {
   },
   created(){
       // common.delCookie('account_token')
+    if (this.$route.query.redirect === 'forum') {
+      this.isForum = false
+    } else {
+      this.isForum = true
+    }
   },
   mounted(){
   }
