@@ -8,7 +8,8 @@
             <div class="tdlc-con"><span class="bloder">内容：</span>{{taskDetail.details}}</div>
             <div class="tdlc-time">
               <div>创建时间：{{taskDetail.createTime}}</div>
-              <div>截止时间：{{taskDetail.receiveByTime}}</div>
+              <div v-if="taskDetail.receiveStatus < 2">截止时间：{{taskDetail.submitByTime}}</div>
+              <div v-else>截止时间：{{taskDetail.receiveByTime}}</div>
             </div>
           </div>
            <div class="uplad">

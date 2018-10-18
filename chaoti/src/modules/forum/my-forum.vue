@@ -1,6 +1,6 @@
 <template>
   <div class="tasks">
-    <Header></Header>
+    <Header :isShowSetting="true"></Header>
     <div class="v-list">
         <swiper :options="swiperOption">
             <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>

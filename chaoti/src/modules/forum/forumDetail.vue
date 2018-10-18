@@ -1,6 +1,6 @@
 <template>
   <div class="forum-detail">
-     <Header></Header>
+     <Header :isShowSetting="true"></Header>
      <div class="v-list">
         <!-- swiper -->
         <swiper :options="swiperOption">

@@ -1,7 +1,7 @@
 <template>
   <div class="tasks">
     <!-- <div class="t-header"></div> -->
-    <Header></Header>
+    <Header :isShowSetting="true"></Header>
     <div class="page-navbar">
         <div class="pn-list" v-if="val === 1" v-for="(item, index) in getTaskListOne" :key="index" @click="toTaskDetail(item.taskId, false, item.receiveStatus)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
