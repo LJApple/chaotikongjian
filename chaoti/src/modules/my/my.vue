@@ -140,7 +140,7 @@
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="部门" placeholder="部门" v-model="userInfo.profession"></mt-field>
+                    <mt-field class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
                 </div>  
                 <div class="sl-list sex">
                     <div class="sll-left">

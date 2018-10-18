@@ -63,11 +63,11 @@ export default {
         font-weight bolder
         text-align center
     .rl-name
-        width 40%
+        width 30%
         padding-left 10px
         box-sizing border-box
     .rl-dpt
-        width 25%
+        width 35%
     .rl-rnk
         width 20%
         .rlr-text
