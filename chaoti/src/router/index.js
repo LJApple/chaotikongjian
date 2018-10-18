@@ -54,6 +54,7 @@ const router = new Router({
     {
       path: '/tasks',
       name: 'tasks',
+      query: {redirect: 'tasks'},
       component : tasks,
       meta: { keepAlive: true, title: '领取任务', requireAuth:true }//当前的.vue文件需要缓存
     },

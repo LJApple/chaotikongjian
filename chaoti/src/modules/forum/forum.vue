@@ -14,7 +14,7 @@
               <div class="fcuc-use" @click="toMyForum">发过的主题</div>
             </div>
         </div>
-       <img  class="fc-logo" src="../../assets/images/logo.png" alt="">
+       <img  class="fc-logo" src="../../assets/images/logo-forum.png" alt="">
       </div>
     </div>
     <div class="f-list">
@@ -33,7 +33,7 @@
       <div class="fl-img" @click="toDetail(2)">
         <div class="fli-modal">
            <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">我要点赞</div>
+          <div class="">我要点赞</div>
         </div>
       </div>
       <div class="fl-img" @click="toBulletin">

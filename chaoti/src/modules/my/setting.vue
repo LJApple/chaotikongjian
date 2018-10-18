@@ -2,7 +2,7 @@
   <div class="tasks">
     <div class="t-header">
       <div class="setting">
-        <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div>
+        <!-- <div class="logout" @click="logout"><img  src="../../assets/images/logout.png" alt=""></div> -->
         <!-- <div class="logout" @click="setting"><img src="../../assets/images/setting.png" alt=""></div> -->
       </div>
       <div class="th-photo">
@@ -17,7 +17,10 @@
           </div>
         </div>
       </div>
-      <div class="thrlt-logo"><img src="../../assets/images/logo.png" alt=""></div>
+      <div class="thrlt-logo">
+        <img v-if="isForum" src="../../assets/images/logo-forum.png" alt="">
+        <img v-else src="../../assets/images/logo-in.png" alt="">
+      </div>
     </div>
     <div class="page-navbar">
       <div class="my-contain">
@@ -99,6 +102,7 @@ export default {
       userInfo: {},
       photoNumber: "",
       value: "1",
+      sextype: '0',
       options: [
         {
           label: "男",
@@ -118,6 +122,7 @@ export default {
           fileName: null,
           uploadFile: null
       }, // 文件内容
+      isForum: false
     }
   },
   watch: {
@@ -302,6 +307,11 @@ export default {
   },
   created() {
     this.getUserInfo()
+    if (this.$route.query.toSetting === 'tasks') {
+      this.isForum = false
+    } else {
+       this.isForum = true
+    }
   },
   mounted() {}
 }

@@ -43,7 +43,7 @@ export default {
             common.delCookie('account_token')
             this.$router.push({
                 path: '/login',
-                query: { redirect: 'forum' }
+                query: {redirect: this.$route.name}
             })
         }).catch(() => {
         // on cancel
@@ -52,7 +52,8 @@ export default {
     // 设置
     setting() {
       this.$router.push({
-        path: '/setting'
+        path: '/setting',
+        query: {toSetting: this.$route.name}
       })
     },
      // 获取用户信息
@@ -66,7 +67,7 @@ export default {
     }
   },
   created() {
-      this.getUserInfo()
+    this.getUserInfo()
   },
   mounted(){}
 }
