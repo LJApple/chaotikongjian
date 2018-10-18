@@ -18,7 +18,7 @@
             <mt-button class="red" v-if="taskDetail.receiveStatus === 0" @click="recieveTask" size="large" type="primary">领取任务</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 1" size="large" type="primary">已过期</mt-button>
             <mt-button class="red" v-if="taskDetail.receiveStatus === 2" @click="satyTask" size="large" type="primary">提交任务</mt-button>
-            <mt-button class="gray" v-if="taskDetail.receiveStatus === 3"  size="large" type="primary">修改</mt-button>
+            <mt-button class="red" v-if="taskDetail.receiveStatus === 3"  size="large" type="primary">修改</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 4" size="large" type="primary">已完成</mt-button>
             <mt-button class="gray" v-if="taskDetail.receiveStatus === 5" size="large" type="primary">已领取，未提交</mt-button>
           </div>
