@@ -5,7 +5,8 @@
         <div class="logout" v-if="isShowsetImg" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
       <div class="f-content">
-        <img class="fc-logo" src="../../assets/images/logo-in.png" alt="">
+        <img v-if="isForum" class="fc-logo" src="../../assets/images/logo-forum.png" alt="">
+        <img v-else class="fc-logo" src="../../assets/images/logo-in.png" alt="">
         <div class="fc-user">
             <img class="" v-if="!userInfo.photo" src="../../assets/images/defalut-wihte.png" alt="">
             <img v-else :src="userInfo.photo" alt="">
@@ -29,6 +30,7 @@ export default {
   data(){
     return {
       userInfo: {},
+      isForum: false
     }
   },
   watch:{
@@ -72,6 +74,11 @@ export default {
   },
   created() {
     this.getUserInfo()
+    if (this.$route.query.redirect === 'forum') {
+      this.isForum = true
+    } else {
+      this.isForum = false
+    }
   },
   mounted(){
     // this.getUserInfo()

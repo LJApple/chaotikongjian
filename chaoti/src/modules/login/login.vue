@@ -82,7 +82,6 @@ export default {
       this.$axios.post(url).then((res) => {
         const { success, data } = res.data
         if (success) {
-          debugger
         //   window.localStorage.setItem('account_token', data)
           common.setCookie('account_token', data.token, 365)
           const path = this.$route.query.redirect

@@ -93,7 +93,6 @@ export default {
     }
   },
   created() {
-      debugger
       this.getactivitydetail()
   },
   mounted() {}

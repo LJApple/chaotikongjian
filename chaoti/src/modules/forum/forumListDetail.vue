@@ -44,7 +44,7 @@
                  <swiper class="cn-swiper contetnL" :options="swiperOption">
                     <swiper-slide v-for="(itemlist, index) in item.uploadFileUrl" :key="index">
                         <img :src="itemlist" alt="" @click="clickOneImg(item.uploadFileUrl)"></swiper-slide>
-                    <div class="swiper-pagination" slot="pagination"></div>
+                    <div v-if="item.uploadFileUrl.length > 1" class="swiper-pagination" slot="pagination"></div>
                 </swiper>
             </div>
             <div class="cn-praise">
@@ -78,7 +78,7 @@
                                 <swiper class="cn-swiper" :options="swiperOption">
                                     <swiper-slide v-for="(itemlist, index) in relyList.uploadFileUrl" :key="index">
                                         <img :src="itemlist" alt="" @click="clickOneImg(relyList.uploadFileUrl)"></swiper-slide>
-                                    <div class="swiper-pagination" slot="pagination"></div>
+                                    <div v-if="relyList.uploadFileUrl.length > 1" class="swiper-pagination" slot="pagination"></div>
                                 </swiper>
                             </div>
                             <div class="cno-praise">

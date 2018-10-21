@@ -18,6 +18,10 @@
                         <div class="df-if1">{{item.name}}</div>
                         <div class="df-if2">{{item.createTime}}</div>
                     </div>
+                    <div  class="df-tag">
+                        <van-tag v-if="item.setTop === 2" round type="danger">精华</van-tag>
+                        <van-tag v-if="item.setTop === 1" round type="danger">置顶</van-tag>
+                    </div>
                 </div>
                 <div class="fdll-mess" v-html="item.details">
                     {{item.details}}
@@ -112,10 +116,10 @@ export default {
         })
     },
     // 获取帖子列表
-    selctPostsType(postsTypeId) {
+    selctPostsType() {
         Toast.loading({ mask: true })
         // sectionId postsTypeId
-        const url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&postsTypeId=${postsTypeId}`
+        const url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}`
         this.$axios.get(url).then((response) => {
         Toast.clear()
         const { data, success } = response.data
@@ -199,6 +203,10 @@ export default {
             display flex
             align-items center
             height 40px
+            position relative
+            .df-tag
+                position absolute
+                right 0
             img 
                 height 40px
                 width @height

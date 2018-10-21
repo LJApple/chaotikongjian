@@ -16,7 +16,8 @@ import 'vant/lib/vant-css/index.css'
 import 'swiper/dist/css/swiper.css'
 import './assets/stylus/index.styl'
 import VueAwesomeSwiper from 'vue-awesome-swiper'
-
+import { Dialog } from 'vant'
+Vue.use(Dialog)
 Vue.use(VueAwesomeSwiper)
 // 导入api
 import './api/api'
@@ -24,7 +25,6 @@ import './api/api'
 Vue.use(Mint)
 Vue.use(Vant)
 
-let isFirstLogin = 0
 // 将所有的请求加加上account_token
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
@@ -58,16 +58,26 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
    if (status === 403 || status === 401) {
-    const {fullPath} = router.history.current
-    // window.localStorage.removeItem('account_token')
+    const {fullPath, query} = router.history.current
     common.delCookie('account_token')
-    if (!isFirstLogin) {
-        isFirstLogin++
-        router.replace({
-            path: '/login',
-            query: { redirect: fullPath }
+    if (query.redirect) return
+    router.replace({
+        path: '/login',
+        query: { redirect: fullPath }
+    })
+    if (status === 401) {
+        Dialog.alert({
+            title: '提示',
+            message: '亲，您还不是超体用户哦！'
         })
     }
+    // if (!isFirstLogin) {
+    //     isFirstLogin++
+    //     router.replace({
+    //         path: '/login',
+    //         query: { redirect: fullPath }
+    //     })
+    // }
    }
 })
 // 挂在axios
