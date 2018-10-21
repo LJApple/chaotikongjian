@@ -1,7 +1,7 @@
 <template>
   <div class="tasks">
     <!-- <div class="t-header"></div> -->
-    <Header :isShowSetting="true" :isShowsetImg="false"></Header>
+    <Header :isShowSetting="true" :isShowsetImg="true"></Header>
     <div class="page-navbar">
         <div class="pn-list" v-for="(item, index) in getTaskList" :key="index" @click="toTaskDetail(item.taskId)">
             <mt-cell class="pnl-list" is-link  :title="item.title">
@@ -12,7 +12,7 @@
     </div>
     <mt-palette-button :content="content" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
     direction="lt" class="changeClass" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">领任务</div></div>
+    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">未领取</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">待提交</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
     <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">已过期</div></div>
@@ -37,7 +37,7 @@ export default {
      getTaskList: [],
      isExpend: false,
      val: 1,
-     content: '领任务'
+     content: '未领取'
     }
   },
   watch:{
@@ -57,7 +57,7 @@ export default {
         this.val = val
         this.getTaskOneTap()
         if (val === 1) {
-          this.content = '领任务'
+          this.content = '未领取'
         } else if (val === 2) {
           this.content = '待提交'
         } else if (val === 3) {

@@ -234,7 +234,7 @@ export default {
     },
     // 提交数据
     submitData() {
-        let {sex, phone, email, photo} = this.userInfo
+        let {sex, phone, email, photo, name} = this.userInfo
         if(!sex || !phone || !email) {
           MessageBox.alert('参数不能为空')
         }
@@ -248,7 +248,8 @@ export default {
           sex,
           phone,
           email,
-          photo
+          photo,
+          name
         }
         console.log('this.userInfo', param, qs.stringify(param))
         param = common.splicingJson(param)

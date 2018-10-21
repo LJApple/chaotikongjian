@@ -35,7 +35,7 @@
     <div class="commont-new" >
          <div class="cn-list" v-for="item in postReplyList" :key="item.replyId">
             <div class="cn-user">
-                <img v-if = "item.photo" src="../../assets/images/default.png"/>
+                <img v-if = "!item.photo" src="../../assets/images/default.png"/>
                 <img v-else :src="item.photo"/>
                 <div>{{item.name}}</div>
             </div>
@@ -121,7 +121,7 @@
                       </div>
                       <div class="add">
                           <img src="../../assets/images/addPhoto.png" alt="">
-                          <input type="file" multiple="multiple" class="file-btn" accept="img/*" @change="getFile"/>
+                          <input type="file" multiple="multiple" class="file-btn" accept="image/*" @change="getFile"/>
                       </div>
                   </div>
                   <div class="fdsb-smile"  @click="showEmoticon">
@@ -353,7 +353,11 @@ export default {
                 this.$toast(message)
                 this.resetReply()
                 this.getpostdetial()
+            } else {
+                MessageBox.alert("上传失败")
             }
+      }).catch(()=> {
+          MessageBox.alert("上传失败")
       })
     },
     // 清空回复窗口数据

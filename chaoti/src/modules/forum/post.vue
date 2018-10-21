@@ -369,6 +369,7 @@ export default {
         width 100%
         height 300px
         padding 12px 0
+        line-height 20px
         box-sizing border-box
 /deep/ .mint-button
     height 28px

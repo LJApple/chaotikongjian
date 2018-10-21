@@ -44,9 +44,10 @@ export default {
         }).then(() => {
             // 清除session 返回login
             common.delCookie('account_token')
+            const redirect = this.$route.query.redirect ? this.$route.query.redirect : this.$route.name
             this.$router.push({
                 path: '/login',
-                query: {redirect: this.$route.name}
+                query: {redirect}
             })
         }).catch(() => {
         // on cancel
@@ -70,10 +71,10 @@ export default {
     }
   },
   created() {
-    // this.getUserInfo()
+    this.getUserInfo()
   },
   mounted(){
-    this.getUserInfo()
+    // this.getUserInfo()
   }
 }
 </script>

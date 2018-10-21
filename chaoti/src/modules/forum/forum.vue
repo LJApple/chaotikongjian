@@ -65,7 +65,7 @@ export default {
       common.delCookie('account_token')
       this.$router.push({
         path: '/login',
-          query: { redirect: 'forum' }
+        query: { redirect: 'forum' }
       })
     },
     // 设置
@@ -85,18 +85,25 @@ export default {
         this.$router.push({
           path: '/forumDetail',
           query: {
-              from: param
+              from: param,
+              redirect: 'forum'
           }
         })
       },
       toBulletin() {
         this.$router.push({
-          path: '/bulletin'
+          path: '/bulletin',
+          query: {
+              redirect: 'forum'
+          }
         })
       },
       toNWork() {
         this.$router.push({
-          path: '/nationalWorkshop'
+          path: '/nationalWorkshop',
+          query: {
+              redirect: 'forum'
+          }
         }) 
       },
       // 获取用户信息

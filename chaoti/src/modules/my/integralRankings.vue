@@ -1,7 +1,7 @@
 <template>
  <transition name="slide">
   <div class="ranking">
-      <div class="r-list" v-for="(item, index) in ranking" :key="item.userId">
+      <div class="r-list" :class="{red: item.red}" v-for="(item, index) in ranking" :key="item.userId">
           <div class="rl-num">{{index + 1}}</div>
           <div class="rl-photo">
               <img v-if="item.photo" :src="item.photo" alt="">
@@ -33,6 +33,13 @@ export default {
       this.$axios.get(url).then(response => {
         const { success, data } = response.data;
         if (success) {
+            for (const item of data) {
+                item.red = false
+                if (item.userId === parseInt(this.$route.query.userID)) {
+                    item.red = true
+                }
+            }
+            console.log(data)
             this.ranking = data
         }
       })
@@ -73,4 +80,6 @@ export default {
         .rlr-text
             font-size 16px
             font-weight bolder
+.red
+    color red
 </style>

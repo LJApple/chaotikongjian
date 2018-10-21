@@ -82,8 +82,9 @@ export default {
       this.$axios.post(url).then((res) => {
         const { success, data } = res.data
         if (success) {
+          debugger
         //   window.localStorage.setItem('account_token', data)
-          common.setCookie('account_token', data, 2)
+          common.setCookie('account_token', data.token, 365)
           const path = this.$route.query.redirect
           setTimeout(() => {
             this.$router.push({path: path})
@@ -118,14 +119,14 @@ export default {
         }
         param = common.splicingJson(param)
         const url = this.$api.forgetpwd + param
-        Toast.loading({ mask: true })
+        // Toast.loading({ mask: true })
         this.$axios.post(url).then((res) => {
             const { message, success } = res.data
             if (success) {
                MessageBox.alert('提交成功，请前往您的邮箱修改密码').then(action => {
                    this.isShowModal = false
                })
-               Toast.clear()
+              //  Toast.clear()
             } else {
                this.$toast(message)
             }

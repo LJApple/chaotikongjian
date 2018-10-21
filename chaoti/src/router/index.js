@@ -138,7 +138,7 @@ const router = new Router({
         name: 'nationalWorkshop',
         component: nationalWorkshop,
         meta: {
-          title: '全名体验坊'
+          title: '全民体验坊'
         },
         children: [
             {

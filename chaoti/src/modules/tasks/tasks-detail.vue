@@ -126,11 +126,13 @@ export default {
       // params = common.splicingJson(params)
       // const url = this.$api.submittask + params
       this.$axios.post(this.$api.submittask, params).then((response) => {
-        const {success} = response.data
+        const {success, message} = response.data
         if (success) {
            MessageBox.alert('提交成功', '提示').then(action => {
             this.$router.go(-1)
           })
+        } else {
+          MessageBox.alert(message)
         }
       })
     }

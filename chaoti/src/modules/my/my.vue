@@ -13,7 +13,7 @@
       <div class="th-right">
         <div class="thr-left">
           <div class="thrl-top">
-            <div class="thrlt-name">{{userInfo.name}}</div>
+            <div class="thrlt-name">你好，{{userInfo.name}}</div>
             <!-- <div class="thrlt-asign">签到</div>
             <div class="thrlt-img" @click="questionClick">
                 <img src="../../assets/images/question.png" alt="">
@@ -73,7 +73,7 @@
                 <!-- <span>已过期</span> -->
             </mt-cell>
           </div>
-          <mt-palette-button content="任务" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
+          <mt-palette-button :content="content" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
             direction="lt" class="changeClass" :radius="120" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
             <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(1)"><div class="classRadio" v-if="isExpend">已领取</div></div>
             <div class="my-icon-button indexicon icon-popup" @touchstart="sub_log(2)"><div class="classRadio" v-if="isExpend">已完成</div></div>
@@ -87,7 +87,7 @@
                 <img src="../../assets/images/exprience-bg.jpg" alt="">
                 <div class="a-count">{{sumExperience}}</div>
             </div>
-            <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" to="/IntegralRankings">积分排行榜</router-link></div>
+            <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" :to="{ path: 'IntegralRankings', query: { userID: userInfo.userID }}">积分排行榜</router-link></div>
           </div>
           <!-- <div class="total">
              <mt-cell title="个人总体验值">
@@ -95,6 +95,10 @@
             <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
           </div> -->
+          <mt-cell title="您的排名" style="margin-bottom: 10px">
+            <span class="my-ex">第{{exper.experienceSort}}名</span>
+            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
+          </mt-cell>
           <mt-cell title="总积分">
             <span class="my-ex">{{exper.sumExperience}}分</span>
             <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
@@ -123,10 +127,6 @@
             <span class="my-ex">{{exper.sumExperience - exper.convertExperience}}分</span>
             <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
-           <mt-cell title="您的排名" class="borderTop">
-            <span class="my-ex">第{{exper.experienceSort}}名</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
-          </mt-cell>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
            <div class="s-list">
@@ -134,13 +134,13 @@
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="用户名" placeholder="用户名" v-model="userInfo.name"></mt-field>
+                    <mt-field disabled class="s-padding" label="用户名" placeholder="用户名" v-model="userInfo.name"></mt-field>
                 </div>
                 <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
+                    <mt-field disabled class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
                 </div>  
                 <div class="sl-list sex">
                     <div class="sll-left">
@@ -157,13 +157,13 @@
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="手机号" placeholder="手机号" v-model="userInfo.phone"></mt-field>
+                    <mt-field disabled class="s-padding" label="手机号" placeholder="手机号" v-model="userInfo.phone"></mt-field>
                 </div>
                 <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
+                    <mt-field disabled class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
                 </div>
                 <!-- <div class="sl-list" @click="changPwd">
                     <mt-cell title="修改密码" value="" class="hasArrow borderBt"  is-link>
@@ -245,7 +245,8 @@ export default {
       getTaskListThree: [],
       val: 4,
       sumExperience: 0,
-      sextype: '0'
+      sextype: '0',
+      content: '全部'
     }
   },
   watch: {
@@ -277,7 +278,15 @@ export default {
     },
     sub_log(val) {
         this.val = val
-         console.log('his.val', val)
+         if (val === 1) {
+          this.content = '已领取'
+        } else if (val === 2) {
+          this.content = '已完成'
+        } else if (val === 3) {
+          this.content = '已过期'
+        } else if (val === 4) {
+          this.content = '全部'
+        }
         this.$refs.target_1.collapse()
         return false
     },
@@ -782,6 +791,7 @@ export default {
     padding: 0
   /deep/ .s-radio
     padding-left: 10px
+    pointer-events: none
 
   .sll-left
     height: 48px
@@ -881,4 +891,6 @@ export default {
 .all-list
   padding-left: 20px
   border-top: 1px solid #ddd
+/deep/ .mint-field-core
+  background #fff
 </style>

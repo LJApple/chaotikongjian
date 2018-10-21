@@ -23,6 +23,8 @@ import './api/api'
 // 应用mintui
 Vue.use(Mint)
 Vue.use(Vant)
+
+let isFirstLogin = 0
 // 将所有的请求加加上account_token
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
@@ -55,14 +57,17 @@ axios.interceptors.request.use(config => {
 })
 axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
-   const {fullPath} = router.history.current
    if (status === 403 || status === 401) {
+    const {fullPath} = router.history.current
     // window.localStorage.removeItem('account_token')
     common.delCookie('account_token')
-    router.replace({
-        path: '/login',
-        query: { redirect: fullPath }
-    })
+    if (!isFirstLogin) {
+        isFirstLogin++
+        router.replace({
+            path: '/login',
+            query: { redirect: fullPath }
+        })
+    }
    }
 })
 // 挂在axios
