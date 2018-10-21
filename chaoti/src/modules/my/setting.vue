@@ -7,7 +7,7 @@
       </div>
       <div class="th-photo">
         <img v-if="userInfo.photo === ''" src="../../assets/images/defalut-wihte.png" alt="">
-        <img v-else :src="userInfo.photo" alt="">
+        <img v-else :src="userInfo.photo" alt="头像渲染失败">
         <input type="file" class="file-btn" accept="image/*" @change="getFile"/>
       </div>
       <div class="th-right">
@@ -25,17 +25,29 @@
     <div class="page-navbar">
       <div class="my-contain">
           <div class="s-list">
-                <div class="sl-list">
+              <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="用户名" placeholder="用户名" v-model="userInfo.name"></mt-field>
+                    <mt-field class="s-padding" label="昵称" placeholder="昵称" v-model="userInfo.nikeName"></mt-field>
                 </div>
                 <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
+                    <mt-field disabled class="s-padding" label="姓名" placeholder="姓名" v-model="userInfo.name"></mt-field>
+                </div>
+                <div class="sl-list">
+                    <div class="sll-img">
+                        <img src="../../assets/images/done.png" alt="">
+                    </div>
+                    <mt-field disabled class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
+                </div>
+                <div class="sl-list">
+                    <div class="sll-img">
+                        <img src="../../assets/images/done.png" alt="">
+                    </div>
+                    <mt-field disabled class="s-padding" label="部门" placeholder="部门" v-model="userInfo.department"></mt-field>
                 </div>  
                 <div class="sl-list sex">
                     <div class="sll-left">
@@ -60,7 +72,7 @@
                     </div>
                     <mt-field class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
                 </div>
-                <div class="sl-list" @click="changPwd">
+                <div class="sl-list maginTop10" @click="changPwd">
                     <mt-cell title="修改密码" value="" class="hasArrow borderBt"  is-link>
                         <img slot="icon" src="../../assets/images/done.png" width="20" height="20">
                     </mt-cell>
@@ -234,7 +246,7 @@ export default {
     },
     // 提交数据
     submitData() {
-        let {sex, phone, email, photo, name} = this.userInfo
+        let {sex, phone, email, photo, name, nikeName} = this.userInfo
         if(!sex || !phone || !email) {
           MessageBox.alert('参数不能为空')
         }
@@ -249,12 +261,13 @@ export default {
           phone,
           email,
           photo,
-          name
+          name,
+          nikeName
         }
         console.log('this.userInfo', param, qs.stringify(param))
-        param = common.splicingJson(param)
-        const url = this.$api.updateuserdata + param
-        this.$axios.post(url).then((res) => {
+        // param = common.splicingJson(param)
+        // const url = this.$api.updateuserdata + param
+        this.$axios.post(this.$api.updateuserdata, qs.stringify(param)).then((res) => {
             const { message, success } = res.data
             if (success) {
               MessageBox.alert('修改成功')
@@ -283,7 +296,7 @@ export default {
                 const { data, success, message } = res.data
                 if (success) {
                     this.userInfo.photo = this.fileList.uploadFile = data
-                    this.$toast(message)
+                    this.$toast('头像上传成功，请提交保存！')
                 } else {
                     this.$toast('头像上传失败')
                 }
@@ -409,6 +422,9 @@ export default {
 
 .th-photo
     position: relative
+    height: 60px
+    width: @height
+    border-radius: @height
     img
         height: 60px
         width: @height

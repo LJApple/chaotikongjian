@@ -8,6 +8,10 @@
             <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
         </swiper>
     </div>
+    <div class="seach">
+        <van-search @search="onSearch" background="#f2f2f2" placeholder="请输入搜索关键词" v-model="key"/>
+        <div slot="action" class="s-btn" @click="onSearch">搜索</div>
+    </div>
     <div class="fd-list">
         <div v-if="forumDetailList">
              <div class="fdl-list" @click="navToDetail(item.postsId)" v-for="item in forumDetailList" :key="item.id">
@@ -82,7 +86,8 @@ export default {
             }
         },
         forumDetailList: null,
-        postsTypes: []
+        postsTypes: [],
+        key: ''
     }
   },
   watch:{},
@@ -116,10 +121,15 @@ export default {
         })
     },
     // 获取帖子列表
-    selctPostsType() {
+    selctPostsType(key) {
         Toast.loading({ mask: true })
         // sectionId postsTypeId
-        const url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}`
+        let url = ''
+        if (!key) {
+            url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}`
+        } else {
+            url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&key=${key}`
+        }
         this.$axios.get(url).then((response) => {
         Toast.clear()
         const { data, success } = response.data
@@ -154,6 +164,11 @@ export default {
               postsId
           }
        })
+    },
+    // 搜索
+    onSearch() {
+        this.selctPostsType(this.key)
+        console.log('key', this.key)
     }
   },
    activated () {
@@ -196,7 +211,7 @@ export default {
     // margin-top 101px
     padding-bottom 30px
     .fdl-list
-        margin-top 10px
+        margin-bottom 10px
         padding 12px
         background #ffffff
         .fdll-top
@@ -239,6 +254,21 @@ export default {
                 align-items center
                 justify-content center
                 color #333
-
-
+.seach
+    display flex
+    align-items center
+    padding 0 12px
+    .van-search
+        width 80%
+        padding 10px 0
+        box-sizing border-box
+    .s-btn
+        width 20%
+        height 30px
+        text-align center
+        line-height @height
+        background #ffffff
+        border-left 1px solid #ddd
+        border-top-right-radius 4px
+        border-bottom-right-radius 4px
 </style>

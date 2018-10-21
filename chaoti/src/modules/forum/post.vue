@@ -195,7 +195,6 @@ export default {
         // ptypeId (integer, optional): 帖子类型 ,
         // detail (string, optional): 帖子详情 ,
         // imgPath (string, optional): 图片
-        Toast.loading({ mask: true })
         console.log('this.fileList', this.fileList)
         if (!this.ptypeId)  return MessageBox.alert('请选择系统类别')
         if (!this.detail)  return MessageBox.alert('请填写内容')
@@ -214,6 +213,7 @@ export default {
             detail: this.detail,
             imgPath
         }
+        Toast.loading({ mask: true })
         // param = common.splicingJson(param)
         // const url = this.$api.posting + param
         this.$axios.post(this.$api.posting, param).then((response) => {

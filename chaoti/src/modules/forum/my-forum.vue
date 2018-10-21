@@ -9,7 +9,7 @@
     <div class="page-navbar">
         <div class="pn-list" v-if="type === 2"  v-for="item in mypostslistOne" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link  :title="item.details">
-                <!-- <span class="red">新的回复</span> -->
+                <!-- <span class="redColor">新的回复</span> -->
             </mt-cell>
         </div>
         <div class="pn-list" v-if="type === 1"  v-for="item in mypostslistTwo" :key="item.postsId" @click="toTaskDetail(item.postsId)">
@@ -19,8 +19,8 @@
         </div>
         <div class="pn-list" v-if="type === 0"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link :title="item.details">
-                <!-- <span v-if="item.isReply === 0">已回复</span>
-                <span v-if="item.isReply === 1" class="red">新的回复</span> -->
+                <span v-if="item.isReply === 0">已回复</span>
+                <span v-if="item.isReply === 1" class="redColor">新的回复</span>
             </mt-cell>
         </div>
         <div class="pn-null" v-if="(mypostslistOne.length === 0 && type === 2) || (mypostslistTwo.length === 0 && type === 1) ||  (mypostslist.length === 0 && type === 0)">暂无数据</div>
@@ -137,4 +137,6 @@ export default {
     .pn-list
         margin-top 10px
         border-top 1px solid #dddddd
+.redColor
+    color rgb(239, 79, 79)
 </style>

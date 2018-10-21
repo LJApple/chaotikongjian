@@ -77,7 +77,10 @@ export default {
       // 跳转发过的主图
       toMyForum() {
          this.$router.push({
-          path: '/myForum'
+          path: '/myForum',
+            query: {
+            redirect: 'forum'
+          }
         })
       },
       // 跳转到详情 type 分别表示对应的类型 意见反馈=5 我要点赞=2
