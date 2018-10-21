@@ -678,4 +678,6 @@ export default {
 .all-list
   padding-left: 20px
   border-top: 1px solid #ddd
+/deep/ .mint-field-core
+  background-color #fff
 </style>
