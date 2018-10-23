@@ -174,15 +174,16 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
 //   const account_token =  window.localStorage.getItem('account_token')
+debugger
   const account_token =  common.getCookie('account_token')
   if (to.matched.some(record => record.meta.requireAuth)){ // 判断该路由是否需要登录权限
       if (account_token) { // 判断当前的token是否存在
           next()
       } else {
         next({
-        path: '/login',
-        query: { redirect: to.name } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-      })
+          path: '/login',
+          query: { redirect: to.name } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+        })
      }
   }
   else {

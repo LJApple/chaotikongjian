@@ -130,11 +130,17 @@
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
            <div class="s-list">
+              <div class="sl-list">
+                    <div class="sll-img">
+                        <img src="../../assets/images/done.png" alt="">
+                    </div>
+                    <mt-field disabled class="s-padding" label="昵称" placeholder="昵称" v-model="userInfo.nikeName"></mt-field>
+                </div>
                 <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
-                    <mt-field disabled class="s-padding" label="用户名" placeholder="用户名" v-model="userInfo.name"></mt-field>
+                    <mt-field disabled class="s-padding" label="姓名" placeholder="姓名" v-model="userInfo.name"></mt-field>
                 </div>
                 <div class="sl-list">
                     <div class="sll-img">
@@ -142,6 +148,12 @@
                     </div>
                     <mt-field disabled class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
                 </div>  
+                <div class="sl-list">
+                    <div class="sll-img">
+                        <img src="../../assets/images/done.png" alt="">
+                    </div>
+                    <mt-field disabled class="s-padding" label="部门" placeholder="部门" v-model="userInfo.department"></mt-field>
+                </div>
                 <div class="sl-list sex">
                     <div class="sll-left">
                         <img src="../../assets/images/done.png" alt="">
@@ -301,7 +313,7 @@ export default {
         const { data, success } = response.data
         if (success) {
           for (const item of data) {
-            item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
+            // item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
             const {receiveStatus} = item 
             if (receiveStatus === 1) {
               this.getTaskListOne.push(item)

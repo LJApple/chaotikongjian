@@ -13,7 +13,7 @@
       <div class="th-right">
         <div class="thr-left">
           <div class="thrl-top">
-            <div class="thrlt-name">{{userInfo.name}}</div>
+            <div class="thrlt-name">你好，{{userInfo.name}}</div>
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
     <div class="page-navbar">
       <div class="my-contain">
           <div class="s-list">
-              <div class="sl-list">
+                <div class="sl-list">
                     <div class="sll-img">
                         <img src="../../assets/images/done.png" alt="">
                     </div>
