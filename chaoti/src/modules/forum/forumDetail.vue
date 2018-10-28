@@ -126,7 +126,7 @@ export default {
         // sectionId postsTypeId
         let url = ''
         if (!key || isTopBlock) {
-            url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}`
+            url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&postsTypeId=${key}`
         } else {
             url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&key=${key}`
         }

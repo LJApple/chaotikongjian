@@ -9,7 +9,7 @@
     <div class="page-navbar">
         <div class="pn-list" v-if="mypostslist.length > 0"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" is-link :title="item.details">
-                <span v-if="item.isReply === 0">已回复</span>
+                <span v-if="item.isReply === 0 && listType !== 0">已回复</span>
                 <span v-if="item.isReply === 1" class="redColor">新的回复</span>
             </mt-cell>
         </div>
@@ -58,8 +58,9 @@ export default {
         postsTypes: [
             {name: '发过的主题', id: 0},
             {name: '管理员回复', id: 1},
-            {name: '非管理回复', id: 2},
-        ]        
+            {name: '非管理员回复', id: 2},
+        ],
+        listType: 0      
     }
   },
   watch: {
@@ -68,7 +69,9 @@ export default {
   methods: {
     // 获取任务列表
     getmypostslist(id) {
+        this.mypostslist = []
         Toast.loading({ mask: true })
+        this.listType = id
         let url = this.$api.getmypostslist + '?ReplyType=' + id
         this.$axios.get(url).then((response) => {
         Toast.clear()
@@ -94,7 +97,7 @@ export default {
   activated() {
   },
   created() {
-      this.getmypostslist()
+      this.getmypostslist(0)
   },
   mounted() {}
 }

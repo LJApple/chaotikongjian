@@ -133,14 +133,15 @@ export default {
    }
   },
   created(){
-      // common.delCookie('account_token')
-    if (this.$route.query.redirect === 'forum') {
-      this.isForum = false
-    } else {
-      this.isForum = true
-    }
+    setTimeout(() => {
+      if (this.$route.query.redirect === '/forum') {
+        this.isForum = false
+      } else {
+        this.isForum = true
+      }
+    }, 1000)
   },
-  mounted(){
+  mounted() {
   }
 }
 </script>

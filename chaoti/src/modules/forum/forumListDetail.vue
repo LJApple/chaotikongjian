@@ -8,11 +8,11 @@
                <van-tag v-if="forumListDetailInfo.isDel" mark type="danger">删除</van-tag>
           </div>
       </div>
-       <swiper class="fd-banner" :options="swiperOption">
+      <swiper v-if="forumListDetailInfo.uploadFileUrl" class="fd-banner" :options="swiperOption">
         <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
             <img :src="item" alt="" @click="clickImg"></swiper-slide>
         <div class="swiper-pagination" v-if="forumListDetailInfo.uploadFileUrl.length > 1" slot="pagination"></div>
-      </swiper>
+    </swiper>
       <div class="fd-content">
           <div class="fd-opr">
               <!-- <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div> -->
@@ -194,17 +194,19 @@ export default {
         this.$axios.get(url).then((response) => {
             const { data, success } = response.data
             if (success) {
-                data.uploadFileUrl = data.uploadFileUrl.split('|')
-                if (data.postReplyList.length > 0) {
-                    for (const rList of data.postReplyList) {
-                        rList.uploadFileUrl = rList.uploadFileUrl.split('|')
-                        console.log('rList.details1', rList.details)
-                        common.emoticon(rList, emoticon, true)
-                        console.log('rList.details', rList.details)
-                        if (rList.postReplyList.length > 0) {
-                            for (const rListTwo of rList.postReplyList) {
-                                common.emoticon(rListTwo, emoticon, true)
-                                rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
+                if (data.uploadFileUrl) {
+                    data.uploadFileUrl = data.uploadFileUrl.split('|')
+                    if (data.postReplyList.length > 0) {
+                        for (const rList of data.postReplyList) {
+                            rList.uploadFileUrl = rList.uploadFileUrl.split('|')
+                            console.log('rList.details1', rList.details)
+                            common.emoticon(rList, emoticon, true)
+                            console.log('rList.details', rList.details)
+                            if (rList.postReplyList.length > 0) {
+                                for (const rListTwo of rList.postReplyList) {
+                                    common.emoticon(rListTwo, emoticon, true)
+                                    rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
+                                }
                             }
                         }
                     }
