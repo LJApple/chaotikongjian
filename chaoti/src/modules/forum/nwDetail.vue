@@ -94,6 +94,7 @@ export default {
   },
   created() {
       this.getactivitydetail()
+      this.getactivitycount()
   },
   mounted() {}
 }
@@ -164,7 +165,7 @@ export default {
                 height 30px
                 line-height @height
         .act-list
-            border-bottom 1px solid #dddddd
+            border-top 1px solid #dddddd
             display flex
             .actl-l
                 width 33.33333333%

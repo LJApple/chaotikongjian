@@ -42,7 +42,7 @@
                 <mt-button type="default">取消</mt-button>
             </div>
             <div class="pf-list" @click="submit">
-                <mt-button type="primary">发布</mt-button>
+                <mt-button class="red" type="primary">发布</mt-button>
             </div>
         </div>
          <!-- 表情列表 -->
