@@ -37,7 +37,7 @@
       <mt-navbar class="page-part paddingLR12" v-model="selected">
         <mt-tab-item id="1">我的任务</mt-tab-item>
         <mt-tab-item id="2">我的积分</mt-tab-item>
-        <mt-tab-item id="3">个人资料</mt-tab-item>
+        <mt-tab-item id="3">积分排行榜</mt-tab-item>
       </mt-navbar>
       <mt-tab-container v-model="selected" class="my-contain">
         <mt-tab-container-item id="1">
@@ -87,7 +87,8 @@
                 <img src="../../assets/images/exprience-bg.jpg" alt="">
                 <div class="a-count">{{sumExperience}}</div>
             </div>
-            <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" :to="{ path: 'IntegralRankings', query: { userID: userInfo.userID }}">积分排行榜</router-link></div>
+            <!-- <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span> <router-link style="color: blue" :to="{ path: 'IntegralRankings', query: { userID: userInfo.userId }}">积分排行榜</router-link></div> -->
+            <div class="mc-bottom"><span v-if="exper.experienceSort !== 1">距离第{{exper.experienceSort - 1}}名只差{{exper.diffExperience}}分哦</span></div>
           </div>
           <!-- <div class="total">
              <mt-cell title="个人总体验值">
@@ -129,66 +130,18 @@
           </mt-cell>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">
-           <div class="s-list">
-              <div class="sl-list">
-                    <div class="sll-img">
-                        <img src="../../assets/images/done.png" alt="">
-                    </div>
-                    <mt-field disabled class="s-padding" label="昵称" placeholder="昵称" v-model="userInfo.nikeName"></mt-field>
+          <div class="ranking">
+            <div class="r-list" :class="{red: item.red}" v-for="(item, index) in ranking" :key="item.userId">
+                <div class="rl-num">{{index + 1}}</div>
+                <div class="rl-photo">
+                    <img v-if="item.photo" :src="item.photo" alt="">
+                    <img v-else src="../../assets/images/default.png" alt="">
                 </div>
-                <div class="sl-list">
-                    <div class="sll-img">
-                        <img src="../../assets/images/done.png" alt="">
-                    </div>
-                    <mt-field disabled class="s-padding" label="姓名" placeholder="姓名" v-model="userInfo.name"></mt-field>
-                </div>
-                <div class="sl-list">
-                    <div class="sll-img">
-                        <img src="../../assets/images/done.png" alt="">
-                    </div>
-                    <mt-field disabled class="s-padding" label="职业" placeholder="职业" v-model="userInfo.profession"></mt-field>
-                </div>  
-                <div class="sl-list">
-                    <div class="sll-img">
-                        <img src="../../assets/images/done.png" alt="">
-                    </div>
-                    <mt-field disabled class="s-padding" label="部门" placeholder="部门" v-model="userInfo.department"></mt-field>
-                </div>
-                <div class="sl-list sex">
-                    <div class="sll-left">
-                        <img src="../../assets/images/done.png" alt="">
-                        <span style="padding-left: 12px">性别</span>
-                    </div>
-                    <mt-radio class="s-radio"
-                        v-model="sextype"
-                        align="right"
-                        :options="options">
-                    </mt-radio>
-                </div>
-                <div class="sl-list">
-                    <div class="sll-img">
-                        <img src="../../assets/images/done.png" alt="">
-                    </div>
-                    <mt-field disabled class="s-padding" label="手机号" placeholder="手机号" v-model="userInfo.phone"></mt-field>
-                </div>
-                <div class="sl-list">
-                    <div class="sll-img">
-                        <img src="../../assets/images/done.png" alt="">
-                    </div>
-                    <mt-field disabled class="s-padding" label="邮箱" placeholder="邮箱" v-model="userInfo.email"></mt-field>
-                </div>
-                <!-- <div class="sl-list" @click="changPwd">
-                    <mt-cell title="修改密码" value="" class="hasArrow borderBt"  is-link>
-                        <img slot="icon" src="../../assets/images/done.png" width="20" height="20">
-                    </mt-cell>
-                </div> -->
-                <!-- <mt-cell title="修改头像"  value="" class="hasArrow"  is-link>
-                    <img slot="icon" class="paddingLR10" src="../../assets/images/done.png" width="20" height="20">
-                </mt-cell> -->
-                </div>
-            <div class="submit" >
-                <!-- <mt-button class="red" type="primary" size="large" @click="submitData">提交</mt-button> -->
+                <div class="rl-name">{{item.userName}}</div>
+                <div class="rl-dpt">{{item.deptName}}</div>
+                <div class="rl-rnk"><span class="rlr-text">{{item.sumExperience}}</span>分</div>
             </div>
+          </div>
         </mt-tab-container-item>
       </mt-tab-container>
     </div>
@@ -258,7 +211,8 @@ export default {
       val: 4,
       sumExperience: 0,
       sextype: '0',
-      content: '全部'
+      content: '全部',
+      ranking: []
     }
   },
   watch: {
@@ -274,6 +228,7 @@ export default {
          this.getexper()
       } else if (val === "3") {
         this.getUserInfo()
+        this.getmyrno()
       }
       console.log("seleced", val, oldVal);
     }
@@ -375,19 +330,6 @@ export default {
         path: "/setting"
       });
     },
-    // 连续签到3天赠送1级分
-    questionClick() {
-      this.$toast("连续签到3天赠送1级分");
-    },
-    // 获取奖励规则
-    rulesData() {
-      this.$axios.get(this.$api.getrules).then(response => {
-        const { success, data } = response.data
-        if (success) {
-          this.rules = data
-        }
-      })
-    },
     // 获取用户信息
     getUserInfo() {
       this.$axios.get(this.$api.getuserinfo).then(response => {
@@ -399,14 +341,6 @@ export default {
             this.sextype = '1'
           }
           this.userInfo = data
-        }
-      })
-    },
-    // 签到
-    signin() {
-      this.$axios.post(this.$api.signin).then(response => {
-        const { success } = response.data;
-        if (success) {
         }
       })
     },
@@ -530,14 +464,23 @@ export default {
         }
         e.target.value = null
       },
-      // 是否签到
-      getissign() {
-         this.$axios.get(this.$api.getissign).then(response => {
-          const { success } = response.data;
-          if (success) {
-          }
-        })
-      }
+    // 获取排行榜
+  getmyrno() {
+      const url = this.$api.getmyrno
+      this.$axios.get(url).then(response => {
+        const { success, data } = response.data;
+        if (success) {
+            for (const item of data) {
+                item.red = false
+                if (item.userId === parseInt(this.userInfo.userId)) {
+                    item.red = true
+                }
+            }
+            console.log(data)
+            this.ranking = data
+        }
+      })
+    }
   },
   activated() {
     // this.getTaskOneTap()
@@ -905,4 +848,35 @@ export default {
   border-top: 1px solid #ddd
 /deep/ .mint-field-core
   background #fff
+
+
+.r-list
+    display flex
+    height 70px
+    align-items center
+    background #ffffff
+    margin-bottom 10px
+    font-size 14px
+    .rl-photo
+        img 
+            height 50px
+            width @height
+            border-radius @height 
+    .rl-num
+        width 5%
+        font-weight bolder
+        text-align center
+    .rl-name
+        width 30%
+        padding-left 10px
+        box-sizing border-box
+    .rl-dpt
+        width 35%
+    .rl-rnk
+        width 20%
+        .rlr-text
+            font-size 16px
+            font-weight bolder
+.red
+    color red
 </style>

@@ -11,7 +11,7 @@
             <img v-else :src="userInfo.photo" alt="">
             <div class="fcuc-list">
               <div class="fcuc-name">你好,{{userInfo.name}}</div>
-              <div class="fcuc-use" @click="toMyForum">发过的主题</div>
+              <div class="fcuc-use" @click="toMyForum">发过的主题 <span v-if="userInfo.isPostReply" class="fu-idot">·</span></div>
             </div>
         </div>
        <img  class="fc-logo" src="../../assets/images/logo-forum.png" alt="">
@@ -166,6 +166,7 @@ export default {
       .fcuc-use
         padding-left 10px
         color $bg-color
+        position relative
   .logo
     margin-top 10px
     color #ffffff
@@ -195,4 +196,9 @@ export default {
       height 60px
 .logo
   top 5px
+.fu-idot
+  font-size 70px
+  position absolute
+  top -35px
+  right -24px
 </style>

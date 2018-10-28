@@ -104,7 +104,7 @@
     </div>
     <!-- 回复列表结束 -->
 
-      <preview v-if="showImageList" :imgList="imgList" @showImageList="close"></preview>
+    <preview v-if="showImageList" :imgList="imgList" @showImageList="close"></preview>
      <div class="fd-input" @click="inputFocus">
           <!-- <div class="fdi-img"><img src="../../assets/images/smile.png" alt=""></div> -->
           <input disabled="true" placeholder="写个回复走走心" class="fdi-text"/>
@@ -151,6 +151,7 @@ import { MessageBox } from "mint-ui"
 import { Dialog } from 'vant';
 import { Toast } from 'vant'
 import common from '../../utils/common'
+import canvasResize from 'canvas-resize'
 export default {
   components:{
     swiper,
@@ -274,33 +275,66 @@ export default {
       const { files, value } = e.target;
       if (this.imgUrl.length >= 5) return MessageBox.alert("最多上传五张图片");
       for (var i = 0; i < files.length; i++) {
-        const name = files[i].name;
-        let param = new FormData();
-        param.append("file", files[i]);
-        let option = {
-          method: "POST",
-          headers: { "content-type": "application/x-www-form-urlencoded" },
-          data: param,
-          processData: false,
-          url: this.$api.upload
-        };
-        Toast.loading({ mask: true })
-        this.$axios(option)
-          .then(res => {
-            const { data, success, message } = res.data;
-            if (success) {
-              this.imgUrl.push({ fileName: name, imgUrl: data });
-               Toast.clear()
-            } else {
-              // this.$toast('头像上传失败')
+        const name = files[i].name
+        let param = new FormData()
+        param.append("file", files[i])
+        const maxSize = 1024 * 1024
+        const fileSize = files[i].size
+        let quality = 1
+        if (fileSize > 5 * 1024 * 1024) {
+            quality = 0.1
+        } else if (fileSize > 2 * 1024 * 1024 && fileSize < 5 * 1024 * 1024) {
+            quality = 0.3
+        } else {
+            quality = 0.5
+        }
+        Toast.loading({
+            mask: true,
+            message: '上传中...',
+            duration: 0
+        })
+        canvasResize(files[i], {
+            crop: false, // 是否裁剪
+            quality: quality, // 压缩质量  0 - 1
+            rotate: 0, // 旋转角度
+            callback:(baseStr) => {
+                const param = {
+                    base64Img: baseStr
+                }
+                this.$axios.post(this.$api.uploadimg, param).then(res => {
+                    const { data, success, message } = res.data
+                    if (success) {
+                        this.imgUrl.push({ fileName: name, imgUrl: data })
+                        Toast.clear()
+                    }
+                })
+                console.log(baseStr.length, baseStr)
             }
-          })
-          .catch(error => {
-            // handle error
-            console.log(error);
-          });
+        })
+        // let option = {
+        //   method: "POST",
+        //   headers: { "content-type": "application/x-www-form-urlencoded" },
+        //   data: param,
+        //   processData: false,
+        //   url: this.$api.upload
+        // };
+        // Toast.loading({ mask: true })
+        // this.$axios(option)
+        //   .then(res => {
+        //     const { data, success, message } = res.data;
+        //     if (success) {
+        //       this.imgUrl.push({ fileName: name, imgUrl: data });
+        //        Toast.clear()
+        //     } else {
+        //       // this.$toast('头像上传失败')
+        //     }
+        //   })
+        //   .catch(error => {
+        //     // handle error
+        //     console.log(error);
+        //   });
       }
-      e.target.value = null;
+      e.target.value = null
     },
     // 删除照片
     closeImg(imgUrl) {
@@ -789,5 +823,5 @@ $userSmallPhoto = 30px
         max-width 100%
         position absolute 
 .contetnL
-    padding-left $contentL
+    margin-left $contentL
 </style>

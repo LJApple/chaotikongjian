@@ -24,9 +24,16 @@ module.exports = {
         pathRewrite:{
             '^/upload':''
         }
+      },
+      '/uploadimg':{
+        target:'http://tyg.sztymk.com:1002/upload/uploadimg',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/uploadimg':''
+        }
       }
     },
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.0.105', // can be overwritten by process.env.HOST
     // host: '192.168.1.38',
     // host: '192.168.1.103',
     // host: '192.168.1.255',

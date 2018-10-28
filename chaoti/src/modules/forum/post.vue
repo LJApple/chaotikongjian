@@ -24,10 +24,11 @@
     </div>
     <div class="p-image" v-if="fileList.length">
         <div class="pi-list" v-for="(item, index) in fileList" :key="index">
-              <img :src="item.uploadFile" alt="">
-              <div class="close" @click="close(item.uploadFile)">X</div>
+            <img @click="clickImg()" :src="item.uploadFile" alt="">
+            <div class="close"  @click.stop @click="delImg(item.uploadFile)">X</div>
         </div>
     </div>
+    <preview v-if="showImageList" :imgList="imgList" @showImageList="close"></preview>
     <div class="p-footer">
         <div class="pf-opr">
             <div class="pf-list">
@@ -63,10 +64,14 @@ import emoticon from 'utils/emoticon'
 import common from '../../utils/common'
 import { MessageBox, Indicator, Actionsheet } from "mint-ui"
 import { Toast } from 'vant'
+import canvasResize from 'canvas-resize'
+import preview from "components/preview/preview"
 
 import qs from 'qs'
 export default {
-  components:{},
+  components:{
+    preview
+  },
   props:{},
   data(){
     return {
@@ -100,7 +105,10 @@ export default {
         }],
         // action sheet 默认不显示，为false。操作sheetVisible可以控制显示与隐藏
         sheetVisible: false,
-        ptypeId: null // 帖子类型
+        ptypeId: null, // 帖子类型
+        showImageList: false,
+        showSendModal: false,
+        imgList: [], // 大图列表
     }
   },
   watch:{},
@@ -120,33 +128,70 @@ export default {
     // 获取文件
     getFile(e) {
         const { files, value } = e.target
+        const maxSize = 200 * 1024
+        // console.log(files[0].size)
         this.filesUrlList = []
-        if (files.length >= 5) return MessageBox.alert('最多上传五张图片')
-        for (var i = 0; i < files.length; i++) {
+        if (files.length > 5) return MessageBox.alert('最多上传五张图片')
+        let i = 0
+        for (i; i < files.length; i++) {    
             this.filesUrlList.push(value)
             const name =  files[i].name
+            const fileSize = files[0].size
             let param = new FormData()
             param.append("file", files[i])
-            let option = {
-                method: 'POST',
-                headers: { 'content-type': 'application/x-www-form-urlencoded' },
-                data: param,
-                processData: false,
-                url: this.$api.upload
+            // let option = {
+            //     method: 'POST',
+            //     headers: { 'content-type': 'application/x-www-form-urlencoded' },
+            //     data: param,
+            //     processData: false,
+            //     url: this.$api.upload
+            // }
+            // 1m
+            const maxSize = 1024 * 1024
+            let quality = 1
+            if (fileSize > 5 * 1024 * 1024) {
+                quality = 0.1
+            } else if (fileSize > 2 * 1024 * 1024 && fileSize < 5 * 1024 * 1024) {
+                quality = 0.3
+            } else {
+                quality = 0.5
             }
-            Toast.loading({ mask: true })
-            this.$axios(option).then((res) => {
-                const { data, success, message } = res.data
-                if (success) {
-                    this.fileList.push({ fileName: name, uploadFile: data})
-                    Toast.clear()
-                } else {
-                    // this.$toast('头像上传失败')
-                }
-            }).catch((error) => {
-                // handle error
-                console.log(error)
+            Toast.loading({
+                mask: true,
+                message: '上传中...',
+                duration: 0
             })
+            canvasResize(files[i], {
+                crop: false, // 是否裁剪
+                quality: quality, // 压缩质量  0 - 1
+                rotate: 0, // 旋转角度
+                callback:(baseStr) => {
+                    const param = {
+                        base64Img: baseStr
+                    }
+                    this.$axios.post(this.$api.uploadimg, param).then(res => {
+                        const { data, success, message } = res.data
+                        if (success) {
+                            this.fileList.push({ fileName: name, uploadFile: data})
+                            Toast.clear()
+                        }
+                    })
+                    console.log(baseStr.length, baseStr)
+                }
+            })
+            // this.$axios(option).then((res) => {
+            //     const { data, success, message } = res.data
+            //     if (success) {
+            //         this.fileList.push({ fileName: name, uploadFile: data})
+            //         if (i === files.length - 1) Toast.clear()
+            //         Toast.clear()
+            //     } else {
+            //         // this.$toast('头像上传失败')
+            //     }
+            // }).catch((error) => {
+            //     // handle error
+            //     console.log(error)
+            // })
         }
         e.target.value = null
     },
@@ -182,7 +227,7 @@ export default {
         })
     },
     // 删除照片
-    close(uploadFile) {
+    delImg(uploadFile) {
         for (const [index, item] of this.fileList.entries()) {
             if (item.uploadFile === uploadFile) {
                 this.fileList.splice(index, 1)
@@ -225,6 +270,15 @@ export default {
                 })
             }
         })
+    },
+    // 全图
+    clickImg(uploadFile) {
+      this.showImageList = true
+      this.imgList = this.fileList.map(v => v.uploadFile)
+    },
+    // 关闭
+    close(e) {
+      this.showImageList = e
     }
   },
   created(){
@@ -303,7 +357,7 @@ export default {
     position relative
     .file-btn 
         position: absolute
-        width: 25%
+        width: 100%
         height: 70px
         top: 0
         left: 0
@@ -373,4 +427,6 @@ export default {
         box-sizing border-box
 /deep/ .mint-button
     height 28px
+.p-image
+    padding-bottom 70px
 </style>

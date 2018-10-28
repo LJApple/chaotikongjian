@@ -9,6 +9,7 @@ const api = {
     updateuserpwd: `${serverUrl}updateuserpwd`, // 修改密码 
     updateuserdata: `${serverUrl}user/updateuserdata`, // 修改用户信息
     upload: `/upload/uploadfile`, // 上传  
+    uploadimg: `/upload/uploadimg`, // 上传  
     taskOneTap: `${serverUrl}gettasklist`, // 领取任务
     getmytask: `${serverUrl}getmytask`, // 获取我的任务
     taskTwoTap: `${serverUrl}getrecievetasklist`, // 待完成任务

@@ -105,7 +105,9 @@
 <script type="text/ecmascript-6">
 import { MessageBox } from "mint-ui"
 import common from '../../utils/common'
+import { Toast } from 'vant'
 import qs from 'qs'
+import canvasResize from 'canvas-resize'
 export default {
   components: {},
   props: {},
@@ -278,43 +280,63 @@ export default {
     },
     // 上传文件
     getFile(e) {
-        const { files, value } = e.target
-        this.filesUrlList = []
-        for (var i = 0; i < files.length; i++) {
-            this.fileList.fileName = files[i].name
-            this.filesUrlList.push(value)
-            let param = new FormData()
-            param.append("file", files[i])
-            let option = {
-                method: 'POST',
-                headers: { 'content-type': 'application/x-www-form-urlencoded' },
-                data: param,
-                processData: false,
-                url: this.$api.upload
-            }
-            this.$axios(option).then((res) => {
-                const { data, success, message } = res.data
-                if (success) {
-                    this.userInfo.photo = this.fileList.uploadFile = data
-                    this.$toast('头像上传成功，请提交保存！')
-                } else {
-                    this.$toast('头像上传失败')
-                }
-            }).catch((error) => {
-                // handle error
-                console.log(error)
-            })
-        }
-        e.target.value = null
-      },
-      // 是否签到
-      getissign() {
-         this.$axios.get(this.$api.getissign).then(response => {
-          const { success } = response.data;
-          if (success) {
+      const { files, value } = e.target
+      this.filesUrlList = []
+      for (var i = 0; i < files.length; i++) {
+          this.fileList.fileName = files[i].name
+          this.filesUrlList.push(value)
+          let param = new FormData()
+          param.append("file", files[i])
+          const fileSize = files[i].size
+          Toast.loading({
+            mask: true,
+            message: '上传中...',
+            duration: 0
+          })
+          const maxSize = 1024 * 1024
+          let quality = 1
+          if (fileSize > 5 * 1024 * 1024) {
+              quality = 0.1
+          } else if (fileSize > 2 * 1024 * 1024 && fileSize < 5 * 1024 * 1024) {
+              quality = 0.3
+          } else {
+              quality = 0.5
           }
-        })
+          canvasResize(files[i], {
+              crop: false, // 是否裁剪
+              quality: quality, // 压缩质量  0 - 1
+              rotate: 0, // 旋转角度
+              callback:(baseStr) => {
+                  const param = {
+                      base64Img: baseStr
+                  }
+                  this.$axios.post(this.$api.uploadimg, param).then(res => {
+                      const { data, success, message } = res.data
+                      if (success) {
+                          this.userInfo.photo = this.fileList.uploadFile = data
+                          Toast.clear()
+                          this.$toast('头像上传成功，请提交保存！')
+                      }
+                  })
+              }
+          })
+          // this.$axios(option).then((res) => {
+          //     const { data, success, message } = res.data
+          //     if (success) {
+          //         this.userInfo.photo = this.fileList.uploadFile = data
+          //         Toast.clear()
+          //         this.$toast('头像上传成功，请提交保存！')
+          //     } else {
+          //         this.$toast('头像上传失败')
+          //     }
+          // }).catch((error) => {
+          //   this.$toast('头像上传失败')
+          //   // handle error
+          //   console.log(error)
+          // })
       }
+      e.target.value = null
+    }
   },
   activated() {
     // this.getTaskOneTap()
