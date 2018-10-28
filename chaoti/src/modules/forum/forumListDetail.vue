@@ -15,18 +15,23 @@
       </swiper>
       <div class="fd-content">
           <div class="fd-opr">
-              <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div>
+              <!-- <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div> -->
+              <div class="fdo-left"></div>
               <div class="fdo-right">
-                <span @click="inputFocus"><img src="../../assets/images/comment.png" alt="/assets/images/comment.png"></span>
-                <span class="fdllb-btns" @click.stop="clickLike(forumListDetailInfo.postsId, 0, 0)">
+                <span @click="inputFocus" class="fr-center">
+                    <img src="../../assets/images/comment.png" alt="/assets/images/comment.png">
+                    <span>{{forumListDetailInfo.goodCount}}</span>
+                </span>
+                <span class="fdllb-btns fr-center" @click.stop="clickLike(forumListDetailInfo.postsId, 0, 0)">
                     <img v-if="!forumListDetailInfo.isGood" src="../../assets/images/like.png" alt="/assets/images/like.png">
-                    <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png">
+                    <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png"><span>{{forumListDetailInfo.commentCount}}</span>
                 </span>
               </div>
           </div>
           <div class="fdc-text" v-html="forumListDetailInfo.details">{{forumListDetailInfo.details}}</div>
           <div class="fdc-tiem">
-              <div>共{{forumListDetailInfo.commentCount}}条回复</div>
+              <!-- <div>共{{forumListDetailInfo.commentCount}}条回复</div> -->
+              <div></div>
               <div>{{forumListDetailInfo.createTime}}</div>
           </div>
       </div>
@@ -824,4 +829,11 @@ $userSmallPhoto = 30px
         position absolute 
 .contetnL
     margin-left $contentL
+.fr-center
+    display flex
+    align-items center
+    font-size 14px
+    span
+        line-height 1
+        padding-left 5px
 </style>

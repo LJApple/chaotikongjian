@@ -81,7 +81,7 @@ export default {
             on: {
                 click: function (e) {
                     const {id} = e.target.dataset
-                    self.selctPostsType(id)
+                    self.selctPostsType(id, true)
                 }
             }
         },
@@ -121,11 +121,11 @@ export default {
         })
     },
     // 获取帖子列表
-    selctPostsType(key) {
+    selctPostsType(key, isTopBlock) {
         Toast.loading({ mask: true })
         // sectionId postsTypeId
         let url = ''
-        if (!key) {
+        if (!key || isTopBlock) {
             url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}`
         } else {
             url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&key=${key}`
