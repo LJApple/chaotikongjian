@@ -68,10 +68,10 @@
                         <span v-else>赞</span>
                     </div>
                 </div>
-              
+
             </div>
               <div class="cn-otherComment" v-if="item.postReplyList.length">
-                    <div v-for="relyList in item.postReplyList" :key="relyList.replyId"> 
+                    <div v-for="relyList in item.postReplyList" :key="relyList.replyId">
                         <div class="cno-list">
                             <div class="cno-user">
                                 <img v-if = "relyList.photo" src="../../assets/images/default.png"/>
@@ -430,31 +430,36 @@ export default {
     },
     // 删除评论
     delmypostsreply(replyId) {
+      Dialog.confirm({
+        title: '提示',
+        message: '确定删除这条评论吗？'
+      }).then(() => {
         const url = `${this.$api.delmypostsreply}?replyId=${replyId}`
         this.$axios.post(url).then(response => {
             const { data, success, message } = response.data
             if (success) {
-                this.$toast(message)
-                this.getpostdetial()
+              this.$toast(message)
+              this.getpostdetial()
             }
         })
+      })
     },
     // 删除帖子
     delmyposts() {
-        const url = `${this.$api.delmyposts}?postsId=${this.forumListDetailInfo.postsId}`
-        Dialog.confirm({
-            title: '提示',
-            message: '确定删除帖子吗？'
-        }).then(() => {
-            this.$axios.post(url).then(response => {
-                const { data, success, message } = response.data
-                if (success) {
-                    this.$router.go(-1)
-                }
-            })
-        }).catch(() => {
-        // on cancel
-        })
+      const url = `${this.$api.delmyposts}?postsId=${this.forumListDetailInfo.postsId}`
+      Dialog.confirm({
+          title: '提示',
+          message: '确定删除帖子吗？'
+      }).then(() => {
+          this.$axios.post(url).then(response => {
+              const { data, success, message } = response.data
+              if (success) {
+                  this.$router.go(-1)
+              }
+          })
+      }).catch(() => {
+      // on cancel
+      })
     }
   },
   created() {
@@ -478,9 +483,9 @@ export default {
         display flex
         align-items center
         padding 12px
-        img 
-            width 40px 
-            height @height 
+        img
+            width 40px
+            height @height
             border-radius 100%
             margin-right 10px
         .fdh-isDel
@@ -493,7 +498,7 @@ export default {
             display flex
             justify-content center
             align-items center
-        img 
+        img
            width 100%
            position absolute
     .cn-imgList
@@ -510,7 +515,7 @@ export default {
               color #333333
           .fdo-right
               display flex
-              img 
+              img
                 height 20px
                 width 20px
                 margin-left 20px
@@ -538,7 +543,7 @@ export default {
         display flex
         align-items center
         justify-content center
-        img 
+        img
             height 28px
             width @height
     .fdi-text
@@ -681,12 +686,12 @@ $userSmallPhoto = 30px
         .cn-user
             display flex
             align-items center
-            height $userBigPhoto 
+            height $userBigPhoto
             padding 0 12px
             img
                 height $userBigPhoto
-                width @height 
-                border-radius @height 
+                width @height
+                border-radius @height
                 margin-right $pageL
             text
                 font-size 16px
@@ -730,7 +735,7 @@ $userSmallPhoto = 30px
                     color: $color999
                     display: flex
                     align-items: center
-                    text-align: right 
+                    text-align: right
                     padding:0 0 0 10px
                     img
                         width: 13px
@@ -766,8 +771,8 @@ $userSmallPhoto = 30px
                     align-items: center
                 img
                     height $userSmallPhoto
-                    width: @height 
-                    border-radius: @height 
+                    width: @height
+                    border-radius: @height
                     margin-right: 12px
                 text
                     font-size: 13px
@@ -810,13 +815,13 @@ $userSmallPhoto = 30px
                         color: $color999
                         display: flex
                         align-items: center
-                        text-align: right 
+                        text-align: right
                         padding:0 0 0 10px
                         img
                             width: 13px
                             height 13px
                             margin-right: 4px
-       
+
 .cn-swiper
     height 150px
     overflow hidden
@@ -826,9 +831,9 @@ $userSmallPhoto = 30px
         justify-content center
         align-items center
         width 100%
-    img 
+    img
         max-width 100%
-        position absolute 
+        position absolute
 .contetnL
     margin-left $contentL
 .fr-center
