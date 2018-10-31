@@ -10,14 +10,16 @@
         </div>
         <div class="pn-null" v-if="getTaskList.length === 0">暂无数据</div>
     </div>
-    <mt-palette-button :content="content" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
-    direction="lt" class="changeClass" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">未领取</div></div>
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">待提交</div></div>
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
-    <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">已过期</div></div>
-    <!-- <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(5)"><div class="classRadio" v-if="isExpend">全部</div></div> -->
-   </mt-palette-button>
+    <div @click="showBtn">
+      <mt-palette-button :content="content" @expand="main_log('expand')" @expanded="main_log('expanded')" @collapse="main_log('collapse')"
+        direction="lt" class="changeClass" :class="isExpend?'expand':''" :radius="140" ref="target_1" mainButtonStyle="color:#fff;background-color:#ef4f4f;font-size:14px">
+        <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(1)"><div class="classRadio" v-if="isExpend">未领取</div></div>
+        <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(2)"><div class="classRadio" v-if="isExpend">待提交</div></div>
+        <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(3)"><div class="classRadio" v-if="isExpend">已完成</div></div>
+        <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(4)"><div class="classRadio" v-if="isExpend">已过期</div></div>
+        <!-- <div class="my-icon-button indexicon icon-popup classH" @click.stop ="sub_log(5)"><div class="classRadio" v-if="isExpend">全部</div></div> -->
+      </mt-palette-button>
+    </div>
   </div>
 </template>
 
@@ -44,29 +46,34 @@ export default {
   },
   computed:{},
   methods:{
+    showBtn() {
+      // 判断是否是移动端
+      if (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+        this.isExpend = !this.isExpend
+      }
+    },
     main_log(val) {
-        console.log('main_log', val)
-        if (val === 'expand') {
-            this.isExpend = true
-        } else if(val === 'collapse') {
-            this.isExpend = false
-        }
+      if (val === 'expand') {
+          this.isExpend = true
+      } else if(val === 'collapse') {
+          this.isExpend = false
+      }
     },
     sub_log(val) {
-        console.log('sub_log', val)
-        this.val = val
-        this.getTaskOneTap()
-        if (val === 1) {
-          this.content = '未领取'
-        } else if (val === 2) {
-          this.content = '待提交'
-        } else if (val === 3) {
-          this.content = '已完成'
-        } else if (val === 4) {
-          this.content = '已过期'
-        }
-        this.$refs.target_1.collapse()
-        return false
+      console.log('sub_log', val)
+      this.val = val
+      this.getTaskOneTap()
+      if (val === 1) {
+        this.content = '未领取'
+      } else if (val === 2) {
+        this.content = '待提交'
+      } else if (val === 3) {
+        this.content = '已完成'
+      } else if (val === 4) {
+        this.content = '已过期'
+      }
+      this.$refs.target_1.collapse()
+      return false
     },
     // 将事件派发
     toTaskDetail(taskId, isHaveUpload, taskType) {
@@ -98,7 +105,7 @@ export default {
           MessageBox('提示', '任务领取成功，任务书已发至您的邮箱，请前往查看！')
         }
       }).catch((error) => {
-        
+
       }).then(() =>{
       })
     },
@@ -113,7 +120,7 @@ export default {
           this.getTaskList = data
         }
       }).catch((error) => {
-        
+
       }).then(() =>{
       })
     },
@@ -138,7 +145,7 @@ export default {
 <style lang="stylus" scoped rel="stylesheet/stylus">
 @import "../../assets/stylus/variable.styl"
 .tasks
-    height 100%   
+    height 100%
     .pnl-list
         margin-top 10px
     .classH
@@ -152,7 +159,7 @@ export default {
         height: 58px
         z-index 99999
         .classRadio
-            height: 50px
+            height: 50px !important
             width: @height
             border-radius: @height
             line-height: @height

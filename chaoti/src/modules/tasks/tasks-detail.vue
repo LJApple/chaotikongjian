@@ -48,6 +48,7 @@ import upload from 'components/upload/upload'
 import { MessageBox } from 'mint-ui'
 import Header from 'components/header/header'
 import common from '../../utils/common'
+import { Dialog } from 'vant'
 import qs from 'qs'
 export default {
   components: {
@@ -109,7 +110,7 @@ export default {
       this.$axios.post(url).then((response) => {
         const {success} = response.data
         if (success) {
-           MessageBox.alert('任务领取成功，任务书已发至您的邮箱，请前往查看！', '提示').then(action => {
+            MessageBox.alert('任务领取成功，任务书已发至您的邮箱，请前往查看！', '提示').then(action => {
             this.$router.go(-1)
           })
         }
@@ -117,7 +118,7 @@ export default {
     },
     // 提交任务
     satyTask() {
-      if (!this.fileData) return this.$toast("请上传任务书！")
+      if (!this.fileData) return Dialog.alert({ title: '标题',message: '请上传任务书！'})
       let params = {
             "taskId": this.taskId,
             "file": this.fileData.uploadFile//附件路径
@@ -128,12 +129,14 @@ export default {
       this.$axios.post(this.$api.submittask, params).then((response) => {
         const {success, message} = response.data
         if (success) {
-           MessageBox.alert('提交成功', '提示').then(action => {
+          MessageBox.alert('提交成功', '提示').then(action => {
             this.$router.go(-1)
           })
         } else {
           MessageBox.alert(message)
         }
+      }).catch(() => {
+
       })
     }
   },

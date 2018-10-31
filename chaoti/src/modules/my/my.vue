@@ -97,7 +97,7 @@
           </mt-cell>
           </div> -->
           <mt-cell title="您的排名" style="margin-bottom: 10px">
-            <span class="my-ex">第{{exper.experienceSort}}名</span>
+            <span class="my-ex">第<span style="color: red;font-weight: bolder">{{exper.experienceSort}}</span>名</span>
             <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
           </mt-cell>
           <mt-cell title="总积分">
@@ -269,7 +269,7 @@ export default {
         if (success) {
           for (const item of data) {
             // item.title = item.title + (item.taskStatus === 0 ? '（新）':'（已结束）')
-            const {receiveStatus} = item 
+            const {receiveStatus} = item
             if (receiveStatus === 1) {
               this.getTaskListOne.push(item)
             } else if (receiveStatus === 2) {
@@ -282,7 +282,7 @@ export default {
           this.getTaskList = data
         }
       }).catch((error) => {
-        
+
       }).then(() =>{
       })
     },
@@ -796,7 +796,7 @@ export default {
 /deep/ .mint-cell-value {
   padding-right: 12px;
 }
-.file-btn 
+.file-btn
     position: absolute
     width: 100%
     height: 100%
@@ -858,10 +858,10 @@ export default {
     margin-bottom 10px
     font-size 14px
     .rl-photo
-        img 
+        img
             height 50px
             width @height
-            border-radius @height 
+            border-radius @height
     .rl-num
         width 5%
         font-weight bolder

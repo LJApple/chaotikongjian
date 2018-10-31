@@ -17,6 +17,7 @@
 <script type="text/ecmascript-6">
 import common from '../../utils/common'
 import { Indicator } from 'mint-ui'
+import { Dialog } from 'vant'
 import qs from 'qs'
 export default {
   components:{},
@@ -66,10 +67,10 @@ export default {
                     uploadFile: this.uploadFile
                 }
                 Indicator.close()
+                Dialog.alert({ title: '标题',message: '上传成功！'})
                 this.$emit('fileList', fileList)
             }).catch((error) => {
-                // handle error
-                console.log(error)
+              Dialog.alert({ title: '标题',message: '上传失败'})
             })
         }
         e.target.value = null;
@@ -85,10 +86,10 @@ export default {
     background #ffffff
     padding 20px $pagePadding
     margin-top 10px
-.u-img 
+.u-img
     padding 10px 0
     position relative
-    .file-btn 
+    .file-btn
         position: absolute
         width: 100%
         height: 100%

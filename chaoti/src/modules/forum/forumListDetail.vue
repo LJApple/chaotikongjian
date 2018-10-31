@@ -4,10 +4,8 @@
           <img class="fdh-img" v-if="!forumListDetailInfo.photo" src="../../assets/images/default.png" alt="">
           <img class="fdh-img" :src="forumListDetailInfo.photo" alt="图片">
           <div class="fdh-name">{{forumListDetailInfo.name}}</div>
-          <div  class="fdh-isDel" @click="delmyposts">
-               <van-tag v-if="forumListDetailInfo.isDel" mark type="danger">删除</van-tag>
-          </div>
       </div>
+      <div class="fdc-text" v-html="forumListDetailInfo.details">{{forumListDetailInfo.details}}</div>
       <swiper v-if="forumListDetailInfo.uploadFileUrl" class="fd-banner" :options="swiperOption">
         <swiper-slide v-for="(item, index) in forumListDetailInfo.uploadFileUrl" :key="index">
             <img :src="item" alt="" @click="clickImg"></swiper-slide>
@@ -16,7 +14,7 @@
       <div class="fd-content">
           <div class="fd-opr">
               <!-- <div class="fdo-left">{{forumListDetailInfo.goodCount}}次点赞</div> -->
-              <div class="fdo-left"></div>
+              <div class="fdo-left">{{forumListDetailInfo.createTime}}</div>
               <div class="fdo-right">
                 <span @click="inputFocus" class="fr-center">
                     <img src="../../assets/images/comment.png" alt="/assets/images/comment.png">
@@ -28,12 +26,14 @@
                 </span>
               </div>
           </div>
-          <div class="fdc-text" v-html="forumListDetailInfo.details">{{forumListDetailInfo.details}}</div>
-          <div class="fdc-tiem">
-              <!-- <div>共{{forumListDetailInfo.commentCount}}条回复</div> -->
+          <div  class="fdh-isDel" @click="delmyposts">
+           <van-tag v-if="forumListDetailInfo.isDel" mark type="danger">删除</van-tag>
+          </div>
+          <!-- <div class="fdc-tiem">
+              <div>共{{forumListDetailInfo.commentCount}}条回复</div>
               <div></div>
               <div>{{forumListDetailInfo.createTime}}</div>
-          </div>
+          </div> -->
       </div>
 
     <!-- 回复列表开始  -->
@@ -79,7 +79,7 @@
                                 <div>{{relyList.name}}</div>
                             </div>
                             <div class="cno-content" v-html="relyList.details">{{relyList.details}}</div>
-                             <div class="cno-imgList" v-if="item.uploadFileUrl.length > 0">
+                             <div class="cno-imgList" v-if="relyList.uploadFileUrl.length > 0">
                                 <swiper class="cn-swiper" :options="swiperOption">
                                     <swiper-slide v-for="(itemlist, index) in relyList.uploadFileUrl" :key="index">
                                         <img :src="itemlist" alt="" @click="clickOneImg(relyList.uploadFileUrl)"></swiper-slide>
@@ -198,16 +198,18 @@ export default {
                     data.uploadFileUrl = data.uploadFileUrl.split('|')
                     if (data.postReplyList.length > 0) {
                         for (const rList of data.postReplyList) {
+                          if (rList.uploadFileUrl) {
                             rList.uploadFileUrl = rList.uploadFileUrl.split('|')
-                            console.log('rList.details1', rList.details)
                             common.emoticon(rList, emoticon, true)
-                            console.log('rList.details', rList.details)
                             if (rList.postReplyList.length > 0) {
                                 for (const rListTwo of rList.postReplyList) {
                                     common.emoticon(rListTwo, emoticon, true)
-                                    rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
+                                    if (rListTwo.uploadFileUrl) {
+                                      rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
+                                    }
                                 }
                             }
+                          }
                         }
                     }
                 }
@@ -488,9 +490,10 @@ export default {
             height @height
             border-radius 100%
             margin-right 10px
-        .fdh-isDel
-            position absolute
-            right 12px
+    .fdh-isDel
+        padding 12px 0
+        display flex
+        justify-content flex-end
     .fd-banner
         height 200px
         overflow hidden
@@ -524,6 +527,7 @@ export default {
             justify-content space-between
             padding 10px 0
         .fdc-text
+            padding 0 12px 12px 12px
             color #333333
             line-height 20px
 
