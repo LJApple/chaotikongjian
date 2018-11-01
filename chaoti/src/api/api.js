@@ -17,6 +17,7 @@ const api = {
     recieveTask: `${serverUrl}receivetask`, // 领取任务
     gettask: `${serverUrl}gettaskdetails`, // 领取详情
     submittask: `${serverUrl}submittask`, // 提交任务
+    getemailstr: `${serverUrl}getemailstr`, // 获取邮件地址
     // 我的
     getrules: `${serverUrl}my/getrules`, // 获取规则和纪律说明内容
     getuserinfo: `${serverUrl}user/getuserdata`, // 获取用户信息

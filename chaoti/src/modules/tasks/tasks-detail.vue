@@ -63,7 +63,8 @@ export default {
       taskId: null,
       taskType: '1',
       fileData: null,
-      fileName: null
+      fileName: null,
+      emailstr: null
     }
   },
   watch:{},
@@ -100,6 +101,15 @@ export default {
           }
         })
     },
+      // 获取任务数据
+    getemailstr() {
+      this.$axios.get(this.$api.getemailstr).then((response) => {
+          const { data, success } = response.data
+          if (success) {
+            this.emailstr = data
+          }
+        })
+    },
      // 领取任务
     recieveTask() {
       let params = {
@@ -118,15 +128,19 @@ export default {
     },
     // 提交任务
     satyTask() {
-      if (!this.fileData) return Dialog.alert({ title: '标题',message: '请上传任务书！'})
-      let params = {
-            "taskId": this.taskId,
-            "file": this.fileData.uploadFile//附件路径
-            // "FileName": this.fileData.fileName//附件名称
-      }
-      // params = common.splicingJson(params)
-      // const url = this.$api.submittask + params
-      this.$axios.post(this.$api.submittask, params).then((response) => {
+      Dialog.confirm({
+        title: '提示',
+        message: `您的任务书还未上传，可上传至上传至${this.emailstr}当前状态是否确认提交？`
+      }).then(() => {
+        let uploadFile = ''
+        if (this.fileData) uploadFile =this.fileData.uploadFile
+        const params = {
+          "taskId": this.taskId,
+          "file": uploadFile // 附件路径
+          // "FileName": this.fileData.fileName // 附件名称
+        }
+        // on confirm
+        this.$axios.post(this.$api.submittask, params).then((response) => {
         const {success, message} = response.data
         if (success) {
           MessageBox.alert('提交成功', '提示').then(action => {
@@ -138,12 +152,20 @@ export default {
       }).catch(() => {
 
       })
+      }).catch(() => {
+        // on cancel
+      })
+      // if (!this.fileData) return Dialog.alert({ title: '标题',message: '请上传任务书！'})
+      // params = common.splicingJson(params)
+      // const url = this.$api.submittask + params
     }
   },
   beforeCreate() {
   },
   created(){
     this.gettask()
+    // 获取邮件地址
+    // this.getemailstr()
   },
   mounted(){
     const params = this.$route.params
