@@ -38,8 +38,9 @@
       </div>
       <div class="fl-img" @click="toBulletin">
         <div class="fli-modal">
-           <img src="../../assets/images/fourm1.png" alt="">
-            <div class="">热点公告</div>
+          <img src="../../assets/images/fourm1.png" alt="">
+          <div class="">热点公告</div>
+          <div v-if="isHaveIdot" class="flim-idot">·</div>
         </div>
       </div>
     </div>
@@ -53,7 +54,8 @@ export default {
   props:{},
   data(){
     return {
-      userInfo: {}
+      userInfo: {},
+      isHaveIdot: false
     }
   },
   watch:{},
@@ -107,7 +109,7 @@ export default {
           query: {
               redirect: 'forum'
           }
-        }) 
+        })
       },
       // 获取用户信息
       getUserInfo() {
@@ -117,10 +119,20 @@ export default {
             this.userInfo = data
           }
         })
+      },
+      // 获取红点通知
+      getnoticereddot() {
+        this.$axios.get(this.$api.getnoticereddot).then(response => {
+          const { success, data } = response.data
+          if (success) {
+            this.isHaveIdot = data
+          }
+        })
       }
   },
   created(){
     this.getUserInfo()
+    this.getnoticereddot()
   },
   mounted(){}
 }
@@ -143,7 +155,7 @@ export default {
     display flex
     .logout
       padding 15px
-      img 
+      img
         height 20px
         width 20px
 .f-content
@@ -154,10 +166,10 @@ export default {
   height 140px
   .fc-user
     display flex
-    img 
+    img
       height 60px
       width @height
-      border-radius @height 
+      border-radius @height
     .fcuc-list
       height 50px
       color #ffffff
@@ -183,15 +195,22 @@ export default {
     align-items center
     .fli-modal
       height 120px
-      width @height 
+      width @height
       border-radius 150px
-      background $bg-color
+      background #333
       color: #ffffff
       display flex
       justify-content center
       flex-direction column
       align-items center
-    img 
+      position relative
+      .flim-idot
+        position absolute
+        font-size 100px
+        color red
+        right 24px
+        top -30px
+    img
       width 60px
       height 60px
 .logo

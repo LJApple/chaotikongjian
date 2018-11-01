@@ -42,7 +42,8 @@
             <div class="cn-user">
                 <img v-if = "!item.photo" src="../../assets/images/default.png"/>
                 <img v-else :src="item.photo"/>
-                <div>{{item.name}}</div>
+                <div class="mr10">{{item.name}}</div>
+                <van-tag mark v-if="item.isAdmin" type="danger">管理员</van-tag>
             </div>
             <div class="cn-content" v-html="item.details">{{item.details}}</div>
             <div class="cn-imgList" v-if="item.uploadFileUrl.length > 0">
@@ -76,7 +77,8 @@
                             <div class="cno-user">
                                 <img v-if = "relyList.photo" src="../../assets/images/default.png"/>
                                 <img v-else :src="relyList.photo"/>
-                                <div>{{relyList.name}}</div>
+                                <div class="mr10">{{relyList.name}}</div>
+                                <van-tag mark v-if="relyList.isAdmin" type="danger">管理员</van-tag>
                             </div>
                             <div class="cno-content" v-html="relyList.details">{{relyList.details}}</div>
                              <div class="cno-imgList" v-if="relyList.uploadFileUrl.length > 0">
@@ -847,4 +849,6 @@ $userSmallPhoto = 30px
     span
         line-height 1
         padding-left 5px
+.mr10
+  margin-right 10px
 </style>

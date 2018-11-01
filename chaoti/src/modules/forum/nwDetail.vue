@@ -13,8 +13,8 @@
             <div v-html="nwInfo.Details" class="nwdc-c">{{nwInfo.Details}}</div>
         </div>
         <div class="nwd-btn">
-            <div @click="saveactivity" v-if="nwInfo.Status === 0">
-                <div class="nwdb-red" v-if="nwState !== '已参与'">我要报名</div>
+            <div v-if="nwInfo.Status === 0">
+                <div class="nwdb-red"  @click="saveactivity" v-if="nwState !== '已参与'">我要报名</div>
                 <div class="nwdb-gray" v-else>{{nwState}}</div>
             </div>
             <div class="nwdb-gray" v-if="nwInfo.Status === 1">已结束/{{nwState}}</div>
@@ -87,7 +87,11 @@ export default {
             const { data, success,  message} = response.data
             if (success) {
                 this.nwState = '已参与'
-                MessageBox.alert("参与活动成功")
+                MessageBox.alert("参与活动成功").then(()=> {
+                  if (data) {
+                    window.location.href  = data
+                  }
+                })
             }
         })
     }
@@ -118,7 +122,7 @@ export default {
         height 40px
         line-height @height
         display flex
-        span 
+        span
             no-wrap()
     .nwd-time
         height 40px
@@ -128,23 +132,23 @@ export default {
     .nwd-btn
         width 100%
         height 40px
-        line-height @height 
+        line-height @height
         text-align center
         border-top 1px solid #dddddd
         border-bottom 1px solid #dddddd
     .nwdb-red
         background-color $bg-color
-        color #ffffff 
+        color #ffffff
     .nwdb-gray
         background-color #999999
-        color #ffffff 
+        color #ffffff
     .titleW
         width 15%
     .conW
         width 85%
     .nwdc-c
         line-height 20px
-        overflow auto 
+        overflow auto
         text-align justify
     .ac-table
         margin-top 20px

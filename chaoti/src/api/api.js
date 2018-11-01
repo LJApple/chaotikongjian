@@ -46,6 +46,7 @@ const api = {
 
     // 我发过的主题
     getmypostslist: `${serverUrl}posts/getmypostslist`, // 我发过的主题 GET
+    getnoticereddot: `${serverUrl}notice/getnoticereddot` // 获取通知红点
 
 }
 Vue.prototype.$api = api
