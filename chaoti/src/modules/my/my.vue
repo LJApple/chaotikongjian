@@ -31,7 +31,7 @@
           </div> -->
         </div>
       </div>
-      <div class="thrlt-logo"><img src="../../assets/images/logo-in.png" alt=""></div>
+      <!-- <div class="thrlt-logo"><img src="../../assets/images/logo-in.png" alt=""></div> -->
     </div>
     <div class="page-navbar">
       <mt-navbar class="page-part paddingLR12" v-model="selected">
@@ -98,7 +98,7 @@
           </div> -->
           <mt-cell title="您的排名" style="margin-bottom: 10px">
             <span class="my-ex">第<span style="color: red;font-weight: bolder">{{exper.experienceSort}}</span>名</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" src="../../assets/images/exprience1.png" width="20" height="20">
           </mt-cell>
           <mt-cell title="总积分">
             <span class="my-ex">{{exper.sumExperience}}分</span>
@@ -106,27 +106,27 @@
           </mt-cell>
            <mt-cell title="活动积分" class="all-list">
             <span class="my-ex">{{exper.activeExperience}}分</span>
-            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience2.png" width="20" height="20">
           </mt-cell>
            <mt-cell title="专题积分" class="all-list">
             <span class="my-ex">{{exper.specialExperience}}分</span>
-            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience2.png" width="20" height="20">
           </mt-cell>
            <mt-cell title="日常反馈" class="all-list">
             <span class="my-ex">{{exper.dailyExperience}}分</span>
-            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience2.png" width="20" height="20">
           </mt-cell>
            <mt-cell title="其它" class="all-list">
             <span class="my-ex">{{exper.otherExperience}}分</span>
-            <img slot="icon" class="mc-img" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" class="mc-img" src="../../assets/images/exprience2.png" width="20" height="20">
           </mt-cell>
           <mt-cell title="已经使用" class="borderTop">
             <span class="my-ex">{{exper.convertExperience}}分</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" src="../../assets/images/exprience3.png" width="20" height="20">
           </mt-cell>
            <mt-cell title="剩余积分" class="borderTop">
             <span class="my-ex">{{exper.sumExperience - exper.convertExperience}}分</span>
-            <img slot="icon" src="../../assets/images/exprience.png" width="20" height="20">
+            <img slot="icon" src="../../assets/images/exprience4.png" width="20" height="20">
           </mt-cell>
         </mt-tab-container-item>
         <mt-tab-container-item id="3">

@@ -135,7 +135,7 @@ export default {
   },
   created(){
     setTimeout(() => {
-      if (this.$route.query.redirect === '/forum') {
+      if (this.$route.query.redirect === 'forum') {
         this.isForum = false
       } else {
         this.isForum = true

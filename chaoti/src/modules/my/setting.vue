@@ -17,10 +17,10 @@
           </div>
         </div>
       </div>
-      <div class="thrlt-logo">
+      <!-- <div class="thrlt-logo">
         <img v-if="isForum" src="../../assets/images/logo-forum.png" alt="">
         <img v-else src="../../assets/images/logo-in.png" alt="">
-      </div>
+      </div> -->
     </div>
     <div class="page-navbar">
       <div class="my-contain">
