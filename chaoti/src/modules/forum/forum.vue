@@ -12,7 +12,7 @@
             <div class="fcuc-list">
               <div class="fcuc-name">你好,{{userInfo.name}}</div>
               <div class="fcuc-use" @click="toMyForum">发过的主题
-                <span v-if="userInfo.isPostReply" class="fu-idot">●</span>
+                <span v-if="userInfo.isPostReply" class="fu-idot">new</span>
               </div>
             </div>
         </div>

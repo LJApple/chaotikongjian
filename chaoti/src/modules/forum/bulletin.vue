@@ -9,6 +9,7 @@
         </div>
         <div class="nw-list" v-if="bulletinList.length" @click="navToWorkDetail(item.Id)" :key="item.Id" v-for="item in bulletinList">
             <div class="nwl-title">{{item.Title}}</div>
+            <van-tag v-if="item.IsNew" type="danger">new</van-tag>
             <!-- <div class="nwl-tip">{{item.TypeName}}</div> -->
         </div>
         <router-view></router-view>
@@ -63,8 +64,14 @@ export default {
     },
     // 跳转到详情
     navToWorkDetail(Id) {
-         this.$router.push({
-          path: `/bulletin/${Id}`
+        const url = this.$api.addnoticereddot + '?noticeId=' + Id
+        this.$axios.post(url).then((response) => {
+            const { data, success } = response.data
+            if (success) {
+                this.$router.push({
+                    path: `/bulletin/${Id}`
+                })
+            }
         })
     },
      // 获取帖子类型
@@ -98,6 +105,14 @@ export default {
       this.getnoticelist()
       this.getPostsType()
   },
+  watch: {
+   '$route' (to, from) {
+       if (!to.params.activityId) {
+        this.getnoticelist()
+        this.getPostsType()   
+       }
+   }
+ },
   mounted() {}
 }
 </script>

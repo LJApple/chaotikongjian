@@ -41,7 +41,7 @@ const api = {
     getactivitydetail: `${serverUrl}activity/getactivitydetail`, // 获取活动详情 GET activityId query
     saveactivity: `${serverUrl}activity/saveactivity`, // 参与活动 activityId query  post
     getactivitycount: `${serverUrl}activity/getactivitycount`, // 获取活动统计  GET activityId query
-
+    addnoticereddot: `${serverUrl}notice/addnoticereddot`, // 查看公告时增加记录
     // 通知公告
     getnoticelist: `${serverUrl}notice/getnoticelist`, // 通知公告 GET
 
