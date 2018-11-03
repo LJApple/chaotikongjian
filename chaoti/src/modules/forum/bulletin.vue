@@ -120,7 +120,7 @@ export default {
 @import "../../assets/stylus/variable.styl"
 @import "../../assets/stylus/mixin.styl"
 .swiper-slide
-    width 33.33333%
+    width 33.33333% !important
 .nw-list
     height 48px
     margin-top 10px
@@ -142,6 +142,6 @@ export default {
     .nwl-status
         width 20%
     .nwl-title
-        width 80%
+        width 100%
         no-wrap()
 </style>

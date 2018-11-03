@@ -8,9 +8,10 @@
     </div>
     <div class="page-navbar">
         <div class="pn-list" v-if="mypostslist.length > 0"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
-            <mt-cell class="pnl-list" is-link :title="item.details">
+            <mt-cell class="pnl-list" :title="item.details">
                 <span v-if="item.isReply === 0 && listType !== 0">已回复</span>
-                <span v-if="item.isReply === 1" class="redColor">新的回复</span>
+                <van-tag v-if="item.isReply === 1" type="danger">new</van-tag>
+                <!-- <span v-if="item.isReply === 1" class="redColor">new</span> -->
             </mt-cell>
         </div>
         <div class="pn-null" v-if="!mypostslist.length">暂无数据</div>

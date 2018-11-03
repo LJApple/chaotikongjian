@@ -178,7 +178,7 @@ $headerH = 140px
   .fc-user
     display flex
     img
-      height 80px
+      height 60px
       width @height
       border-radius @height
     .fcuc-list
@@ -229,8 +229,8 @@ $headerH = 140px
         right 0px
         top 0px
     img
-      width 80px
-      height 80px
+      width 70px
+      height @height
 .logo
   top 5px
 .fu-idot
