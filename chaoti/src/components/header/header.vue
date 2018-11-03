@@ -5,8 +5,8 @@
         <div class="logout" v-if="isShowsetImg" @click="setting"><img src="../../assets/images/setting.png" alt=""></div>
       </div>
       <div class="f-content">
-        <img v-if="isForum" class="fc-logo" src="../../assets/images/logo-forum.png" alt="">
-        <img v-else class="fc-logo" src="../../assets/images/logo-in.png" alt="">
+        <!-- <img v-if="isForum" class="fc-logo" src="../../assets/images/logo-forum.png" alt="">
+        <img v-else class="fc-logo" src="../../assets/images/logo-in.png" alt=""> -->
         <div class="fc-user">
             <img class="" v-if="!userInfo.photo" src="../../assets/images/defalut-wihte.png" alt="">
             <img v-else :src="userInfo.photo" alt="">
