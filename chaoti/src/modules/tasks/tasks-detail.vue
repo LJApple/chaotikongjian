@@ -120,7 +120,7 @@ export default {
       this.$axios.post(url).then((response) => {
         const {success} = response.data
         if (success) {
-            MessageBox.alert('任务领取成功，任务书已发至您的邮箱，请前往查看！', '提示').then(action => {
+            MessageBox.alert('您领取的任务：超体超体用户年度任务完成总结，附件已送达，请及时查看！', '提示').then(action => {
             this.$router.go(-1)
           })
         }

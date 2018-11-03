@@ -198,27 +198,27 @@ export default {
             if (success) {
                 if (data.uploadFileUrl) {
                     data.uploadFileUrl = data.uploadFileUrl.split('|')
-                    if (data.postReplyList.length > 0) {
-                        for (const rList of data.postReplyList) {
-                          if (rList.uploadFileUrl) {
+                }
+                if (data.postReplyList.length > 0) {
+                    for (const rList of data.postReplyList) {
+                        if (rList.uploadFileUrl) {
                             rList.uploadFileUrl = rList.uploadFileUrl.split('|')
                             common.emoticon(rList, emoticon, true)
                             if (rList.postReplyList.length > 0) {
                                 for (const rListTwo of rList.postReplyList) {
                                     common.emoticon(rListTwo, emoticon, true)
                                     if (rListTwo.uploadFileUrl) {
-                                      rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
+                                        rListTwo.uploadFileUrl = rListTwo.uploadFileUrl.split('|')
                                     }
                                 }
                             }
-                          }
                         }
                     }
                 }
+                console.log('data', data)
                 common.emoticon(data, emoticon, true)
                 this.forumListDetailInfo = data
                 this.postReplyList = data.postReplyList
-                console.log('this.postReplyList', this.postReplyList, this.forumListDetailInfo)
             }
         })
       },

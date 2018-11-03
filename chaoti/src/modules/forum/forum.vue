@@ -11,7 +11,10 @@
             <img v-else :src="userInfo.photo" alt="">
             <div class="fcuc-list">
               <div class="fcuc-name">你好,{{userInfo.name}}</div>
-              <div class="fcuc-use" @click="toMyForum">发过的主题 <span v-if="userInfo.isPostReply" class="fu-idot">·</span></div>
+              <div class="fcuc-use" @click="toMyForum">发过的主题
+                <!-- <span v-if="userInfo.isPostReply" class="fu-idot">●</span> -->
+                <span class="fu-idot">●</span>
+              </div>
             </div>
         </div>
        <img  class="fc-logo" src="../../assets/images/logo-forum.png" alt="">
@@ -40,7 +43,7 @@
         <div class="fli-modal">
           <img src="../../assets/images/fourm1.png" alt="">
           <div class="">热点公告</div>
-          <div v-if="isHaveIdot" class="flim-idot">·</div>
+          <div v-if="isHaveIdot" class="flim-idot">●</div>
         </div>
       </div>
     </div>
@@ -206,18 +209,18 @@ export default {
       position relative
       .flim-idot
         position absolute
-        font-size 100px
+        font-size 30px
         color red
-        right 24px
-        top -30px
+        right 20px
+        top 10px
     img
       width 60px
       height 60px
 .logo
   top 5px
 .fu-idot
-  font-size 70px
+  font-size 15px
   position absolute
-  top -35px
-  right -24px
+  top -32px
+  right 13px
 </style>
