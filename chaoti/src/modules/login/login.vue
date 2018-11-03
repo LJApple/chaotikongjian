@@ -140,7 +140,7 @@ export default {
       } else {
         this.isForum = true
       }
-    }, 1000)
+    }, 300)
   },
   mounted() {
   }
