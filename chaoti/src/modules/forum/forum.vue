@@ -12,8 +12,7 @@
             <div class="fcuc-list">
               <div class="fcuc-name">你好,{{userInfo.name}}</div>
               <div class="fcuc-use" @click="toMyForum">发过的主题
-                <!-- <span v-if="userInfo.isPostReply" class="fu-idot">●</span> -->
-                <span class="fu-idot">●</span>
+                <span v-if="userInfo.isPostReply" class="fu-idot">●</span>
               </div>
             </div>
         </div>
@@ -219,8 +218,15 @@ export default {
 .logo
   top 5px
 .fu-idot
-  font-size 15px
+  font-size 16px
   position absolute
-  top -32px
-  right 13px
+  top -4px
+  left 83px
+  color #ffffff
+  height 20px
+  line-height 20px
+  font-weight bolder
+  background #ef4f4f
+  padding 0 3px
+  border-radius 4px
 </style>
