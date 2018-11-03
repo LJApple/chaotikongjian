@@ -45,7 +45,8 @@ export default {
             message: '确定退出系统吗？'
         }).then(() => {
             // 清除session 返回login
-            common.delCookie('account_token')
+            // common.delCookie('account_token')
+            window.localStorage.removeItem('account_token')
             const redirect = this.$route.query.redirect ? this.$route.query.redirect : this.$route.name
             this.$router.push({
                 path: '/login',

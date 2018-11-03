@@ -28,8 +28,8 @@ Vue.use(Vant)
 // 将所有的请求加加上account_token
 axios.interceptors.request.use(config => {
     // 让每个请求携带token--['token']为自定义key
-    // const account_token = window.localStorage.getItem('account_token')
-    const account_token = common.getCookie('account_token')
+    const account_token = window.localStorage.getItem('account_token')
+    // const account_token = common.getCookie('account_token')
     // if(account_token) Object.assign(config.headers, { 'account_token': account_token})
     let url = config.url
     let curUrl = ''
@@ -59,7 +59,8 @@ axios.interceptors.response.use(response => response,error => {
    const {status} =  error.response
    if (status === 403 || status === 401) {
     const {fullPath, query} = router.history.current
-    common.delCookie('account_token')
+    // common.delCookie('account_token')
+    window.localStorage.removeItem('account_token')
     if (query.redirect) return
     router.replace({
         path: '/login',

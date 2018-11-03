@@ -319,8 +319,8 @@ export default {
       MessageBox.confirm("确定退出吗?").then(action => {
         console.log("action", action);
         const path = this.$route.path;
-        // window.localStorage.removeItem("account_token")
-        common.delCookie('account_token')
+        window.localStorage.removeItem("account_token")
+        // common.delCookie('account_token')
         this.$router.push({ path: "login", query: { redirect: path } });
       });
     },

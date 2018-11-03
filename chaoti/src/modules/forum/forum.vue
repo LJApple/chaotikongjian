@@ -66,7 +66,8 @@ export default {
     // 退出登录
     logout() {
       // 清除session 返回login
-      common.delCookie('account_token')
+      // common.delCookie('account_token')
+      window.localStorage.removeItem('account_token')
       this.$router.push({
         path: '/login',
         query: { redirect: 'forum' }

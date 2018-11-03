@@ -19,7 +19,7 @@
             </div>
             <div class="nwdb-gray" v-if="nwInfo.Status === 1">已结束/{{nwState}}</div>
         </div>
-        <div class="ac-table">
+        <div class="ac-table" v-if="!nwInfo.Url">
             <div class="act-desc">目前各部门体验情况</div>
             <div class="act-title">
                 <div class="act-l">部门</div>

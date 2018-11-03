@@ -83,7 +83,8 @@ export default {
         const { success, data } = res.data
         if (success) {
         //   window.localStorage.setItem('account_token', data)
-          common.setCookie('account_token', data.token, 365)
+          // common.setCookie('account_token', data.token, 365)
+          localStorage.setItem('account_token', data.token)
           const path = this.$route.query.redirect
           setTimeout(() => {
             this.$router.push({path: path})
