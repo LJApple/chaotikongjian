@@ -33,8 +33,8 @@ module.exports = {
         }
       }
     },
-    host: '192.168.1.106', // can be overwritten by process.env.HOST
-    // host: '192.168.1.38',
+    // host: '192.168.1.106', // can be overwritten by process.env.HOST
+    host: '192.168.1.38',
     // host: '192.168.1.103',
     // host: '192.168.1.255',
     // host: 'localhost',

@@ -2,14 +2,18 @@
   <div class="tasks">
     <Header :isShowSetting="true"></Header>
     <div class="v-list">
-        <swiper :options="swiperOption">
+        <!-- <swiper :options="swiperOption">
             <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
-        </swiper>
+        </swiper> -->
+      <van-tabs @click="selctPostsType">
+        <van-tab v-for="item in postsTypes" :title="item.name" :key="item.id"></van-tab>
+      </van-tabs>
     </div>
     <div class="page-navbar">
         <div class="pn-list" v-if="mypostslist.length > 0"  v-for="item in mypostslist" :key="item.postsId" @click="toTaskDetail(item.postsId)">
             <mt-cell class="pnl-list" :title="item.details">
-                <span v-if="item.isReply === 0 && listType !== 0">已回复</span>
+                <!-- <span v-if="item.isReply === 0 && listType !== 0">已回复</span> -->
+                <van-tag v-if="item.isReply === 0 && listType !== 0" type="danger">已回复</van-tag>
                 <van-tag v-if="item.isReply === 1" type="danger">new</van-tag>
                 <!-- <span v-if="item.isReply === 1" class="redColor">new</span> -->
             </mt-cell>
@@ -39,29 +43,29 @@ export default {
     return {
         mypostslist: [],
         isExpend: false,
-        swiperOption: {
-            spaceBetween: 0,
-            slidesPerView: 'auto',
-            slideToClickedSlide: true,
-            preventClicks : false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true
-            },
-            on: {
-                click: function (e) {
-                    Toast.loading({ mask: true })
-                    const {id} = e.target.dataset
-                    self.selctPostsType(parseInt(id))
-                }
-            }
-        },
+        // swiperOption: {
+        //     spaceBetween: 0,
+        //     slidesPerView: 'auto',
+        //     slideToClickedSlide: true,
+        //     preventClicks : false,
+        //     pagination: {
+        //         el: '.swiper-pagination',
+        //         clickable: true
+        //     },
+        //     on: {
+        //         click: function (e) {
+        //             Toast.loading({ mask: true })
+        //             const {id} = e.target.dataset
+        //             self.selctPostsType(parseInt(id))
+        //         }
+        //     }
+        // },
         postsTypes: [
             {name: '发过的主题', id: 0},
             {name: '管理员回复', id: 1},
             {name: '非管理员回复', id: 2},
         ],
-        listType: 0      
+        listType: 0
     }
   },
   watch: {
@@ -92,7 +96,7 @@ export default {
        })
     },
     selctPostsType(id) {
-        this.getmypostslist(id)
+      this.getmypostslist(id)
     }
   },
   activated() {

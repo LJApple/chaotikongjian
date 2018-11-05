@@ -3,9 +3,12 @@
         <Header :isShowSetting="true"></Header>
         <div class="v-list">
             <!-- swiper -->
-            <swiper :options="swiperOption">
+            <!-- <swiper :options="swiperOption">
                 <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
-            </swiper>
+            </swiper> -->
+            <van-tabs @click="selctPostsType">
+              <van-tab v-for="item in postsTypes" :title="item.name" :key="item.id"></van-tab>
+            </van-tabs>
         </div>
         <div class="nw-list" @click="navToWorkDetail(item.Id)" v-for="item in actilist" :key="item.Id">
             <div class="nwl-status have" v-if="item.Status === 0">进行中</div>
@@ -18,7 +21,7 @@
 
 <script type="text/ecmascript-6">
 import emoticon from 'utils/emoticon'
-import common from '../../utils/common' 
+import common from '../../utils/common'
 import { MessageBox, Indicator, Actionsheet } from "mint-ui"
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import Header from 'components/header/header'
@@ -37,28 +40,28 @@ export default {
         actilistAll: [],
         actilistHave: [],
         actilistEnd: [],
-        swiperOption: {
-            spaceBetween: 0,
-            slidesPerView: 'auto',
-            slideToClickedSlide: true,
-            preventClicks : false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true
-            },
-            on: {
-                click: function (e) {
-                    Toast.loading({ mask: true })
-                    const {id} = e.target.dataset
-                    self.selctPostsType(parseInt(id))
-                }
-            }
-        },
+        // swiperOption: {
+        //     spaceBetween: 0,
+        //     slidesPerView: 'auto',
+        //     slideToClickedSlide: true,
+        //     preventClicks : false,
+        //     pagination: {
+        //         el: '.swiper-pagination',
+        //         clickable: true
+        //     },
+        //     on: {
+        //         click: function (e) {
+        //             Toast.loading({ mask: true })
+        //             const {id} = e.target.dataset
+        //             self.selctPostsType(parseInt(id))
+        //         }
+        //     }
+        // },
         postsTypes: [
-            {name: '全部', id: 3},
-            {name: '进行中', id: 1},
-            {name: '已结束', id: 2}
-        ]        
+          {name: '全部', id: 0},
+          {name: '进行中', id: 1},
+          {name: '已结束', id: 2}
+        ]
     }
   },
   watch:{},
@@ -123,13 +126,13 @@ export default {
     margin-top 10px
     display flex
     align-items center
-    border-top 1px solid #d9d9d9 
-    border-bottom 1px solid #d9d9d9 
+    border-top 1px solid #d9d9d9
+    border-bottom 1px solid #d9d9d9
     margin-bottom 10px
     background #ffffff
     font-size 16px
     padding 0 12px
-    .have 
+    .have
         color rgb(239, 79, 79)
     .nwl-status
         width 20%
