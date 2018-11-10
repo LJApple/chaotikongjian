@@ -18,11 +18,11 @@
               <div class="fdo-right">
                 <span @click="inputFocus" class="fr-center">
                     <img src="../../assets/images/comment.png" alt="/assets/images/comment.png">
-                    <span>{{forumListDetailInfo.goodCount}}</span>
+                    <span>{{forumListDetailInfo.commentCount}}</span>
                 </span>
                 <span class="fdllb-btns fr-center" @click.stop="clickLike(forumListDetailInfo.postsId, 0, 0)">
                     <img v-if="!forumListDetailInfo.isGood" src="../../assets/images/like.png" alt="/assets/images/like.png">
-                    <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png"><span>{{forumListDetailInfo.commentCount}}</span>
+                    <img v-else src="../../assets/images/like-active.png" alt="/assets/images/like-active.png"><span>{{forumListDetailInfo.goodCount}}</span>
                 </span>
               </div>
           </div>

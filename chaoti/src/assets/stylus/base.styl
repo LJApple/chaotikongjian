@@ -1,4 +1,5 @@
 @import '../../assets/stylus/mixin.styl'
+$bgColor = rgb(239, 79, 79)
 html,body
     height:100%
     background-color: #f2f2f2
@@ -129,8 +130,10 @@ html,body
 .v-list
     // position fixed
     // top 50px
-    margin-top: 10px
+    // margin-top: 10px
     width 100%
+    // padding: 0 12px
+    box-sizing: border-box
     .swiper-slide
         height 40px
         width 100px
@@ -167,13 +170,13 @@ html,body
     height 50px
     width 154px
 .mint-navbar .mint-tab-item.is-selected
-    border-bottom: 0.03rem solid rgb(239, 79, 79)
-    color: rgb(239, 79, 79)
+    border-bottom: 0.03rem solid $bgColor
+    color: $bgColor
 .mint-radio-input:checked + .mint-radio-core
-    background-color: rgb(239, 79, 79)
-    border-color: rgb(239, 79, 79)
+    background-color: $bgColor
+    border-color: $bgColor
 .red
-    background-color: rgb(239, 79, 79)
+    background-color: $bgColor
     color: #ffffff
 // .swiper-slide-active
 //     background-color: rgb(239, 79, 79) !important
@@ -184,3 +187,15 @@ html,body
     background: #000000
 .maginTop10
     margin-top: 10px
+.van-tabs__nav--card
+  margin: 0
+.van-tabs__wrap--scrollable .van-tab
+  flex: 0 0 26%
+.van-tabs__line
+  color:$bgColor
+// .van-tab,.van-tabs__nav--card
+//   border: 0 !important
+//   color: #333333 !important
+// .van-tab--active
+//   background-color: rgb(239, 79, 79) !important
+//   color: #ffffff !important

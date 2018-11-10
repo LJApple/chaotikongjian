@@ -2,10 +2,13 @@
     <div class="nw">
         <Header></Header>
         <div class="v-list">
-            <swiper :options="swiperOption">
+            <!-- <swiper :options="swiperOption">
                 <swiper-slide @click="selctPostsType()">全部</swiper-slide>
                 <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
-            </swiper>
+            </swiper> -->
+          <van-tabs @click="selctPostsType">
+            <van-tab v-for="item in postsTypes" :title="item.name" :key="item.id"></van-tab>
+          </van-tabs>
         </div>
         <div class="nw-list" v-if="bulletinList.length" @click="navToWorkDetail(item.Id)" :key="item.Id" v-for="item in bulletinList">
             <div class="nwl-title">{{item.Title}}</div>
@@ -18,7 +21,7 @@
 
 <script type="text/ecmascript-6">
 import emoticon from 'utils/emoticon'
-import common from '../../utils/common' 
+import common from '../../utils/common'
 import { Indicator, MessageBox } from 'mint-ui'
 import Header from 'components/header/header'
 export default {
@@ -31,23 +34,23 @@ export default {
     return {
         bulletinList: [],
         isExpend: false,
-        swiperOption: {
-            spaceBetween: 0,
-            slidesPerView: 'auto',
-            slideToClickedSlide: true,
-            preventClicks : false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true
-            },
-            on: {
-                click: function (e) {
-                    const {id} = e.target.dataset
-                    self.selctPostsType(id)
-                }
-            }
-        },
-       postsTypes: [] 
+        // swiperOption: {
+        //     spaceBetween: 0,
+        //     slidesPerView: 'auto',
+        //     slideToClickedSlide: true,
+        //     preventClicks : false,
+        //     pagination: {
+        //         el: '.swiper-pagination',
+        //         clickable: true
+        //     },
+        //     on: {
+        //         click: function (e) {
+        //             const {id} = e.target.dataset
+        //             self.selctPostsType(id)
+        //         }
+        //     }
+        // },
+       postsTypes: []
     }
   },
   watch:{},
@@ -81,20 +84,26 @@ export default {
         this.$axios.get(url).then((response) => {
             const { data, success } = response.data
             if (success) {
-               this.postsTypes = data
+              data.unshift({
+                id: 0,
+                name: '全部'
+              })
+              this.postsTypes = data
             //    this.selctPostsType()
             }
         })
     },
     selctPostsType(TypeId) {
         this.bulletinList = []
+        if (TypeId === 1) TypeId = 12
+        if (TypeId === 2) TypeId = 13
          this.$axios.get(this.$api.getnoticelist).then((response) => {
             const { data, success } = response.data
             if (success) {
                 if (!TypeId) return this.bulletinList = data
                 for (const item of data) {
                     if (item.TypeId === parseInt(TypeId)) {
-                        this.bulletinList.push(item)
+                      this.bulletinList.push(item)
                     }
                 }
             }
@@ -109,7 +118,7 @@ export default {
    '$route' (to, from) {
        if (!to.params.activityId) {
         this.getnoticelist()
-        this.getPostsType()   
+        this.getPostsType()
        }
    }
  },
@@ -126,8 +135,8 @@ export default {
     margin-top 10px
     display flex
     align-items center
-    border-top 1px solid #d9d9d9 
-    border-bottom 1px solid #d9d9d9 
+    border-top 1px solid #d9d9d9
+    border-bottom 1px solid #d9d9d9
     margin-bottom 10px
     background #ffffff
     font-size 16px
@@ -137,7 +146,7 @@ export default {
         position absolute
         right 12px
         color $de-color
-    .have 
+    .have
         color rgb(239, 79, 79)
     .nwl-status
         width 20%

@@ -3,10 +3,13 @@
      <Header :isShowSetting="true"></Header>
      <div class="v-list">
         <!-- swiper -->
-        <swiper :options="swiperOption">
+        <!-- <swiper :options="swiperOption">
             <swiper-slide @click="selctPostsType()">全部</swiper-slide>
             <swiper-slide v-if="postsTypes" v-for="item in postsTypes" :data-id="item.id" :key="item.id">{{item.name}}</swiper-slide>
-        </swiper>
+        </swiper> -->
+        <van-tabs @click="selctPostsType">
+          <van-tab v-for="item in postsTypes" :title="item.name" :key="item.id"></van-tab>
+        </van-tabs>
     </div>
     <div class="seach">
         <van-search @search="onSearch" background="#f2f2f2" placeholder="请输入搜索关键词" v-model="key"/>
@@ -67,27 +70,11 @@ export default {
   data(){
     const self = this
     return {
-        value: '',
-        autofocus: true,
-        swiperOption: {
-            spaceBetween: 0,
-            slidesPerView: 'auto',
-            slideToClickedSlide: true,
-            preventClicks : false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true
-            },
-            on: {
-                click: function (e) {
-                    const {id} = e.target.dataset
-                    self.selctPostsType(id, true)
-                }
-            }
-        },
-        forumDetailList: null,
-        postsTypes: [],
-        key: ''
+      value: '',
+      autofocus: true,
+      forumDetailList: null,
+      postsTypes: [],
+      key: ''
     }
   },
   watch:{},
@@ -115,22 +102,37 @@ export default {
         this.$axios.get(url).then((response) => {
             const { data, success } = response.data
             if (success) {
+              data.unshift({
+                id: 0,
+                name: '全部'
+              })
                this.postsTypes = data
             //    this.selctPostsType()
             }
         })
     },
     // 获取帖子列表
-    selctPostsType(key, isTopBlock) {
-        Toast.loading({ mask: true })
-        // sectionId postsTypeId
-        let url = ''
-        if (!key || isTopBlock) {
-            url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&postsTypeId=${key}`
+    selctPostsType(index) {
+      Toast.loading({ mask: true })
+      if (index === 0) index = ''
+      let url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&postsTypeId=${index}`
+      this.$axios.get(url).then((response) => {
+        Toast.clear()
+        const { data, success } = response.data
+        if (success) {
+            common.emoticon(data, emoticon)
+            this.forumDetailList = data
         } else {
-            url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&key=${key}`
+            this.forumDetailList = null
         }
-        this.$axios.get(url).then((response) => {
+      })
+    },
+    // 查询帖子
+    seachPost(key) {
+      Toast.loading({ mask: true })
+      // sectionId postsTypeId
+      let url = `${this.$api.getpostlist}?sectionId=${this.$route.query.from}&key=${key}`
+      this.$axios.get(url).then((response) => {
         Toast.clear()
         const { data, success } = response.data
         if (success) {
@@ -167,8 +169,8 @@ export default {
     },
     // 搜索
     onSearch() {
-        this.selctPostsType(this.key)
-        console.log('key', this.key)
+      this.seachPost(this.key)
+      console.log('key', this.key)
     }
   },
    activated () {
@@ -222,7 +224,7 @@ export default {
             .df-tag
                 position absolute
                 right 0
-            img 
+            img
                 height 40px
                 width @height
                 border-radius 100%
@@ -239,10 +241,10 @@ export default {
         .fdll-btnbox
             display flex
             padding-top 12px
-            img 
+            img
                 height 18px
                 width @height
-            span 
+            span
                 padding 0 10px
                 font-size 16px
                 line-height 22px
