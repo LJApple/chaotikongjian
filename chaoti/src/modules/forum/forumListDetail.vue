@@ -75,7 +75,7 @@
                     <div v-for="relyList in item.postReplyList" :key="relyList.replyId">
                         <div class="cno-list">
                             <div class="cno-user">
-                                <img v-if = "relyList.photo" src="../../assets/images/default.png"/>
+                                <img v-if = "!relyList.photo" src="../../assets/images/default.png"/>
                                 <img v-else :src="relyList.photo"/>
                                 <div class="mr10">{{relyList.name}}</div>
                                 <van-tag mark v-if="relyList.isAdmin" type="danger">管理员</van-tag>
