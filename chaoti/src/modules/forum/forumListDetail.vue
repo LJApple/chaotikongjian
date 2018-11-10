@@ -94,13 +94,13 @@
                                     <div class="cnp-del" @click="delmypostsreply(relyList.replyId)" v-if="relyList.isDel">删除</div>
                                 </div>
                                 <div class="cnop-reply">
-                                    <div class="cnop-re" @click="reply(relyList.replyId, relyList.replyId, 2)" v-if="relyList.isDel === false">回复</div>
+                                    <div class="cnop-re" @click="reply(item.replyId, item.replyId, 2)" v-if="relyList.isDel === false">回复</div>
                                     <span class="cnopr-circle" v-if="relyList.isDel === false">·</span>
                                     <div class="cnopr-like" @click.stop="clickLike(forumListDetailInfo.postsId, relyList.replyId,2)">
                                          <img v-if="!relyList.isGood" src="../../assets/images/praise.png">
                                          <img v-else src="../../assets/images/praise--active.png">
                                         <span class="red" v-if="relyList.goodCount !== 0">{{relyList.goodCount}}</span>
-                                        <span class="red" v-else>赞</span>
+                                        <span v-else>赞</span>
                                     </div>
                                 </div>
                             </div>
