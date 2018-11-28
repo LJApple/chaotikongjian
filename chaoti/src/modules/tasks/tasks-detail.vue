@@ -120,7 +120,7 @@ export default {
       this.$axios.post(url).then((response) => {
         const {success} = response.data
         if (success) {
-            MessageBox.alert('您领取的任务：超体超体用户年度任务完成总结，附件已送达，请及时查看！', '提示').then(action => {
+            MessageBox.alert('您领取的任务，附件已送达至预留邮箱，请您及时查看！', '提示').then(action => {
             this.$router.go(-1)
           })
         }
@@ -130,7 +130,7 @@ export default {
     satyTask() {
       Dialog.confirm({
         title: '提示',
-        message: `您的任务书还未上传，确认任务书已发送至chaoti_ti_kzx@qq.com，当前状态是否确认提交？`
+        message: `您的任务书还未上传，确认任务书已发送至chaoti_ti_kzx@qq.com，当前状，当前状态是否确认提交？`
       }).then(() => {
         let uploadFile = ''
         if (this.fileData) uploadFile =this.fileData.uploadFile
