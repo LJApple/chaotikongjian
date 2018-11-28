@@ -182,6 +182,15 @@ export default {
     this.selctPostsType()
     // 获取帖子类型
     this.getPostsType()
+    console.log('router', this.$route)
+    const {from} = this.$route.query
+    if (from === '2') {
+        // 我要点赞
+        this.$route.meta.title = '我要点赞'
+    } else if (from === '5') {
+        // 意见反馈
+        this.$route.meta.title = '意见反馈'
+    }
   },
   mounted(){}
 }

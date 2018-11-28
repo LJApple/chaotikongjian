@@ -154,7 +154,8 @@ export default {
   height 100%
   display flex
   flex-direction column
-  padding 30px 10% 0 10%
+  padding 30px 10% 20% 10%
+  box-sizing border-box
   .l-input
     display flex
     flex-direction column

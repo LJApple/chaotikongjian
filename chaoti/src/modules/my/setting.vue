@@ -214,6 +214,10 @@ export default {
     },
     // 点击修改密码
     changPwd() {
+         if (!this.userInfo.email) {
+          this.$toast('请完善您的邮箱再修改密码！')
+          return
+        }
         this.isShowModal = true
     },
     // 提交修改密码

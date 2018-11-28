@@ -130,7 +130,7 @@ export default {
     satyTask() {
       Dialog.confirm({
         title: '提示',
-        message: `您的任务书还未上传，确认任务书已发送至chaoti_ti_kzx@qq.com，当前状，当前状态是否确认提交？`
+        message: `您的任务书还未上传，确认任务书已发送至chaoti_kzx@qq.com，当前状态是否确认提交？`
       }).then(() => {
         let uploadFile = ''
         if (this.fileData) uploadFile =this.fileData.uploadFile
