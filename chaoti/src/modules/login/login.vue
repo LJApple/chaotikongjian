@@ -198,5 +198,6 @@ export default {
     background-color #eee
     text-align center
     top 155px
+    left 0
     color #333
 </style>
