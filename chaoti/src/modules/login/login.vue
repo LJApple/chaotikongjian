@@ -79,6 +79,7 @@ export default {
       }
       param = common.splicingJson(param)
       const url = this.$api.login + param
+      // const url =   'http://tyg.sztymk.com:1004/rbac-v1.0/Login'
       this.$axios.post(url).then((res) => {
         const { success, data } = res.data
         if (success) {

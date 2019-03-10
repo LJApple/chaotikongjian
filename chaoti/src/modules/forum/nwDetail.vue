@@ -75,6 +75,9 @@ export default {
         this.$axios.get(url).then((response) => {
             const { data, success,  message} = response.data
             if (success) {
+                for (const item of data) {
+                    item.rate = (item.rate * 100).toFixed(3) + '%'
+                }
                 this.activitycount = data
             }
         })
