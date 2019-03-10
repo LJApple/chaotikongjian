@@ -10,7 +10,7 @@
             <van-tab v-for="item in postsTypes" :title="item.name" :key="item.id"></van-tab>
           </van-tabs>
         </div>
-        <div class="nw-list" v-if="bulletinList.length" @click="navToWorkDetail(item.Id)" :key="item.Id" v-for="item in bulletinList">
+        <div class="nw-list"  @click="navToWorkDetail(item.Id)" :key="item.Id" v-for="item in bulletinList">
             <div class="nwl-title">{{item.Title}}</div>
             <van-tag v-if="item.IsNew" type="danger">new</van-tag>
             <!-- <div class="nwl-tip">{{item.TypeName}}</div> -->

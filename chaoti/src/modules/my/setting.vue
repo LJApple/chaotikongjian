@@ -48,7 +48,7 @@
                         <img src="../../assets/images/done.png" alt="">
                     </div>
                     <mt-field disabled class="s-padding" label="部门" placeholder="部门" v-model="userInfo.department"></mt-field>
-                </div>  
+                </div>
                 <div class="sl-list sex">
                     <div class="sll-left">
                         <img src="../../assets/images/done.png" alt="">
@@ -103,9 +103,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { MessageBox } from "mint-ui"
 import common from '../../utils/common'
-import { Toast } from 'vant'
+import { Toast, Dialog  } from 'vant'
 import qs from 'qs'
 import canvasResize from 'canvas-resize'
 export default {
@@ -242,11 +241,11 @@ export default {
         this.$axios.post(url).then((response) => {
             const { message, success } = response.data
             if (success) {
-              MessageBox.alert('修改成功').then(action => {
+              Dialog.alert( {message: '修改成功'}).then(() => {
                 this.isShowModal = false
               })
             } else {
-              MessageBox.alert(message)
+              Dialog.alert({message})
             }
         })
     },
@@ -254,7 +253,7 @@ export default {
     submitData() {
         let {sex, phone, email, photo, name, nikeName} = this.userInfo
         if(!sex || !phone || !email) {
-          MessageBox.alert('参数不能为空')
+          Dialog.alert({message: '手机号、邮箱不能为空！'})
         }
         if (this.sextype === '0') {
           sex = '男'
@@ -276,9 +275,9 @@ export default {
         this.$axios.post(this.$api.updateuserdata, qs.stringify(param)).then((res) => {
             const { message, success } = res.data
             if (success) {
-              MessageBox.alert('修改成功')
+              Dialog.alert({ message: '修改成功' })
             } else {
-              MessageBox.alert(message)
+              Dialog.alert({ message })
             }
         })
     },
@@ -324,20 +323,6 @@ export default {
                   })
               }
           })
-          // this.$axios(option).then((res) => {
-          //     const { data, success, message } = res.data
-          //     if (success) {
-          //         this.userInfo.photo = this.fileList.uploadFile = data
-          //         Toast.clear()
-          //         this.$toast('头像上传成功，请提交保存！')
-          //     } else {
-          //         this.$toast('头像上传失败')
-          //     }
-          // }).catch((error) => {
-          //   this.$toast('头像上传失败')
-          //   // handle error
-          //   console.log(error)
-          // })
       }
       e.target.value = null
     }
@@ -654,7 +639,7 @@ export default {
 /deep/ .mint-cell-value {
   padding-right: 12px;
 }
-.file-btn 
+.file-btn
     position: absolute
     width: 100%
     height: 100%

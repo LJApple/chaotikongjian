@@ -1,9 +1,10 @@
 <template>
   <div class="login">
-     <div class="l-img">
+    <div class="l-img">
        <img v-if="isForum" class="li-img" src="../../assets/images/logo.png" alt="">
        <img v-else class="li-img" src="../../assets/images/bg_login.png" alt="">
-      </div>
+       <div class="li-tip">首次登录密码和工号一致</div>
+    </div>
      <div class="l-input">
       <!-- <input placeholder="请输入用户名" v-model="userName"/>
       <input placeholder="请输入密码" v-model="passWord" type="password"/>
@@ -191,4 +192,13 @@ export default {
     color #999999
     text-align center
     padding 30px 0
+  .li-tip
+    position absolute
+    padding 15px 0
+    width 100%
+    background-color #eee
+    text-align center
+    top 155px
+    left 0
+    color #333
 </style>
